@@ -17,7 +17,8 @@
     "preview": "npm run preview -w @drprop/web",
     "test": "vitest run",
     "typecheck": "tsc -p brand && tsc -p web && tsc -p app --noEmit",
-    "app": "npm run start -w @drprop/app"
+    "app": "npm run start -w @drprop/app",
+    "brand:3d": "npm run 3d -w @drprop/brand"
   },
   "devDependencies": {
     "@types/node": "^26.6.3",

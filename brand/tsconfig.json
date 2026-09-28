@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["node"]
+    "types": ["node", "vite/client"]
   },
-  "include": ["tokens", "pulse", "fonts", "scripts", "test", "types", "pricing.ts"]
+  "include": ["tokens", "pulse", "fonts", "logo", "3d", "scripts", "test", "types", "pricing.ts"]
 }
