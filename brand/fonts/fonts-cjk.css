@@ -1,0 +1,8 @@
+/*
+ * Chinese faces (brief §5.3): Noto Serif SC 300 for display, Noto Sans SC 400 for body.
+ * Load only on pages with Chinese text. Each file declares ~100 unicode-range slices;
+ * browsers download just the slices whose characters appear on the page.
+ */
+
+@import '@fontsource/noto-serif-sc/300.css';
+@import '@fontsource/noto-sans-sc/400.css';

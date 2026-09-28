@@ -1,0 +1,70 @@
+/* Generated from tokens.ts by scripts/build-css.ts — do not edit by hand. */
+
+:root {
+  --bone: #F4F1EA;
+  --paper: #FBFAF7;
+  --ink: #1C1B19;
+  --stone: #8A857C;
+  --travertine: #D9CFBF;
+  --bronze: #8C6A43;
+  --night: #141412;
+  --night-text: #EDE9E1;
+  --font-display: 'Instrument Serif', 'Noto Serif SC', 'Songti SC', serif;
+  --font-body: 'Geist', 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --weight-display-latin: 400;
+  --weight-display-cjk: 300;
+  --weight-body: 400;
+  --text-display: clamp(48px, 9vw, 120px);
+  --text-body: clamp(15px, 0.35vw + 14px, 17px);
+  --text-small: 13px;
+  --leading-display: 1.02;
+  --leading-body: 1.6;
+  --tracking-display: -0.01em;
+  --tracking-wordmark: 0.18em;
+  --tracking-label: 0.08em;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+  --space-12: 96px;
+  --space-16: 128px;
+  --space-20: 160px;
+  --section-gap-desktop: 160px;
+  --section-gap-mobile: 96px;
+  --radius-none: 0;
+  --radius-hair: 2px;
+  --rule: 1px;
+  --rule-pulse: 1.5px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-short: 600ms;
+  --duration-long: 1200ms;
+  --max-width: 1440px;
+  --gutter-mobile: 20px;
+  --gutter-desktop: 48px;
+  --touch-min: 44px;
+
+  /* Semantic roles — light (default) */
+  --c-bg: #F4F1EA;
+  --c-surface: #FBFAF7;
+  --c-text: #1C1B19;
+  --c-muted: #8A857C;
+  --c-rule: #8A857C;
+  --c-wash: #D9CFBF;
+  --c-accent: #8C6A43;
+}
+
+/* Dark scheme. Opt-in: add data-scheme="dark" (the app follows the OS setting). */
+[data-scheme='dark'] {
+  --c-bg: #141412;
+  --c-surface: #1C1B19;
+  --c-text: #EDE9E1;
+  --c-muted: #8A857C;
+  --c-rule: #4A4741;
+  --c-wash: #2A2825;
+  --c-accent: #B08B60;
+}

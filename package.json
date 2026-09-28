@@ -1,0 +1,25 @@
+{
+  "name": "drprop",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "brand",
+    "web"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "brand:build": "npm run build -w @drprop/brand",
+    "dev": "npm run dev -w @drprop/web",
+    "build": "npm run brand:build && npm run build -w @drprop/web",
+    "preview": "npm run preview -w @drprop/web",
+    "test": "vitest run",
+    "typecheck": "tsc -p brand && tsc -p web"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}
