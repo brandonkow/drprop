@@ -3,3 +3,15 @@ dist/
 *.log
 test-results/
 playwright-report/
+.expo/
+app/android/
+app/ios/
+app/dist-native/
+reels/.cache/
+reels/public/models/
+reels/public/fonts/
+docs/sources/*.pdf
+docs/sources/*.png
+blender/__pycache__/
+*.blend1
+public/models/

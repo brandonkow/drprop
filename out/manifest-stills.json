@@ -1,0 +1,317 @@
+{
+  "createdAt": "2026-09-28T18:02:45.462Z",
+  "mode": "stills",
+  "language": "en",
+  "inputs": {
+    "language": "en",
+    "showSafeZone": false,
+    "forceModelFallback": false,
+    "caseData": {
+      "id": "sample-questions",
+      "language": "en",
+      "status": "fictional",
+      "hook": "A home you like.\nA few questions first.",
+      "lines": [
+        "What does the title say?",
+        "Which costs keep coming?",
+        "What needs a closer look?",
+        "Put the unanswered questions on paper."
+      ],
+      "houseType": "terrace",
+      "highlight": "title",
+      "note": "Fictional educational scenario. No client, development or transaction is depicted."
+    },
+    "marketData": {
+      "id": "selangor-residential-value-2025",
+      "language": "en",
+      "status": "observed",
+      "title": "Read the flow.\nKeep the context.",
+      "metric": "Residential transaction value",
+      "unit": "RM million",
+      "frequency": "annual",
+      "geography": "Selangor",
+      "series": [
+        {
+          "label": "2021",
+          "value": 26490.71
+        },
+        {
+          "label": "2022",
+          "value": 30578.01
+        },
+        {
+          "label": "2023",
+          "value": 30255.16
+        },
+        {
+          "label": "2024",
+          "value": 31684.46
+        },
+        {
+          "label": "2025",
+          "value": 30528.85
+        }
+      ],
+      "source": "NAPIC, Property Market Report 2025, Central Region, Chart 8, p. 5",
+      "sourceUrl": "https://napic.jpph.gov.my/storage/app/media/3-penerbitan/Shahrul/Bahagian%20Pasaran%20Harta%20Tanah/Laporan%20Pasaran%20Harta%20Separuh%20Tahun%20dan%20Jadual/Q4%202025/Laporan%20Pasaran%20Harta%202025.pdf",
+      "asOf": "2025",
+      "retrievedAt": "2026-09-29",
+      "note": "Transcribed from PDF page 98 (printed Central Region page 5). Annual aggregate value of residential transactions, not median prices, asking prices, a house-price index, or monthly observations. Historical annual edition; no claim to be the latest release."
+    },
+    "storeStatus": "concept"
+  },
+  "outputs": [
+    {
+      "file": "BrandPulse-en-9x16.png",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 93331,
+      "sha256": "40c7bb83b2f81dfecc15da5febb6f821cca03f5ebba7dd6606e8027490fc964d"
+    },
+    {
+      "file": "CaseOfWeek-en-9x16.png",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 1080,
+      "bytes": 105700,
+      "sha256": "efd308b37c29c3b1af856c922ab3f4dee5863acaf40796a00836338a893ab3ee"
+    },
+    {
+      "file": "BeforeYouSign-en-9x16.png",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 63352,
+      "sha256": "9987c49d40fb168b9f68a5303d59ccb997211ef3f0b0b593af32086a3af6f889"
+    },
+    {
+      "file": "FeeReveal-en-9x16.png",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 77313,
+      "sha256": "99048e43e85fa518c2186ee1c40c40e2078e2bd5762c2526adec037155da45f9"
+    },
+    {
+      "file": "MarketPulse-en-9x16.png",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 117472,
+      "sha256": "5f3feb74b1f3fb51b56650fb73575d7e28a170425647f3e36dd34d97ec725611"
+    },
+    {
+      "file": "LoungeMoment-en-9x16.png",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 360,
+      "bytes": 157281,
+      "sha256": "14c3e6fc6674e823fae1d93ad1da1055f38f7f80090b414aad05dfe890d99621"
+    },
+    {
+      "file": "StoreReveal-en-9x16.png",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 600,
+      "bytes": 153905,
+      "sha256": "e8bfe44eea5324e989a062604155895454244860007026c1cbc17f32ac4e14f4"
+    },
+    {
+      "file": "MemberCardReveal-en-9x16.png",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 270,
+      "bytes": 92207,
+      "sha256": "b46cff169505da882d6169caaf398890254b63141f804cf775f2212d0cf51610"
+    },
+    {
+      "file": "BrandPulse-en-4x5.png",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 83266,
+      "sha256": "d662255f2a451ba7e0e836d317fa9040884b107c8ce1e7108de451c624b52877"
+    },
+    {
+      "file": "CaseOfWeek-en-4x5.png",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 1080,
+      "bytes": 96016,
+      "sha256": "bef88e81d6c8ba1c51feecbf3b8e221504b59f1d3e9d448fbfeddbdda139502c"
+    },
+    {
+      "file": "BeforeYouSign-en-4x5.png",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 54277,
+      "sha256": "cd57a1712a560ddfd80fe8da99670d8d52a2dfdd7a9315f803654877c256584c"
+    },
+    {
+      "file": "FeeReveal-en-4x5.png",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 65398,
+      "sha256": "f6c033cd572e625f9c9c92aca573addd1e1bcf9ed26ac45366778e1aa5185bd6"
+    },
+    {
+      "file": "MarketPulse-en-4x5.png",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 105222,
+      "sha256": "64c57db74447d69d1312e05a4911ee8fac3e2e086de6bf66defb057fefd9bccb"
+    },
+    {
+      "file": "LoungeMoment-en-4x5.png",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 360,
+      "bytes": 152225,
+      "sha256": "34d092c6d669d7cb555add4ad5389c555f6bea8f3ebd2ec1db6198d26446760e"
+    },
+    {
+      "file": "StoreReveal-en-4x5.png",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 600,
+      "bytes": 150514,
+      "sha256": "4c27ca5ba88045e6937de8e5cfa91ee14417436f99884e27f72400b5f90a54cf"
+    },
+    {
+      "file": "MemberCardReveal-en-4x5.png",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 270,
+      "bytes": 82168,
+      "sha256": "efea76162957ac326134f4d9bdf79ea491854fe752ae778a5a65aa47d89762c4"
+    },
+    {
+      "file": "BrandPulse-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 102733,
+      "sha256": "c3856b250769cb342472c86d8d7a84eb4518808cf7141843e6a0d7de004bc291"
+    },
+    {
+      "file": "CaseOfWeek-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 1080,
+      "bytes": 118460,
+      "sha256": "549c74b423297141bd48e4061d64011523cc1896ae1578cae309cf8a941cc60b"
+    },
+    {
+      "file": "BeforeYouSign-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 62375,
+      "sha256": "f68a9ff12c21dfefa82ff1d6939fdac858bc603b31a525ff974811f2d2962eed"
+    },
+    {
+      "file": "FeeReveal-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 73603,
+      "sha256": "2f981afb9e6bac29662e81b94b6d9a4b037efc511d21e48601d9a8d371c0ffe8"
+    },
+    {
+      "file": "MarketPulse-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 113737,
+      "sha256": "c9ba336fffde8ef42899240b9cbeb525327d8d18210d9f3d1031620395a7bb9e"
+    },
+    {
+      "file": "LoungeMoment-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 360,
+      "bytes": 206841,
+      "sha256": "7741b9d64c0d123dbc53873f1c0eb2d32b07d9a74e1fb00557e7dd9fecf684c0"
+    },
+    {
+      "file": "StoreReveal-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 600,
+      "bytes": 135061,
+      "sha256": "81ed968396542d1a9b6e92283ebd2407680c49f295972da56a198069555ec89e"
+    },
+    {
+      "file": "MemberCardReveal-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 270,
+      "bytes": 100077,
+      "sha256": "65929ea662b69424ceb5a901114409f9386f8abf7d2fd31fdd73d63d164714d9"
+    },
+    {
+      "file": "BrandPulseShort-en-9x16.png",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 210,
+      "bytes": 92965,
+      "sha256": "0b70f1e7d48e5d996b373386b2c17750f2fec6aa4811d0d43494e5f0418d0425"
+    },
+    {
+      "file": "BrandPulseShort-en-4x5.png",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 210,
+      "bytes": 82592,
+      "sha256": "dbff3d78f5b870b57eb3d4d975535dba663570bfc270493b4021da500719fab7"
+    },
+    {
+      "file": "BrandPulseShort-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 210,
+      "bytes": 101741,
+      "sha256": "f16b5c71c35777a08e61e1cb8c5667702f0fdd2044cd45a44692c52e6bfe69aa"
+    },
+    {
+      "file": "StoreLoop-en-16x9.png",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 1200,
+      "bytes": 102733,
+      "sha256": "c3856b250769cb342472c86d8d7a84eb4518808cf7141843e6a0d7de004bc291"
+    }
+  ]
+}

@@ -1,17 +1,27 @@
 {
   "limitBytes": 250000,
-  "gzipBytes": 194587,
+  "gzipBytes": 218086,
   "passed": true,
   "chunks": [
     {
-      "file": "index-CtR1trRq.js",
-      "bytes": 6967,
-      "gzipBytes": 2988
+      "file": "index-XdXo3JgI.js",
+      "bytes": 7814,
+      "gzipBytes": 3285
     },
     {
-      "file": "scene-Bukh_uBy.js",
-      "bytes": 700466,
-      "gzipBytes": 191599
+      "file": "scene-DL0cxMtd.js",
+      "bytes": 167055,
+      "gzipBytes": 59961
+    },
+    {
+      "file": "store-model-DxAeOkgy.js",
+      "bytes": 46952,
+      "gzipBytes": 14228
+    },
+    {
+      "file": "tokens-d1IsRSGv.js",
+      "bytes": 568870,
+      "gzipBytes": 140612
     }
   ]
 }

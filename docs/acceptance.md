@@ -1,5 +1,7 @@
 # Website acceptance — steps 1–5
 
+Historical phase report. Later app/media/store work and the latest measurements are documented in [the full delivery ledger](acceptance-full.md). The original phase's Lighthouse summary is preserved as [lighthouse-steps-1-5-summary.json](qa/lighthouse-steps-1-5-summary.json); the other primary QA report paths now track the latest build.
+
 Updated: 2026-09-29 (Asia/Kuala_Lumpur). Branch: `feat/brand-static-landing`, repository `brandonkow/drprop`.
 
 The user explicitly approved steps 3–5 after the initial steps 1–2 delivery. All copy and documentation remain English-only. This work does not modify, merge into or deploy `main`; deployment belongs to the other session. The [original steps 1–2 report](acceptance-steps-1-2.md) is retained as a historical record.

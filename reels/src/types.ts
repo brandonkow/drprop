@@ -1,0 +1,3 @@
+export type CaseData = { id: string; language: 'en'; status: 'fictional' | 'anonymized'; hook: string; lines: string[]; houseType: 'terrace' | 'condo' | 'bungalow'; highlight: 'roof' | 'title' | 'facade' | 'none'; note: string };
+export type MarketData = { id: string; language: 'en'; status: 'demo' | 'observed'; title: string; metric: string; unit: string; frequency: string; geography: string; series: { label: string; value: number }[]; source: string; sourceUrl: string; asOf: string; retrievedAt: string; note: string };
+export type ReelProps = { language: 'en'; showSafeZone: boolean; forceModelFallback: boolean; caseData: CaseData; marketData: MarketData; storeStatus: 'concept' | 'approved-plan'; audioSrc?: string };

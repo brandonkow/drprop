@@ -1,103 +1,97 @@
 # DR. PROP
 
-English-only brand foundation and progressively enhanced landing page for the independent property clinic. Implements **Chapter 10, steps 1–5** of [the supplied brief](docs/brief.md), following the user's subsequent approval of steps 3–5.
+English brand system, website, Expo mock app, shared 3D assets and Remotion studio. The authorized scope extends through Chapter 10, step 14 of [the working brief](docs/brief.md). See [the delivery ledger](docs/acceptance-full.md) for verification and remaining gates.
 
-All delivery work belongs to **`feat/brand-static-landing`**. Do not merge, push or deploy `main` as part of this task. Another session owns deployment.
+**All work belongs to `feat/brand-static-landing`.** Another session owns `main` and deployment. This branch has not been merged or deployed.
 
-## Run locally
+## Website
 
-Use Node.js 22.19+ (Node 24 was used for validation).
+Node.js 22.19+ is required; validation used Node 24 on Windows. Each project has its own lockfile.
 
 ```sh
 npm ci
 npm run dev
-```
-
-Open the local URL printed by Vite. For the production version:
-
-```sh
 npm run build
 npm run preview
 ```
 
-Build output is `dist/`. It is reproducible and excluded from Git, together with dependencies and temporary test files. Source, brand assets, documentation, lockfile and acceptance screenshots are included in the branch. No deployment workflow is installed. The eventual deployment owner can use `npm ci && npm run build` and serve `dist/` from a static host.
+The website uses Vite, TypeScript and vanilla three.js. Five semantic sections, fee calculator and WhatsApp booking action remain readable without JavaScript/WebGL. Deferred ink, grain and Pulse Roof effects have reduced-motion, memory, data-saving and GPU-failure fallbacks. The lounge has a labelled Blender concept poster and an on-demand shared GLB that renders once, then releases GPU resources.
 
-## Included
+The deployment owner can run `npm ci && npm run build` and serve `dist/` from a static host. Dependencies/build output are ignored and reproducible. No deployment workflow was installed.
 
-- Shared TypeScript tokens and generated CSS variables, licensed/self-hosted Instrument Serif, Geist and Geist Mono, and the static Pulse Roof SVG.
-- Five semantic HTML sections: hero, consultations, fees, lounge and visit.
-- Responsive editorial typography, fine rules, bone/paper/travertine surfaces and restrained bronze.
-- Price-band calculator with boundary and malformed-input handling. The page's copy and published fee bands also work without JavaScript in the production build.
-- Configurable WhatsApp booking and external Google Maps directions. Missing data never creates a fabricated live link.
-- English copy only. The user's later instruction supersedes the original three-language plan; no language selector or locale dictionaries are shipped.
-- Keyboard focus, skip link, input labels and live fee/error feedback.
-- Deferred three.js Pulse Roof animation, GSAP/ScrollTrigger + Lenis synchronization, adapted MIT ink simulation and a static grain pass.
-- Reduced-motion, data-saving, low-memory, WebGL/half-float failure, context-loss and hidden-page handling. Static content remains available in every fallback.
+Edit `src/config/site.ts` with the confirmed WhatsApp number (digits beginning with 60), address, hours, HTTPS Google Maps URL, SSM number, actual lounge photograph and capacity proposal. Absent information stays unconfirmed; booking remains unavailable without a number. Format validation does not verify ownership. No live messages were sent.
 
-## Configure confirmed business details
+Edit `src/config/pricing.ts` and the static fee table in `index.html` together. Proposed standard fees are RM 199 / 399 / 699 / 1,199 / 1,999. Exact thresholds use the lower band. Update app rules and reel fee copy if the proposal changes. Confirm commercial terms and replace the provisional privacy notice before operations.
 
-Edit [`src/config/site.ts`](src/config/site.ts):
+Set `loungeImage` for approved photography. Otherwise `loungeModel` uses the shared store concept; failure retains its WebP poster. See [effects architecture](docs/effects.md).
 
-| Field | What to supply |
-| --- | --- |
-| `whatsappNumber` | Confirmed Malaysian WhatsApp number, digits only, beginning with `60` |
-| `address` / `hours` | Confirmed public English details |
-| `mapsUrl` | HTTPS Google Maps destination; directions appear only with an address |
-| `ssmNumber` | Actual business registration number |
-| `loungeImage` | Local image path and descriptive English alternative text |
-| `memberCapProposal` | Proposed capacity; copy continues to identify it as a proposal |
+## App preview
 
-Place approved store imagery in `public/images/`. An unavailable/broken photograph retains the clearly labelled placeholder. No stock image or invented store photograph is supplied.
+```sh
+npm --prefix app ci
+npm --prefix app start
+npm --prefix app run export:web
+npm --prefix app run export:native
+```
 
-Booking is currently unavailable because no verified number was provided. Setting a valid number enables the existing header CTA; it opens WhatsApp with an encoded English message. Merely passing the number-format check does not verify that an account exists. No live message was sent during verification.
+Exactly three tabs: Home, Records and Me. Includes launch, preview OTP, four-screen booking, metadata-only attachments, simulated payment, records/sample PDF, profile and Skia membership card with optional gyroscope. Use preview code **246810** and sample details only. Local AsyncStorage is cleared on sign out. No SMS, backend, real payment or valid check-in credential is present.
 
-Edit [`src/config/pricing.ts`](src/config/pricing.ts) for fee bands. The current proposal is RM 199 / 399 / 699 / 1,199 / 1,999. Exact threshold values fall into the lower band. The calculator is for standard consultations; urgent/follow-up terms are informational proposals. If pricing changes, update the visible static price table in `index.html` as well. The boundary test intentionally documents the current business rule.
+Web output is `app/dist`; native JavaScript/assets output is `app/dist-native`. Neither is a signed native release. See [app guide](docs/app.md) for flows and phase-two boundaries.
 
-Before opening real bookings, confirm the commercial terms and replace the pre-opening copy, unconfirmed hours/address/SSM details and provisional business privacy notice. This handoff does not claim launch readiness.
+## 3D and reels
 
-## Brand changes
+```sh
+npm run models
+npm --prefix reels ci
+npm --prefix reels run studio
+npm --prefix reels run stills
+npm --prefix reels run render
+```
 
-Edit `brand/tokens.ts`, then run `npm run tokens`. Development and production builds regenerate `brand/tokens.css` automatically. `brand/fonts.css` imports only Latin subsets; Fontsource provides `font-display: swap`. Font license notices are preserved under `brand/licenses/`. The single `brand/pulse-roof.svg` is reused by the wordmark, hero and lounge placeholder.
+Eight series in three ratios, three short brand variants and one store loop produce **28 English compositions**. Review media and SHA-256 manifests go in `out/`. MP4 uses H.264, 30fps, yuv420p and a silent AAC track until rights-cleared sound is supplied. No -14 LUFS audio master is claimed.
 
-The semantic page lives in `index.html`, with progressive enhancement in `src/main.ts`. This keeps content present before JavaScript runs. The original proposed section modules were unnecessary for this single-page site. Styles are split into shared base and responsive layout rules. See [`docs/effects.md`](docs/effects.md) for rendering architecture, upstream attribution, configuration and lifecycle behavior.
+To add an episode, copy a JSON under `reels/src/data`, retain evidence status/provenance and pass it to the batch script:
 
-## Verify
+```sh
+npm --prefix reels run render -- --only=CaseOfWeek --case=src/data/cases/sample.json
+npm --prefix reels run stills -- --only=StoreReveal --ratio=9x16 --safe-zones
+```
+
+See [reel production](docs/reels.md) for schemas, safe zones, audio and licensing. Default market data is historical annual NAPIC transaction value, not monthly/current prices; [source evidence](docs/market-provenance.md) records the distinction.
+
+Original procedural geometry lives in `brand/three`; shared exports in `brand/3d`. Blender generates editable scenes, GLBs and Cycles stills. The store is an **unconfirmed 8 × 12 m concept**, not a measured twin or construction plan. See [3D production](docs/3d.md).
+
+## Verification
 
 ```sh
 npm test
 npm run build
 npm run test:browser
+npm --prefix app test
+npm --prefix app run typecheck
+npm run test:app
+npm --prefix reels test
+npm --prefix reels run typecheck
+npm run test:reels
 ```
 
-Browser tests use installed Microsoft Edge through Playwright. On a machine without Edge, install it or set `channel` in `playwright.config.ts` to the browser available to that environment. Tests cover the calculator, unavailable booking/directions, page semantics, keyboard entry, automated WCAG A/AA checks, no-JavaScript content, reduced motion, and horizontal overflow at 1440 / 768 / 390 / 320px widths. Effects tests cover rendering, actual ink pixels, idle cleanup, scroll progress, memory/DPR limits, context loss and page visibility. They generate PNGs in `docs/qa/`.
+Browser tests use installed Microsoft Edge through Playwright. App tests require `export:web` first. Remotion uses supported Chrome Headless Shell, downloaded on first use; `CHROME_PATH` optionally overrides it. Run `npm run audit:mobile` against production preview port 4173 with heavy work stopped. Run `node scripts/verify-media.mjs` after the full batch, with FFmpeg/FFprobe on PATH.
 
-The production build enforces a combined JavaScript gzip budget below 250KB, including lazy chunks. With the preview server running on port 4173, run `npm run audit:mobile` for a mobile Lighthouse report. Set `CHROME_PATH` or `AUDIT_URL` to override the audit browser or target. Reports are saved in `docs/qa/`; local simulated results do not replace a production-host or physical-device test.
-
-See [`docs/acceptance.md`](docs/acceptance.md) for the item-by-item §5.6 assessment, evidence and limitations.
-
-The latest local mobile Lighthouse run measured LCP **1.55s**, performance **72/100** and TBT **1.70s**. The LCP and JavaScript transfer targets pass, but blocking time remains a performance limitation. This is not a claim of smooth operation on a physical Android device or production-host readiness.
-
-## Out of scope
-
-No mobile application, backend, payment integration, 3D asset production, reels or publishing. Physical Android performance remains unverified. Missing business details and booking readiness remain the deployment owner's responsibility.
+The website enforces a combined JavaScript gzip budget below 250,000 bytes, including lazy chunks. This budget does not apply to the separate app or video-authoring environment. Local simulation does not certify physical-device or deployed-host performance. Current results and the item-by-item §5.6 review belong in [acceptance-full.md](docs/acceptance-full.md).
 
 ## Repository map
 
 ```text
-brand/              tokens, fonts, Pulse Roof, font license notices
-docs/brief.md       English working translation and current scope overrides
-docs/acceptance.md  verification and anti-template checklist
-docs/effects.md     rendering, fallbacks and upstream attribution
-docs/qa/            screenshots, bundle budget and Lighthouse reports
-public/images/      approved future store images
-scripts/            tokens, pinned shader import, budget and mobile audit
-src/config/         business details and pricing
-src/effects/        scene, pulse shader, fluid adapter and fallbacks
-src/features/       calculator and WhatsApp URL handling
-src/styles/         shared and responsive CSS
-src/main.ts         progressive enhancement
-tests/              business rules and browser verification
-index.html          full semantic page
+app/             Expo mock frontend, local state, sample PDF, unit tests
+brand/           tokens, fonts, notices, Pulse Roof, shared models
+blender/         original store/cabinet generation and configuration
+reels/           compositions, JSON episodes, safe zones, batch renderer
+out/             review stills/videos and render manifests
+src/             vanilla website, effects and business configuration
+public/images/   labelled concepts and future approved photographs
+scripts/         asset generation, budgets, audits and media checks
+tests/           website/app/reel browser verification
+docs/            brief, guides, provenance and acceptance evidence
 ```
 
-The project was manually assembled using [Vite's documented setup](https://vite.dev/guide/), without a UI theme or template generator.
+No default UI theme was used. Instrument Serif, Geist and Geist Mono, fine rules, square corners and Pulse Roof are shared across surfaces. Font and integrated website-library notices are retained under `brand/licenses`. Remotion has its own license; operating-team eligibility for commercial use is unconfirmed.

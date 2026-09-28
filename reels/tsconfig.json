@@ -1,0 +1,4 @@
+{
+  "compilerOptions": { "target": "ES2022", "lib": ["ES2022", "DOM"], "module": "ESNext", "moduleResolution": "Bundler", "strict": true, "jsx": "react-jsx", "esModuleInterop": true, "skipLibCheck": true, "resolveJsonModule": true, "allowJs": true, "allowImportingTsExtensions": true, "noEmit": true },
+  "include": ["src", "scripts", "tests", "remotion.config.ts", "../brand/tokens.ts", "../brand/three/models.mjs"]
+}

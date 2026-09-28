@@ -4,7 +4,7 @@ English working translation of the founder-supplied `dr-prop-brief.md`. The orig
 
 ## Current implementation instructions
 
-The user's explicit instructions control this delivery: initially implement Chapter 10, steps 1–2, followed by explicit approval to continue with steps 3–5; make every deliverable English-only; place all work on `feat/brand-static-landing` in `brandonkow/drprop`; do not change or deploy `main`. References to three languages below describe the original roadmap and are superseded for this delivery. Sections 0–4 are background and decision rationale, not authorization to provide legal advice or settle business decisions. Sections 5–8 describe product specifications. Do not use default UI themes or design templates. Follow §5.6.
+The user's explicit instructions control this delivery: initial steps 1–2, then steps 3–5, followed by authorization to build the remaining Chapter 10 scope through step 14. Make every deliverable English-only; place all work on `feat/brand-static-landing` in `brandonkow/drprop`; do not change or deploy `main`. References to three languages below describe the original roadmap and are superseded. Sections 0–4 are background and decision rationale, not authorization to provide legal advice or settle business decisions. Product descriptions do not establish real business facts. Do not use default UI themes or design templates. Follow §5.6. Current completion status and evidence are recorded in `docs/acceptance-full.md`.
 
 ## 0. One-sentence positioning
 
@@ -209,7 +209,7 @@ Footer disclaimer: Dr Prop provides property information and analysis, not prope
 
 Verify relevant licenses when actually integrating these projects. None of these rendering libraries is part of steps 1–2.
 
-## 8. Mobile app — future scope
+## 8. Mobile app — authorized phase-one mock scope
 
 ### 8.1 Stack
 
@@ -243,7 +243,7 @@ Exactly three tabs: Home, Records, Me.
 
 Reuse all brand tokens, 0–2px corners and fine rules. Support night/night-text dark mode. Original roadmap includes three languages. Touch targets at least 44×44pt. No bottom-sheet advertisements, rating prompts or marketing push messages.
 
-## 9. Motion reels and 3D — future scope
+## 9. Motion reels and 3D — authorized scope
 
 ### 9.1 Principles
 
@@ -330,7 +330,7 @@ Future acceptance: render all compositions/languages/ratios with one command; ne
 13. Batch rendering by language and aspect ratio.
 14. README for local development/deployment, replacing contact/store details and adding reel episodes.
 
-General acceptance: no §5.6 violations; smooth landing-page scrolling on a midrange Android such as a 4GB device; complete usable site without WebGL; app booking within four screens. This delivery does not claim physical Android performance or app acceptance. A minimal README is included for handoff of steps 1–2, not execution of later implementation phases.
+General acceptance: no §5.6 violations; smooth landing-page scrolling on a midrange Android such as a 4GB device; complete usable site without WebGL; app booking within four screens. Native JavaScript export and browser emulation do not establish physical-device acceptance. Read the full acceptance ledger for completed checks, limitations and handoff status.
 
 ## 11. Founder decisions still required
 

@@ -6,6 +6,7 @@ import { calculateFee } from './features/fee-calculator.ts';
 import { whatsappUrl } from './features/whatsapp.ts';
 import { site } from './config/site.ts';
 import { mountEffects } from './effects/index.ts';
+import { mountStorePreview } from './features/store-preview.ts';
 
 const price = document.querySelector<HTMLInputElement>('#property-price')!;
 price.disabled = false;
@@ -51,9 +52,15 @@ if (site.loungeImage) {
   image.alt = site.loungeImage.alt;
   image.loading = 'lazy';
   image.decoding = 'async';
-  image.addEventListener('load', () => document.querySelector('#lounge-media')!.replaceChildren(image));
+  image.addEventListener('load', () => {
+    const media = document.querySelector('#lounge-media')!;
+    media.replaceChildren(image);
+    media.classList.remove('lounge-concept');
+    document.querySelector('.lounge-figure figcaption')!.textContent = 'A place for coffee, conversation and a little clarity.';
+  });
   image.src = site.loungeImage.src;
 }
 document.querySelector('.member-cap')!.textContent = site.memberCapProposal.toLocaleString('en-MY');
 document.querySelector('#year')!.textContent = String(new Date().getFullYear());
 mountEffects();
+if (site.loungeModel && !site.loungeImage) mountStorePreview(site.loungeModel);

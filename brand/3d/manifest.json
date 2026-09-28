@@ -1,0 +1,42 @@
+{
+  "generator": "scripts/export-models.mjs",
+  "provenance": "Original procedural geometry. No third-party models or real developments.",
+  "storeStatus": "Unconfirmed 8 x 12 m concept; replace with an approved measured plan.",
+  "models": [
+    {
+      "file": "pulse-roof.glb",
+      "bytes": 77384,
+      "sha256": "4e894768e14a6863a7abe07be412e08f51a9a9a8958fe2802d08bcdffee492b2"
+    },
+    {
+      "file": "clay-terrace.glb",
+      "bytes": 19664,
+      "sha256": "11a0badbae1dfa87922bfd9f2d75fbea5cb2c1822b044e622edcf12d30e235ec"
+    },
+    {
+      "file": "clay-condo.glb",
+      "bytes": 43616,
+      "sha256": "006d051535f7bb6bbd4544567c00ace72299017452a538154b90c51efdf77712"
+    },
+    {
+      "file": "clay-bungalow.glb",
+      "bytes": 19636,
+      "sha256": "1b2285a1bc23c8821e58bcead0392e9b7e13e2119f73723ceb6c01fcee1564d6"
+    },
+    {
+      "file": "apothecary.glb",
+      "bytes": 296696,
+      "sha256": "43820e89178f8f291ef08740291ac1d4c8fb7e778f5018b998e54c28da8eed9d"
+    },
+    {
+      "file": "member-card.glb",
+      "bytes": 77396,
+      "sha256": "ec5490dfba7cbf0b24dcfcad7fb7054cc2ab86141a8330f3c0156cb7072b0f54"
+    },
+    {
+      "file": "store-concept.glb",
+      "bytes": 374508,
+      "sha256": "e14903b325844f9ea4d7dccf6daf52c12debd740ca213a56b7080c151eb3fc3a"
+    }
+  ]
+}

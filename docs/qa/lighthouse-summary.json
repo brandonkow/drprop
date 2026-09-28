@@ -1,11 +1,11 @@
 {
-  "date": "2026-09-28T16:24:09.803Z",
+  "date": "2026-09-28T17:51:59.038Z",
   "url": "http://127.0.0.1:4173/",
   "lighthouseVersion": "13.5.0",
   "environment": {
     "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36",
     "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0",
-    "benchmarkIndex": 303.5,
+    "benchmarkIndex": 1123.5,
     "credits": {
       "axe-core": "4.13.0"
     }
@@ -70,22 +70,22 @@
     "skipAudits": null
   },
   "scores": {
-    "performance": 72,
+    "performance": 97,
     "accessibility": 100,
     "best-practices": 100,
     "seo": 92
   },
   "metrics": {
     "first-contentful-paint": {
-      "value": 1187.488,
+      "value": 1066.76325,
       "unit": "millisecond"
     },
     "largest-contentful-paint": {
-      "value": 1554.366,
+      "value": 1291.76325,
       "unit": "millisecond"
     },
     "total-blocking-time": {
-      "value": 1701.256,
+      "value": 183.20612500000016,
       "unit": "millisecond"
     },
     "cumulative-layout-shift": {
@@ -93,7 +93,7 @@
       "unit": "unitless"
     },
     "speed-index": {
-      "value": 3482.9986837225315,
+      "value": 1425.524977704431,
       "unit": "millisecond"
     }
   },

@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Dr Prop Preview",
+    "slug": "dr-prop-preview",
+    "scheme": "drprop",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-document-picker",
+      "expo-status-bar",
+      "expo-sharing"
+    ],
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "name": "Dr Prop Preview"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.drprop.preview",
+      "infoPlist": {
+        "NSMotionUsageDescription": "Optional motion gently changes the sheen of your membership preview."
+      }
+    },
+    "android": {
+      "package": "com.drprop.preview"
+    }
+  }
+}

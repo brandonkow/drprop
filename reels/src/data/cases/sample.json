@@ -1,0 +1,10 @@
+{
+  "id": "sample-questions",
+  "language": "en",
+  "status": "fictional",
+  "hook": "A home you like.\nA few questions first.",
+  "lines": ["What does the title say?", "Which costs keep coming?", "What needs a closer look?", "Put the unanswered questions on paper."],
+  "houseType": "terrace",
+  "highlight": "title",
+  "note": "Fictional educational scenario. No client, development or transaction is depicted."
+}

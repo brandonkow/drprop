@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
+const run=(command,args)=>{const result=spawnSync(command,args,{encoding:'utf8',windowsHide:true,maxBuffer:4*1024*1024});if(result.error)throw result.error;if(result.status!==0)throw new Error(`${command}: ${result.stderr}`);return result.stdout;};
+const manifest=JSON.parse(await readFile('out/manifest-video.json','utf8'));
+assert.equal(manifest.outputs.length,28,'The full batch must finish before final verification.');
+assert.equal(new Set(manifest.outputs.map(item=>item.file)).size,28);
+await mkdir('docs/qa/media',{recursive:true});const outputs=[];
+for(const item of manifest.outputs){
+  assert.equal(path.basename(item.file),item.file);
+  const file=path.join('out',item.file),data=await readFile(file);
+  assert.equal(createHash('sha256').update(data).digest('hex'),item.sha256);
+  const probe=JSON.parse(run('ffprobe',['-v','error','-show_streams','-show_format','-of','json',file]));
+  const video=probe.streams.find(stream=>stream.codec_type==='video'),audio=probe.streams.find(stream=>stream.codec_type==='audio');
+  assert.ok(video&&audio,`${item.file}: video and AAC required`);
+  assert.equal(video.codec_name,'h264');assert.equal(audio.codec_name,'aac');assert.equal(video.pix_fmt,'yuv420p');
+  assert.equal(video.width,item.width);assert.equal(video.height,item.height);assert.equal(video.r_frame_rate,`${item.fps}/1`);
+  assert.equal(Number(video.nb_frames),item.durationInFrames);
+  assert.ok(Math.abs(Number(probe.format.duration)-item.durationInFrames/item.fps)<.1);
+  run('ffmpeg',['-v','error','-xerror','-i',file,'-f','null','-']);
+  const sheet=`docs/qa/media/${path.parse(item.file).name}.jpg`;
+  const frames=[Math.round(item.fps),Math.floor(item.durationInFrames/2),item.durationInFrames-item.fps];
+  const selection=frames.map(frame=>`eq(n\\,${frame})`).join('+');
+  run('ffmpeg',['-v','error','-y','-i',file,'-vf',`select='${selection}',scale=320:-2,tile=3x1`,'-frames:v','1','-q:v','3',sheet]);
+  outputs.push({file:item.file,codec:video.codec_name,audio:audio.codec_name,width:video.width,height:video.height,frames:Number(video.nb_frames),duration:Number(probe.format.duration),sha256:item.sha256,decode:'pass',contactSheet:sheet});
+  console.log(`Verified ${item.file}`);
+}
+await writeFile('docs/qa/media-verification.json',JSON.stringify({checkedAt:new Date().toISOString(),count:outputs.length,audio:'Silent AAC evaluation track; no loudness master claimed.',outputs},null,2)+'\n');

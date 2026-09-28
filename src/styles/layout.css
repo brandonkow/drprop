@@ -55,6 +55,8 @@ h2 { font-size: clamp(48px, 4.45vw, 64px); line-height: 1.05; letter-spacing: -.
 .placeholder-center p { font: 400 36px/1.1 var(--font-heading); }
 .lounge-placeholder:has(> img) { padding: 0; }
 .lounge-placeholder > img { width: 100%; height: 100%; object-fit: cover; }
+.lounge-concept { aspect-ratio: 5/4; overflow: hidden; }
+.lounge-concept > img { object-fit: contain; }
 figcaption { font-size: 12px; margin-top: 16px; }
 .lounge-copy > p:not(.eyebrow) { margin-top: 24px; max-width: 38ch; }
 .membership { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--stone); }
