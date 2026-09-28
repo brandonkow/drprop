@@ -4,7 +4,8 @@
   "type": "module",
   "workspaces": [
     "brand",
-    "web"
+    "web",
+    "app"
   ],
   "engines": {
     "node": ">=22"
@@ -15,11 +16,12 @@
     "build": "npm run brand:build && npm run build -w @drprop/web",
     "preview": "npm run preview -w @drprop/web",
     "test": "vitest run",
-    "typecheck": "tsc -p brand && tsc -p web"
+    "typecheck": "tsc -p brand && tsc -p web && tsc -p app --noEmit",
+    "app": "npm run start -w @drprop/app"
   },
   "devDependencies": {
     "@types/node": "^26.6.3",
-    "typescript": "^7.0.2",
+    "typescript": "~6.0.3",
     "vitest": "^5.0.2"
   }
 }

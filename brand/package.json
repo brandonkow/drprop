@@ -12,6 +12,7 @@
     "./pricing": "./pricing.ts",
     "./pulse": "./pulse/pulse-roof.ts",
     "./pulse/forms": "./pulse/forms.ts",
+    "./logo/paths": "./logo/logo-paths.ts",
     "./logo/*": "./logo/*"
   },
   "scripts": {

@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Dr Prop",
+    "slug": "drprop",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "my.drprop.app"
+    },
+    "android": {
+      "package": "my.drprop.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#F4F1EA",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#F4F1EA",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "dark": {
+            "backgroundColor": "#141412",
+            "image": "./assets/splash-icon-dark.png"
+          }
+        }
+      ],
+      "expo-font",
+      "expo-localization",
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "Dr Prop uses motion to light your member card as you tilt your phone."
+        }
+      ],
+      "expo-document-picker"
+    ],
+    "scheme": "drprop"
+  }
+}

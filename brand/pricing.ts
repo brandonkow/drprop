@@ -30,6 +30,19 @@ export const URGENT_SURCHARGE = 0.5;
 /** Pre-signing review: half price. */
 export const REVIEW_DISCOUNT = 0.5;
 
+export type ConsultType = 'clinic' | 'urgent' | 'review';
+
+/**
+ * Fee for a consult type in a band, in whole ringgit (rounded up).
+ * Urgent adds the surcharge; a pre-signing review is discounted.
+ */
+export function consultFee(type: ConsultType, band: PriceBand): number {
+  const base = bands.find((b) => b.id === band)!.fee;
+  if (type === 'urgent') return Math.ceil(base * (1 + URGENT_SURCHARGE));
+  if (type === 'review') return Math.ceil(base * (1 - REVIEW_DISCOUNT));
+  return base;
+}
+
 /** Band for a property value in RM. Returns null for non-positive or non-finite input. */
 export function bandFor(value: number): Band | null {
   if (!Number.isFinite(value) || value <= 0) return null;

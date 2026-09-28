@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bandFor, bands, feeFor } from '../pricing.ts';
+import { bandFor, bands, consultFee, feeFor } from '../pricing.ts';
 
 describe('feeFor', () => {
   it.each([
@@ -27,5 +27,19 @@ describe('feeFor', () => {
     expect(bounds.at(-1)).toBeNull();
     const closed = bounds.slice(0, -1) as number[];
     expect(closed).toEqual([...closed].sort((a, b) => a - b));
+  });
+});
+
+describe('consultFee', () => {
+  it('charges the band fee for a clinic consult', () => {
+    expect(consultFee('clinic', '300k-600k')).toBe(399);
+  });
+  it('adds 50% for urgent, rounded up to whole ringgit', () => {
+    expect(consultFee('urgent', 'lt300k')).toBe(299);
+    expect(consultFee('urgent', 'gt2m')).toBe(2999);
+  });
+  it('halves the fee for a review, rounded up', () => {
+    expect(consultFee('review', 'lt300k')).toBe(100);
+    expect(consultFee('review', '1m-2m')).toBe(600);
   });
 });
