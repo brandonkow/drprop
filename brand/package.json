@@ -10,6 +10,7 @@
     "./fonts-cjk.css": "./fonts/fonts-cjk.css",
     "./pricing": "./pricing.ts",
     "./pulse": "./pulse/pulse-roof.ts",
+    "./pulse/forms": "./pulse/forms.ts",
     "./logo/*": "./logo/*"
   },
   "scripts": {

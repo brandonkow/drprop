@@ -230,3 +230,31 @@
   display: inline-flex;
   align-items: center;
 }
+
+/* ---- WebGL background (Layer B) ---- */
+
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-long) var(--ease);
+}
+
+.scene.is-ready {
+  opacity: 1;
+}
+
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* While the WebGL line loads (or runs), the static SVG line stays hidden. */
+.motion .pulse {
+  visibility: hidden;
+}

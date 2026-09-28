@@ -4,6 +4,7 @@
  */
 import { bands } from '@drprop/brand/pricing';
 import { roofPath } from '@drprop/brand/pulse';
+import { PULSE_LAYOUT, type PulseLayout } from '../config/pulse.ts';
 import { site, whatsappUrl } from '../config/site.ts';
 import { groupDigits, formatRM } from '../features/money.ts';
 import { dicts, fmt, langMeta, langs, type Dict, type Lang } from '../i18n/index.ts';
@@ -56,6 +57,7 @@ function head(t: Dict, lang: Lang, page: PageId): string {
     <meta property="og:title" content="${esc(title)}">
     <meta property="og:description" content="${esc(t.meta.description)}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <script>matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.add('motion')</script>
     ${alternates}
     <link rel="stylesheet" href="/src/styles/main.css">${lang === 'zh' ? '\n    <link rel="stylesheet" href="/src/styles/cjk.css">' : ''}
     <script type="module" src="/src/main.ts"></script>
@@ -83,12 +85,15 @@ function header(t: Dict, lang: Lang, page: PageId, logoSvg: string): string {
 
 /** Static Pulse Roof. Doubles as the no-WebGL / reduced-motion fallback (brief §7.4). */
 function pulse(): string {
-  const wide = roofPath({ width: 1440, height: 120, baseline: 140 }, { apex: 0.7, halfSpan: 0.075, dip: 0.14 });
-  const narrow = roofPath({ width: 390, height: 84, baseline: 100 }, { apex: 0.68, halfSpan: 0.19, dip: 0.14 });
   const attrs = 'fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="miter" vector-effect="non-scaling-stroke"';
+  const svg = (l: PulseLayout) => {
+    const [w, h] = l.viewBox;
+    const d = roofPath({ width: w, height: l.height, baseline: l.baseline }, l.roof);
+    return `<svg class="pulse__${l.variant}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" data-pulse-svg="${l.variant}"><path d="${d}" ${attrs}/></svg>`;
+  };
   return `<div class="pulse" aria-hidden="true">
-      <svg class="pulse__wide" viewBox="0 0 1440 160" preserveAspectRatio="none"><path d="${wide}" ${attrs}/></svg>
-      <svg class="pulse__narrow" viewBox="0 0 390 120" preserveAspectRatio="none"><path d="${narrow}" ${attrs}/></svg>
+      ${svg(PULSE_LAYOUT.wide)}
+      ${svg(PULSE_LAYOUT.narrow)}
     </div>`;
 }
 
