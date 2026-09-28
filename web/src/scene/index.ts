@@ -1,5 +1,9 @@
 /**
- * The WebGL background (brief §7.3). Step 3 draws Layer B, the Pulse Roof line.
+ * The WebGL background (brief §7.3):
+ *   Layer A  ink fluid on bone paper, only while the pointer moves (./fluid)
+ *   Layer B  the Pulse Roof line (./pulse-line.ts)
+ *   Layer C  film grain, drawn in Layer A's display pass
+ * Devices reporting under 4 GB of memory get grain only, no fluid (§7.4).
  *
  * Where the line lives as the page scrolls:
  *   hero     at the static SVG's position; flat → heartbeat on arrival. It
@@ -16,6 +20,7 @@ import { FORM } from '@drprop/brand/pulse/forms';
 import { OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import { PULSE_BREAKPOINT, PULSE_LAYOUT, type PulseLayout } from '../config/pulse.ts';
 import { FEE_INPUT_EVENT, type FeeInputDetail } from '../features/events.ts';
+import { InkPaper } from './fluid/fluid.ts';
 import { createPulseLine } from './pulse-line.ts';
 import { initSmoothScroll } from './smooth-scroll.ts';
 
@@ -56,6 +61,20 @@ export async function startScene(): Promise<void> {
   const pulse = createPulseLine(layout);
   scene.add(pulse.line);
 
+  // Layers A + C. Optional: without them the line still runs.
+  const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  let paper: InkPaper | null = null;
+  try {
+    paper = new InkPaper({
+      simulate: memory === undefined || memory >= 4,
+      mobile: coarse || layout.variant === 'narrow',
+      pixelRatio: Math.min(window.devicePixelRatio, 1.5),
+    });
+  } catch (error) {
+    if (import.meta.env.DEV) console.warn('[drprop] ink paper unavailable', error);
+  }
+
   /* ---- layout measurements (document coordinates) ---- */
   const m = { vw: 1, vh: 1, heroH: 1, headerH: 0, apexPx: layout.height, heroBaseline: 0, footerTop: 0, maxScroll: 1 };
 
@@ -72,6 +91,7 @@ export async function startScene(): Promise<void> {
     camera.top = m.vh;
     camera.updateProjectionMatrix();
     pulse.material.resolution.set(m.vw, m.vh);
+    paper?.resize(m.vw, m.vh);
 
     const y = window.scrollY;
     const svg = document.querySelector<SVGElement>(`[data-pulse-svg="${layout.variant}"]`);
@@ -117,6 +137,8 @@ export async function startScene(): Promise<void> {
 
   /* ---- frame ---- */
   const frame = (time: number, deltaMs: number) => {
+    if (paper?.active) paper.update(deltaMs / 1000);
+
     const now = performance.now();
     if (now - lastInput > 700) state.ampTarget = 1;
     const ampStep = 1 - Math.exp(-(deltaMs / 1000) * 6);
@@ -174,11 +196,19 @@ export async function startScene(): Promise<void> {
   }
 
   document.body.prepend(canvas);
+  if (paper) {
+    paper.update(0);
+    document.body.prepend(paper.canvas);
+    window.addEventListener('pointermove', (e) => paper.move(e.clientX, e.clientY), { passive: true });
+  }
   gsap.ticker.add(frame);
   document.addEventListener('visibilitychange', () => (document.hidden ? gsap.ticker.sleep() : gsap.ticker.wake()));
   void document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
   // Fade in, then the signature: the flat line starts to beat.
-  requestAnimationFrame(() => canvas.classList.add('is-ready'));
+  requestAnimationFrame(() => {
+    canvas.classList.add('is-ready');
+    paper?.canvas.classList.add('is-ready');
+  });
   gsap.to(state, { intro: 1, duration: 1.2, delay: 0.4, ease: 'brand', onUpdate: () => (dirty = true) });
 }
