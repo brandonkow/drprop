@@ -204,6 +204,15 @@ function apothecary(): string {
       </svg>`;
 }
 
+/** The store photo or refined render when configured, otherwise the line drawing. */
+function loungeImage(t: Dict): string {
+  const img = site.store.image;
+  if (!img) return `${apothecary()}\n        <figcaption class="small">${esc(t.lounge.figure)}</figcaption>`;
+  const caption = img.kind === 'render' ? t.lounge.renderCaption : t.lounge.photoCaption;
+  return `<img class="lounge__photo" src="${esc(img.src)}" alt="${esc(caption)}" width="1600" height="1200" loading="lazy" decoding="async">
+        <figcaption class="small">${esc(caption)}</figcaption>`;
+}
+
 function lounge(t: Dict): string {
   const { memberCap, memberPlacesLeft } = site.store;
   const places =
@@ -213,8 +222,7 @@ function lounge(t: Dict): string {
     <div class="wrap grid">
       <p class="label" aria-hidden="true">${esc(t.lounge.label)}</p>
       <figure class="lounge__figure">
-        ${apothecary()}
-        <figcaption class="small">${esc(t.lounge.figure)}</figcaption>
+        ${loungeImage(t)}
       </figure>
       <div class="lounge__text">
         <h2 class="display" id="lounge-title">${esc(t.lounge.title)}</h2>

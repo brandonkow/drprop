@@ -1,0 +1,14 @@
+{
+  "_comment": "Placeholder floor plan (brief §6.2: 80–120 m²). Replace with the real survey; all values in metres. The street is along y = 0, the back wall at y = depth.",
+  "width": 12.5,
+  "depth": 8.0,
+  "height": 3.2,
+  "entrance": { "x": 2.4, "width": 1.2 },
+  "consultRooms": 2,
+  "consultRoomWidth": 3.2,
+  "consultRoomDepth": 3.0,
+  "urgentBooth": true,
+  "privateEntrance": true,
+  "apothecary": { "rows": 5, "cols": 4 },
+  "signage": "DR. PROP"
+}

@@ -58,7 +58,9 @@
     "promise": "Tiada jualan. Datang minum kopi saja pun boleh.",
     "cap": "{cap} tempat ahli di klinik ini.",
     "left": "Baki {left}.",
-    "figure": "Dinding almari ubat. Gambar sebenar selepas kami dibuka."
+    "figure": "Dinding almari ubat. Gambar sebenar selepas kami dibuka.",
+    "renderCaption": "Gambaran kedai. Gambar sebenar selepas kami dibuka.",
+    "photoCaption": "Lounge di Petaling Jaya."
   },
   "visit": {
     "label": "Lawatan",

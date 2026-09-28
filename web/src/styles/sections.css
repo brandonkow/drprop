@@ -351,7 +351,9 @@
   }
 }
 
-.apothecary {
+.apothecary,
+.lounge__photo {
+  display: block;
   width: 100%;
   height: auto;
 }

@@ -58,7 +58,9 @@
     "promise": "No sales pitch. Come in just for the coffee.",
     "cap": "{cap} member places at this clinic.",
     "left": "{left} remaining.",
-    "figure": "The apothecary wall. Photographs when we open."
+    "figure": "The apothecary wall. Photographs when we open.",
+    "renderCaption": "A rendering of the store. Photographs when we open.",
+    "photoCaption": "The Lounge, Petaling Jaya."
   },
   "visit": {
     "label": "Visit",

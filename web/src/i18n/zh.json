@@ -58,7 +58,9 @@
     "promise": "没有推销。只来喝杯咖啡也可以。",
     "cap": "本店名额 {cap} 位。",
     "left": "余 {left} 位。",
-    "figure": "药柜零食墙。开业后换成实拍照片。"
+    "figure": "药柜零食墙。开业后换成实拍照片。",
+    "renderCaption": "门店渲染图。开业后换成实拍照片。",
+    "photoCaption": "Petaling Jaya 店的 Lounge。"
   },
   "visit": {
     "label": "到访",

@@ -30,6 +30,12 @@ export const site = {
      * Example from the brief: 42.
      */
     memberPlacesLeft: null as number | null,
+    /**
+     * §4 image. Null shows the apothecary line drawing. Once the Blender model is
+     * refined (blender/build_store.py --render) or the store is photographed, put
+     * the file in web/public/ and set e.g. { src: '/store.jpg', kind: 'render' }.
+     */
+    image: null as { src: string; kind: 'render' | 'photo' } | null,
   },
 } as const;
 
