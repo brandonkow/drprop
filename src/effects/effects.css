@@ -1,0 +1,17 @@
+body { isolation: isolate; }
+#effects-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 800ms var(--ease); }
+html[data-effects='active'] #effects-canvas { opacity: 1; }
+html[data-effects='active'] .pulse > img,
+html[data-effects='active'] .pulse::before,
+html[data-effects='active'] .pulse::after { visibility: hidden; }
+html[data-effects='active'] .fees { background: transparent; }
+.effect-track { height: 96px; pointer-events: none; }
+.fee-pulse { height: 64px; margin-block: 8px; }
+.visit-pulse { grid-column: 1 / -1; }
+@media (prefers-reduced-motion: reduce) {
+  #effects-canvas { display: none; transition: none; }
+  html[data-effects='active'] .pulse > img,
+  html[data-effects='active'] .pulse::before,
+  html[data-effects='active'] .pulse::after { visibility: visible; }
+  html[data-effects='active'] .fees { background: var(--paper); }
+}

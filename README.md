@@ -1,12 +1,12 @@
 # DR. PROP
 
-English-only brand foundation and static landing page for the independent property clinic. Implements **Chapter 10, steps 1–2 only** of [the supplied brief](docs/brief.md).
+English-only brand foundation and progressively enhanced landing page for the independent property clinic. Implements **Chapter 10, steps 1–5** of [the supplied brief](docs/brief.md), following the user's subsequent approval of steps 3–5.
 
 All delivery work belongs to **`feat/brand-static-landing`**. Do not merge, push or deploy `main` as part of this task. Another session owns deployment.
 
 ## Run locally
 
-Use Node.js 22.18+ (Node 24 was used for validation).
+Use Node.js 22.19+ (Node 24 was used for validation).
 
 ```sh
 npm ci
@@ -30,7 +30,9 @@ Build output is `dist/`. It is reproducible and excluded from Git, together with
 - Price-band calculator with boundary and malformed-input handling. The page's copy and published fee bands also work without JavaScript in the production build.
 - Configurable WhatsApp booking and external Google Maps directions. Missing data never creates a fabricated live link.
 - English copy only. The user's later instruction supersedes the original three-language plan; no language selector or locale dictionaries are shipped.
-- Keyboard focus, skip link, input labels, live fee/error feedback and no motion to suppress.
+- Keyboard focus, skip link, input labels and live fee/error feedback.
+- Deferred three.js Pulse Roof animation, GSAP/ScrollTrigger + Lenis synchronization, adapted MIT ink simulation and a static grain pass.
+- Reduced-motion, data-saving, low-memory, WebGL/half-float failure, context-loss and hidden-page handling. Static content remains available in every fallback.
 
 ## Configure confirmed business details
 
@@ -57,7 +59,7 @@ Before opening real bookings, confirm the commercial terms and replace the pre-o
 
 Edit `brand/tokens.ts`, then run `npm run tokens`. Development and production builds regenerate `brand/tokens.css` automatically. `brand/fonts.css` imports only Latin subsets; Fontsource provides `font-display: swap`. Font license notices are preserved under `brand/licenses/`. The single `brand/pulse-roof.svg` is reused by the wordmark, hero and lounge placeholder.
 
-The semantic page lives in `index.html`, with progressive enhancement in `src/main.ts`. This keeps content present before JavaScript runs. The original proposed section modules were unnecessary for this single static page. Styles are split into shared base and responsive layout rules.
+The semantic page lives in `index.html`, with progressive enhancement in `src/main.ts`. This keeps content present before JavaScript runs. The original proposed section modules were unnecessary for this single-page site. Styles are split into shared base and responsive layout rules. See [`docs/effects.md`](docs/effects.md) for rendering architecture, upstream attribution, configuration and lifecycle behavior.
 
 ## Verify
 
@@ -67,13 +69,17 @@ npm run build
 npm run test:browser
 ```
 
-Browser tests use installed Microsoft Edge through Playwright. On a machine without Edge, install it or set `channel` in `playwright.config.ts` to the browser available to that environment. Tests cover the calculator in the actual page, unavailable booking/directions, page semantics, keyboard entry, automated WCAG A/AA checks, no-JavaScript content, reduced motion, and horizontal overflow at 1440 / 768 / 390 / 320px widths. They generate full-page PNGs in `docs/qa/`.
+Browser tests use installed Microsoft Edge through Playwright. On a machine without Edge, install it or set `channel` in `playwright.config.ts` to the browser available to that environment. Tests cover the calculator, unavailable booking/directions, page semantics, keyboard entry, automated WCAG A/AA checks, no-JavaScript content, reduced motion, and horizontal overflow at 1440 / 768 / 390 / 320px widths. Effects tests cover rendering, actual ink pixels, idle cleanup, scroll progress, memory/DPR limits, context loss and page visibility. They generate PNGs in `docs/qa/`.
+
+The production build enforces a combined JavaScript gzip budget below 250KB, including lazy chunks. With the preview server running on port 4173, run `npm run audit:mobile` for a mobile Lighthouse report. Set `CHROME_PATH` or `AUDIT_URL` to override the audit browser or target. Reports are saved in `docs/qa/`; local simulated results do not replace a production-host or physical-device test.
 
 See [`docs/acceptance.md`](docs/acceptance.md) for the item-by-item §5.6 assessment, evidence and limitations.
 
+The latest local mobile Lighthouse run measured LCP **1.55s**, performance **72/100** and TBT **1.70s**. The LCP and JavaScript transfer targets pass, but blocking time remains a performance limitation. This is not a claim of smooth operation on a physical Android device or production-host readiness.
+
 ## Out of scope
 
-No three.js, GSAP, Lenis, WebGL fluid/grain, Pulse Roof animation, mobile application, backend, payment integration, 3D assets, reels or publishing. Physical Android performance testing and Lighthouse belong to later work and have not been claimed.
+No mobile application, backend, payment integration, 3D asset production, reels or publishing. Physical Android performance remains unverified. Missing business details and booking readiness remain the deployment owner's responsibility.
 
 ## Repository map
 
@@ -81,10 +87,12 @@ No three.js, GSAP, Lenis, WebGL fluid/grain, Pulse Roof animation, mobile applic
 brand/              tokens, fonts, Pulse Roof, font license notices
 docs/brief.md       English working translation and current scope overrides
 docs/acceptance.md  verification and anti-template checklist
-docs/qa/            desktop, tablet and phone screenshots
+docs/effects.md     rendering, fallbacks and upstream attribution
+docs/qa/            screenshots, bundle budget and Lighthouse reports
 public/images/      approved future store images
-scripts/            token generation
+scripts/            tokens, pinned shader import, budget and mobile audit
 src/config/         business details and pricing
+src/effects/        scene, pulse shader, fluid adapter and fallbacks
 src/features/       calculator and WhatsApp URL handling
 src/styles/         shared and responsive CSS
 src/main.ts         progressive enhancement

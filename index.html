@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#F4F1EA" />
     <meta name="description" content="An independent property clinic. We don't sell. We tell. A clearer view of your next home, before you sign." />
     <link rel="icon" type="image/svg+xml" href="/brand/pulse-roof.svg" />
+    <link rel="preload" href="/node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
     <title>DR. PROP — Before you sign.</title>
   </head>
   <body>
@@ -45,6 +46,7 @@
             <p id="price-help" class="field-help">Enter an amount in Malaysian ringgit.</p>
             <p id="price-error" class="field-error" aria-live="polite"></p>
             <div class="fee-result"><span>Your consultation fee</span><output id="fee-output" for="property-price" aria-live="polite" aria-atomic="true"><span class="fee-currency">RM</span> <span id="fee-value">—</span></output></div>
+            <div class="effect-track fee-pulse" aria-hidden="true"></div>
             <p class="report-note">A written diagnostic report is included.</p>
             <div class="price-bands" aria-label="Proposed standard consultation fees">
               <div><span>Up to RM 300,000</span><span>RM 199</span></div>
@@ -67,6 +69,7 @@
       <section class="visit page-width section-space" aria-labelledby="visit-title">
         <div><p class="eyebrow">04 / COME BY</p><h2 id="visit-title">The door will be open.<br />The pressure stays out.</h2></div>
         <div class="visit-details"><div><h3>Our first clinic</h3><p id="store-address">Address to be announced.</p><a id="maps-link" class="text-link" hidden>Directions on Google Maps <span aria-hidden="true">↗</span></a></div><div><h3>Opening hours</h3><p id="store-hours">Hours to be confirmed.</p></div><p class="visit-note">We are preparing our first space.<br />Appointments are not yet available.</p></div>
+        <div class="effect-track visit-pulse" aria-hidden="true"></div>
       </section>
     </main>
 

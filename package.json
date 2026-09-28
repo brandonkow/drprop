@@ -4,24 +4,30 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.18.0"
+    "node": ">=22.19.0"
   },
   "scripts": {
     "tokens": "node scripts/generate-tokens.ts",
     "dev": "npm run tokens && vite --host 127.0.0.1",
-    "build": "npm run tokens && tsc --noEmit && vite build",
+    "build": "npm run tokens && node scripts/generate-notices.mjs && tsc --noEmit && vite build && node scripts/check-budget.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "test": "node --test tests/*.test.ts",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "audit:mobile": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
     "@fontsource/geist": "5.3.0",
     "@fontsource/geist-mono": "5.3.0",
-    "@fontsource/instrument-serif": "5.3.0"
+    "@fontsource/instrument-serif": "5.3.0",
+    "gsap": "3.15.0",
+    "lenis": "1.3.26",
+    "three": "0.186.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.63.0",
+    "@types/three": "0.186.0",
+    "lighthouse": "13.5.0",
     "typescript": "7.0.2",
     "vite": "8.3.1"
   }

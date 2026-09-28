@@ -4,7 +4,7 @@ English working translation of the founder-supplied `dr-prop-brief.md`. The orig
 
 ## Current implementation instructions
 
-The user's explicit instructions control this delivery: implement Chapter 10, steps 1–2 only; make every deliverable English-only; place all work on `feat/brand-static-landing` in `brandonkow/drprop`; do not change or deploy `main`. References to three languages below describe the original roadmap and are superseded for this delivery. Sections 0–4 are background and decision rationale, not authorization to provide legal advice or settle business decisions. Sections 5–8 describe product specifications. Do not use default UI themes or design templates. Follow §5.6.
+The user's explicit instructions control this delivery: initially implement Chapter 10, steps 1–2, followed by explicit approval to continue with steps 3–5; make every deliverable English-only; place all work on `feat/brand-static-landing` in `brandonkow/drprop`; do not change or deploy `main`. References to three languages below describe the original roadmap and are superseded for this delivery. Sections 0–4 are background and decision rationale, not authorization to provide legal advice or settle business decisions. Sections 5–8 describe product specifications. Do not use default UI themes or design templates. Follow §5.6.
 
 ## 0. One-sentence positioning
 

@@ -1,68 +1,85 @@
-# Steps 1–2 acceptance report
+# Website acceptance — steps 1–5
 
-Date: 2026-09-28. Delivery branch: `feat/brand-static-landing` in `brandonkow/drprop`.
+Updated: 2026-09-29 (Asia/Kuala_Lumpur). Branch: `feat/brand-static-landing`, repository `brandonkow/drprop`.
 
-## Scope and instruction precedence
+The user explicitly approved steps 3–5 after the initial steps 1–2 delivery. All copy and documentation remain English-only. This work does not modify, merge into or deploy `main`; deployment belongs to the other session. The [original steps 1–2 report](acceptance-steps-1-2.md) is retained as a historical record.
 
-Implemented only Chapter 10, steps 1–2: shared brand assets and the static landing page. The user's later English-only instruction supersedes the original trilingual requirement. The user also requires branch-only output and reserves `main` deployment for another session. No main-branch mutation, merge, deployment or publishing is part of this delivery.
+## Delivered in this phase
 
-The original attachment was read in full. `docs/brief.md` is an English working translation retaining the background, proposals and future roadmap, with an explicit current-scope note. Background legal and market assertions have not been independently validated. They are not treated as implementation commands or verified launch claims.
+- **Step 3:** three.js Line2/LineMaterial pulse, 512-vertex shader morphing from flat to heartbeat to roof to generic skyline; GSAP/ScrollTrigger + Lenis coordination; small calculator amplitude feedback.
+- **Step 4:** the adapted Pavel Dobryakov fluid solver, limited to muted brand pigments, pointer movement, 64 simulation resolution and 512/256 desktop/mobile dye resolution; a 4% static grain postprocessing pass. No bloom, sunrays or random startup splats.
+- **Step 5:** asynchronous initialization, parallel shader warm-up where supported, heading-font preload, DPR cap, reduced-motion/data-saving/low-memory/WebGL/context-loss fallbacks, hidden-page pausing, idle fluid cleanup, budget enforcement and mobile Lighthouse checks.
+
+Full technical details, upstream revision, license locations and reproduction commands are in [effects.md](effects.md). The complete page and calculator remain available without decorative rendering. Missing real-world business details remain explicitly unconfirmed.
 
 ## Section 5.6 — item-by-item review
 
-| Requirement | Result | Evidence |
+| Brief requirement | Result | Evidence in this delivery |
 | --- | --- | --- |
-| No generic hero + subtitle + two buttons + three feature cards | Pass | One booking action in the header. Asymmetric serif hero and static roof rule; consultation services are numbered text rows with dividers, not cards. |
-| No glassmorphism card grid | Pass | Opaque bone/paper/travertine surfaces. No backdrop filters, translucent cards or glass styling. |
-| No purple-blue gradients, glowing borders or gradient text | Pass | Specified flat colors only; no gradient, glow or shadow rules. |
-| No emoji or Lucide/Heroicons stacks in feature lists | Pass | Plain 01/02/03 labels. No icon library. The small outbound arrow on links is not a feature-list icon. |
-| No site-wide Inter | Pass | Instrument Serif headings; Geist body; Geist Mono monetary values. Self-hosted Latin font files through Fontsource. |
-| No rounded-2xl + shadow-lg cards | Pass | Corners are square or 2px. Fine rules replace shadows; no card grid or UI component library. |
-| No fabricated trust data | Pass | No testimonials, customer counts or fabricated remaining capacity. The 300 memberships and prices are expressly proposals. Address, hours and SSM remain unconfirmed. |
-| No testimonial carousel, FAQ accordion or newsletter box | Pass | None present in the five sections or footer. |
-| No floating chatbot | Pass | No chatbot or floating widget. The only booking action is the ordinary header CTA. |
-| Establish quality through typography, space and a breathing line | Pass for steps 1–2 | Editorial serif hierarchy, 160px desktop / 96px phone section separation and shared Pulse Roof artwork. The line is intentionally static; breathing/scroll animation is deferred to step 3. |
+| No generic hero + subtitle + two buttons + three feature cards | Pass | One header booking action; asymmetric serif hero; numbered consultation rows without cards. |
+| No glassmorphism card grid | Pass | Opaque paper/stone styling and rules; no glass cards or backdrop filters. |
+| No purple-blue gradients, glowing borders or gradient text | Pass | Brand-only pigment palette with capped ink absorption; no bloom, sunrays, luminous edges or gradient text. Fluid tonal variation is the expressly requested ink effect. |
+| No emoji or Lucide/Heroicons stacks | Pass | Plain service numerals; no icon library. Small link-direction arrows are not feature-list icon stacks. |
+| No site-wide Inter | Pass | Instrument Serif, Geist and Geist Mono; self-hosted and licensed. |
+| No rounded-2xl + shadow-lg cards | Pass | Square/2px corners, no card shadows or component-library theme. |
+| No fabricated trust data | Pass | No customer counts, testimonials or fabricated availability; proposed fees and 300 memberships are labelled as proposals. |
+| No testimonial carousel, FAQ accordion or newsletter box | Pass | None present. |
+| No floating chatbot | Pass | None present; normal header booking action only. |
+| Use typography, whitespace and a breathing line | Pass | Existing editorial hierarchy and spacing retained; quiet pulse morphing in dedicated blank tracks, with a static SVG alternative for reduced motion or GPU failure. |
 
-No §5.6 prohibited pattern was found in the delivered source or inspected screenshots. This is a scoped design review, not an assertion that all future roadmap acceptance criteria are complete.
+Motion is limited to the brand signature and calculator feedback. There are no per-section fade-ups, bounce effects, spinning entrances or recognizable real buildings. The static grain does not flicker. The empty store-photo area remains honestly labelled.
 
-## Verification performed
+## Verification
 
-- `npm run build`: TypeScript check and production build passed.
-- `npm test`: 3 test groups passed, covering every price threshold and next cent, formatted amounts, empty/malformed input, unavailable contact data and encoded WhatsApp messages.
-- `npm run test:browser`: 7 tests passed in headless Microsoft Edge via Playwright against the production build.
-- Automated axe checks for WCAG 2 A/AA and WCAG 2.1 AA: no reported violations in the tested desktop/tablet/phone states. This is not a complete accessibility certification.
-- Actual UI price entry, all five bands, invalid-input feedback and clearing/reset were verified. No fake fee is shown while empty or invalid.
-- Header booking has no destination and is unavailable without the actual number. Google Maps remains hidden without confirmed address/destination data.
-- Five semantic content sections, English document language, skip-link keyboard focus and no page JavaScript errors verified.
-- Horizontal overflow checks passed at 1440, 768, 390 and 320 CSS pixels.
-- Production content and static price bands remain readable with JavaScript disabled. The calculator is disabled with a visible explanation until enhancement initializes.
-- Reduced-motion check found no animations and no canvas. No WebGL is required.
-- Screenshots were generated and desktop/phone views visually inspected; tablet and narrow-phone full-page screenshots were also reviewed.
-- English-only source scan found no remaining Chinese characters in authored project files.
+The TypeScript/production build and all-JavaScript gzip budget passed. **All 5 unit tests and all 15 browser tests passed** on the final regression run. Automated axe WCAG 2 A/AA and WCAG 2.1 AA scans reported no violations in the tested states; this is not a complete accessibility certification.
 
-The first browser pass found the supplied bronze color had insufficient contrast for small text against bone (4.37:1). That label now uses ink, with bronze retained only as a decorative rule. The no-JavaScript explanation was changed from `noscript` to visible static fallback content hidden only after enhancement starts. All affected checks then passed.
+Browser coverage includes actual ink-pixel changes, three-second ink cleanup, full skyline progress, rendered calculator feedback, unavailable WebGL, a 2GB/DPR-3 phone profile, a 4GB/DPR-2 phone profile with fourfold CPU throttling and native touch scrolling, live reduced-motion toggling, hidden-page handling, context loss and skipping the entire scene download under reduced motion. Existing checks cover pricing, keyboard entry, page semantics, automated WCAG A/AA scans, no-JavaScript content and overflow at 1440/768/390/320px.
 
-## Build footprint
+The visibility test explicitly simulates the document visibility event and verifies that GPU frame counts stop; it does not claim an operating-system background-tab measurement. The 4GB profile is browser emulation, not a physical Android phone.
 
-Vite reported approximately 3.06 KB JavaScript / **1.39 KB gzipped**, and 9.95 KB CSS / **2.90 KB gzipped**. Latin WOFF2 assets total approximately 43.84 KB; WOFF fallbacks are also emitted. These are build artifact sizes, not measured network performance or LCP.
+## Mobile Lighthouse results
+
+Final audited production build, localhost, Lighthouse 13.5.0 through headless Edge/Chromium. Default mobile screen/network settings and simulated CPU throttling; no audit-specific visual-feature bypass was used. The report's Android user-agent string is emulation, not evidence of a connected Android device.
+
+| Metric | Result |
+| --- | --- |
+| Performance | **72 / 100** |
+| Accessibility | **100 / 100** |
+| Best practices | **100 / 100** |
+| SEO | **92 / 100** |
+| First Contentful Paint | **1.19 s** |
+| Largest Contentful Paint | **1.55 s** — meets the brief's <2.5 s target in this run |
+| Total Blocking Time | **1.70 s** — remaining limitation |
+| Cumulative Layout Shift | **0.00023** |
+| Speed Index | **3.48 s** |
+| All JS chunks, gzipped | **194,587 bytes** — below the 250,000-byte budget |
+
+The initial audit recorded LCP 2.44 s and TBT 4.68 s; an intermediate audit recorded LCP 2.53 s and TBT 3.23 s. Heading-font preload and correctly targeted asynchronous shader warm-up improved the final results. These are separate local runs with normal measurement variability, not a controlled laboratory claim.
+
+**Performance is not fully optimized.** Despite meeting LCP and transfer-budget targets, shader/setup work and other main-thread activity still produce substantial simulated blocking time. No physical midrange Android smoothness, real-world INP or deployed-host performance is certified. The deployment owner should repeat the audit on the actual host and a target Android device before treating it as launch-ready.
+
+Evidence:
+
+- [Full HTML Lighthouse report](qa/lighthouse-mobile.html)
+- [Full JSON report](qa/lighthouse-mobile.json)
+- [Final summary with environment/settings](qa/lighthouse-summary.json)
+- [Initial summary](qa/lighthouse-initial-summary.json) and [intermediate summary](qa/lighthouse-intermediate-summary.json)
+- [Build budget by chunk](qa/bundle-size.json)
+
+On Windows, chrome-launcher encountered a locked temporary browser-profile directory during cleanup. The browser audit had already completed and its reports were saved. The script reports that cleanup warning without treating the valid audit as a measurement failure; it does not delete unrelated temporary directories.
 
 ## Visual evidence
 
-- [Desktop, 1440px full page](qa/landing-1440.png)
-- [Desktop first viewport](qa/hero-1440.png)
-- [Tablet, 768px full page](qa/landing-768.png)
-- [Phone, 390px full page](qa/landing-390.png)
-- [Phone first viewport](qa/hero-390.png)
-- [Narrow phone, 320px full page](qa/landing-320.png)
+- [Animated hero](qa/effects-hero-desktop.png)
+- [Pointer ink](qa/effects-ink-desktop.png) and [ink detail](qa/effects-ink-detail.png)
+- [Fee-area roof and calculator](qa/effects-fees-desktop.png)
+- [Visit-area skyline](qa/effects-skyline-desktop.png)
+- [Low-memory phone](qa/effects-low-memory-phone.png)
+- [4GB phone emulation](qa/effects-4gb-phone.png)
+- [Reduced-motion desktop](qa/landing-1440.png), [tablet](qa/landing-768.png), [phone](qa/landing-390.png) and [narrow phone](qa/landing-320.png)
 
-Screenshots show RM 500,000 entered and the corresponding RM 399 proposed standard fee. This is an example calculator input, not a transaction or customer record.
+The effects, text clearance, typography and phone layouts were visually reviewed. Screenshot calculator values are test inputs, not customer or transaction data.
 
-## Remaining business inputs and limits
+## Remaining inputs and boundaries
 
-The WhatsApp Business number, actual store photograph, address, hours, SSM number and business privacy notice are missing. Fees, urgent surcharge and membership terms need confirmation. The interface labels this as a pre-opening preview; booking is not available. `src/config/site.ts` is the handoff point for confirmed business data.
-
-No message was sent to WhatsApp, no live booking was made and no map destination was fabricated. Valid URL formatting is unit-tested; contact-account existence and a live booking flow are unverified.
-
-No real Android device, iOS Safari, other browser engine, network-throttled LCP or Lighthouse measurement was performed. These remain future validation work. No app, WebGL, animation, backend, payments, reels or 3D work was executed.
-
-The repository was empty when this local branch was initialized, so this delivery starts with its own root commit. A separate Claude branch appeared remotely while work was underway. This task does not modify that branch. The deployment owner should inspect history before deciding how to integrate this branch into their own work.
+The real WhatsApp number, store address/hours/photo, SSM registration and final privacy notice are still missing. Pricing and membership terms remain proposals. No live booking or outbound message was sent. No backend, payment flow, mobile app, reels, 3D asset pipeline, website deployment or main-branch work was performed.

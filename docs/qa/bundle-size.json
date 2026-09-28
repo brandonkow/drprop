@@ -1,0 +1,17 @@
+{
+  "limitBytes": 250000,
+  "gzipBytes": 194587,
+  "passed": true,
+  "chunks": [
+    {
+      "file": "index-CtR1trRq.js",
+      "bytes": 6967,
+      "gzipBytes": 2988
+    },
+    {
+      "file": "scene-Bukh_uBy.js",
+      "bytes": 700466,
+      "gzipBytes": 191599
+    }
+  ]
+}

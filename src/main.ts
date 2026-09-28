@@ -5,6 +5,7 @@ import './styles/layout.css';
 import { calculateFee } from './features/fee-calculator.ts';
 import { whatsappUrl } from './features/whatsapp.ts';
 import { site } from './config/site.ts';
+import { mountEffects } from './effects/index.ts';
 
 const price = document.querySelector<HTMLInputElement>('#property-price')!;
 price.disabled = false;
@@ -55,3 +56,4 @@ if (site.loungeImage) {
 }
 document.querySelector('.member-cap')!.textContent = site.memberCapProposal.toLocaleString('en-MY');
 document.querySelector('#year')!.textContent = String(new Date().getFullYear());
+mountEffects();
