@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["node"],
+    "noUnusedLocals": true
+  },
+  "include": ["src", "scripts", "test", "remotion.config.ts", "../brand/types"]
+}

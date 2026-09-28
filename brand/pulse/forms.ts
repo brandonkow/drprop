@@ -165,16 +165,17 @@ export interface PulseGeometry {
 export function pulseGeometry(count: number, roof: RoofOptions, variant: SkylineVariant): PulseGeometry {
   const roofPoly = roofPoints(roof);
   // Evenly spaced x plus the roof's corners, so the ridge stays sharp.
-  const corners = roofPoly.map(([x]) => x);
-  let sortedX: number[] = [];
-  for (let m = count - corners.length + 2, tries = 0; tries < 50; tries++) {
-    const set = new Set<number>(corners);
-    for (let i = 0; i < m; i++) set.add(i / (m - 1));
-    sortedX = [...set].sort((a, b) => a - b);
-    if (sortedX.length === count) break;
-    m += sortedX.length < count ? 1 : -1;
+  const corners = [...new Set(roofPoly.map(([x]) => x))];
+  // Corners (incl. 0 and 1) plus evenly spaced interior points; a point that
+  // lands on a corner is nudged so every x is unique and the count is exact.
+  const interior = count - corners.length;
+  const sortedX = [...corners];
+  for (let i = 1; i <= interior; i++) {
+    let x = i / (interior + 1);
+    while (sortedX.some((c) => Math.abs(c - x) < 1e-9)) x += 1e-6;
+    sortedX.push(x);
   }
-  if (sortedX.length !== count) throw new Error('pulseGeometry: could not place vertices');
+  sortedX.sort((a, b) => a - b);
 
   const roofY = (x: number) => {
     for (let i = 1; i < roofPoly.length; i++) {
@@ -195,4 +196,30 @@ export function pulseGeometry(count: number, roof: RoofOptions, variant: Skyline
     skyArr[i * 2 + 1] = sky[i]![1];
   });
   return { count, base, sky: skyArr, apex: roof.apex ?? 0.5 };
+}
+
+/* ------------------------------------------------------------ blending */
+
+/**
+ * CPU twin of the website's vertex shader (web/src/scene/pulse-line.ts):
+ * unit-space points of the line at `progress` (0 flat → 0.25 beat → 0.5 roof →
+ * 1 skyline) and `time` (s, drives the beat). Used by the reels (2D and 3D).
+ */
+export function pulseAt(g: PulseGeometry, progress: number, time: number, widthPx: number): Float32Array {
+  const toBeat = smoothstep(0, 0.25, progress);
+  const toRoof = smoothstep(0.25, 0.5, progress);
+  const toSky = smoothstep(0.5, 1, progress);
+  const env = beatEnvelope(time);
+  const out = new Float32Array(g.count * 2);
+  for (let i = 0; i < g.count; i++) {
+    const x = g.base[i * 2]!;
+    const roof = g.base[i * 2 + 1]!;
+    let y = toBeat * ecgShape(x, g.apex, widthPx) * env;
+    y += (roof - y) * toRoof;
+    const sx = g.sky[i * 2]!;
+    const sy = g.sky[i * 2 + 1]!;
+    out[i * 2] = x + (sx - x) * toSky;
+    out[i * 2 + 1] = y + (sy - y) * toSky;
+  }
+  return out;
 }

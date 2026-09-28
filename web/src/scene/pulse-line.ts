@@ -18,7 +18,7 @@ const VERTICES = 512;
 
 const f = (n: number) => (Number.isInteger(n) ? `${n}.0` : String(n));
 
-/** Mirrors ecgShape() and beatEnvelope() in brand/pulse/forms.ts. */
+/** Mirrors ecgShape(), beatEnvelope() and pulseAt() in brand/pulse/forms.ts. */
 const PULSE_GLSL = /* glsl */ `
 uniform float uProgress;
 uniform float uTime;

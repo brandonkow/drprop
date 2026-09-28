@@ -1,0 +1,31 @@
+{
+  "houseType": "condo",
+  "highlight": "roof",
+  "en": {
+    "hook": "What is a sinking fund?",
+    "lines": [
+      "Strata owners pay two things: maintenance and the sinking fund.",
+      "The sinking fund pays for big repairs: roof, lifts, repainting.",
+      "Under the Strata Management Act it is 10% of the maintenance charge.",
+      "Ask for the balance. A thin fund means special levies later."
+    ]
+  },
+  "zh": {
+    "hook": "维修基金（sinking fund）是什么？",
+    "lines": [
+      "分层地契业主要付两笔：管理费和维修基金。",
+      "维修基金用于大修：屋顶、电梯、外墙粉刷。",
+      "按《分层管理法令》，它是管理费的 10%。",
+      "问清楚余额。基金太薄，日后可能要额外征费。"
+    ]
+  },
+  "ms": {
+    "hook": "Apa itu kumpulan wang penjelas?",
+    "lines": [
+      "Pemilik strata membayar dua perkara: caj penyenggaraan dan kumpulan wang penjelas.",
+      "Kumpulan wang penjelas membiayai pembaikan besar: bumbung, lif, cat semula.",
+      "Di bawah Akta Pengurusan Strata, ia 10% daripada caj penyenggaraan.",
+      "Tanya bakinya. Dana yang nipis bermakna levi khas kemudian."
+    ]
+  }
+}

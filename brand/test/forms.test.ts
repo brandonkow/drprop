@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { beatEnvelope, BEAT_PERIOD, ecgShape, ECG, pulseGeometry, resample, SKYLINES } from '../pulse/forms.ts';
+import { beatEnvelope, BEAT_PERIOD, ecgShape, ECG, pulseAt, pulseGeometry, resample, SKYLINES } from '../pulse/forms.ts';
 import { roofPoints } from '../pulse/pulse-roof.ts';
 
 describe('resample', () => {
@@ -51,5 +51,22 @@ describe('beat', () => {
     expect(beatEnvelope(ECG.rise)).toBeCloseTo(1, 5);
     expect(beatEnvelope(BEAT_PERIOD * 0.99)).toBeCloseTo(ECG.rest, 2);
     expect(beatEnvelope(ECG.rise + BEAT_PERIOD * 3)).toBeCloseTo(1, 5);
+  });
+});
+
+describe('pulseAt', () => {
+  const g = pulseGeometry(256, { apex: 0.6, halfSpan: 0.12, dip: 0.14 }, 'wide');
+  const ys = (p: Float32Array) => Array.from({ length: p.length / 2 }, (_, i) => p[i * 2 + 1]!);
+
+  it('is flat at 0', () => {
+    expect(Math.max(...ys(pulseAt(g, 0, 0.06, 1080)).map(Math.abs))).toBe(0);
+  });
+  it('is the roof at 0.5', () => {
+    const p = pulseAt(g, 0.5, 0.3, 1080);
+    expect(Math.max(...ys(p))).toBeCloseTo(1, 5);
+  });
+  it('is the skyline at 1', () => {
+    const p = pulseAt(g, 1, 0, 1080);
+    expect(Array.from(p)).toEqual(Array.from(g.sky));
   });
 });

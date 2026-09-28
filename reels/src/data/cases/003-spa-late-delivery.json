@@ -1,0 +1,31 @@
+{
+  "houseType": "bungalow",
+  "highlight": "facade",
+  "en": {
+    "hook": "Have you read this clause in your SPA?",
+    "lines": [
+      "Buying from a developer? The SPA sets a date for vacant possession.",
+      "Late delivery entitles you to compensation, calculated in the SPA.",
+      "Check the date, and how the compensation is worked out.",
+      "Keep every letter. Dates matter when you claim."
+    ]
+  },
+  "zh": {
+    "hook": "SPA 里这一条，你看过吗？",
+    "lines": [
+      "向发展商买房，SPA 会写明交屋（空屋交付）日期。",
+      "逾期交屋，你有权获得赔偿，算法写在 SPA 里。",
+      "看清楚日期，也看清楚赔偿怎么算。",
+      "保留每一封信件。索赔时，日期很重要。"
+    ]
+  },
+  "ms": {
+    "hook": "Sudahkah anda baca klausa ini dalam SPA?",
+    "lines": [
+      "Membeli daripada pemaju? SPA menetapkan tarikh milikan kosong.",
+      "Penyerahan lewat melayakkan anda pampasan, dikira dalam SPA.",
+      "Semak tarikhnya, dan cara pampasan dikira.",
+      "Simpan setiap surat. Tarikh penting ketika membuat tuntutan."
+    ]
+  }
+}

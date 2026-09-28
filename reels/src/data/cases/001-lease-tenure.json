@@ -1,0 +1,31 @@
+{
+  "houseType": "terrace",
+  "highlight": "land",
+  "en": {
+    "hook": "How many years are left on the lease?",
+    "lines": [
+      "Leasehold land returns to the state when the lease ends.",
+      "Banks look at the years left, not the age of the house.",
+      "A short remaining lease can mean a smaller loan, or none.",
+      "Check the title before you pay the deposit."
+    ]
+  },
+  "zh": {
+    "hook": "地契还剩几年？",
+    "lines": [
+      "租赁地契到期，土地归还州政府。",
+      "银行看的是剩余年限，不是房子的屋龄。",
+      "剩余年限短，可能贷得少，甚至贷不到。",
+      "付订金之前，先查地契。"
+    ]
+  },
+  "ms": {
+    "hook": "Berapa tahun lagi baki pajakan?",
+    "lines": [
+      "Tanah pajakan kembali kepada negeri apabila pajakan tamat.",
+      "Bank melihat baki tahun, bukan usia rumah.",
+      "Baki pajakan yang pendek boleh bermakna pinjaman lebih kecil, atau tiada.",
+      "Semak hak milik sebelum membayar deposit."
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "sample": true,
+  "_comment": "Placeholder numbers to design with. Replace with published NAPIC figures, set sample to false.",
+  "source": "NAPIC · Malaysian House Price Index",
+  "date": "2026-Q2",
+  "unit": "index",
+  "label": { "en": "House price index", "zh": "房价指数", "ms": "Indeks harga rumah" },
+  "series": [
+    { "label": "Q3 24", "value": 213.1 },
+    { "label": "Q4 24", "value": 214.8 },
+    { "label": "Q1 25", "value": 215.2 },
+    { "label": "Q2 25", "value": 217.9 },
+    { "label": "Q3 25", "value": 218.4 },
+    { "label": "Q4 25", "value": 220.6 },
+    { "label": "Q1 26", "value": 220.1 },
+    { "label": "Q2 26", "value": 222.7 }
+  ]
+}
