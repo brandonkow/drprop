@@ -61,7 +61,7 @@ Outputs
 | `brand/renders/store-doorway.jpg` | reference still from the doorway (Cycles) |
 | `blender/out/store_layout.blend` | the animated layout plan (git-ignored) |
 | `brand/renders/layout-plan.jpg`, `layout-axo.jpg` | plan and axonometric stills of the flow |
-| `blender/out/layout-flow.mp4` | the flow as a video (git-ignored) |
+| `blender/out/layout-flow.mp4` | the flow as a video (git-ignored; a copy, 840×560 at 5 fps, is kept in `brand/renders/layout-flow.mp4`) |
 
 When the real floor plan arrives, edit `store.config.json` (metres; the street
 is along y = 0) and run the script again. Lights are 2700 K inside, with daylight
