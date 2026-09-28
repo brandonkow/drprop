@@ -7,7 +7,7 @@
  */
 import { BEAT_PERIOD, ECG, pulseGeometry, type PulseGeometry } from '@drprop/brand/pulse/forms';
 import { color } from '@drprop/brand/tokens';
-import { InstancedInterleavedBuffer, InterleavedBufferAttribute } from 'three';
+import { InstancedInterleavedBuffer, InterleavedBufferAttribute, OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import { Line2 } from 'three/examples/jsm/lines/Line2.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
@@ -123,4 +123,20 @@ export function createPulseLine(layout: PulseLayout) {
   line.frustumCulled = false;
 
   return { line, material, uniforms, setLayout };
+}
+
+/** Renderer, scene and pixel-space camera for the line. Lives here so three.js loads as one chunk. */
+export function createLineStage(canvas: HTMLCanvasElement, onShaderError: () => void) {
+  const renderer = new WebGLRenderer({
+    canvas,
+    antialias: true,
+    alpha: true,
+    powerPreference: 'low-power',
+    // Software-only WebGL is too slow for a full-screen canvas: keep the SVG line.
+    failIfMajorPerformanceCaveat: true,
+  });
+  renderer.debug.onShaderError = onShaderError;
+  renderer.setClearColor(0x000000, 0);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  return { renderer, scene: new Scene(), camera: new OrthographicCamera(0, 1, 1, 0, -1, 1) };
 }

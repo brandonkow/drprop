@@ -5,6 +5,7 @@
   --paper: #FBFAF7;
   --ink: #1C1B19;
   --stone: #8A857C;
+  --stone-text: #726D64;
   --travertine: #D9CFBF;
   --bronze: #8C6A43;
   --night: #141412;
@@ -52,7 +53,7 @@
   --c-bg: #F4F1EA;
   --c-surface: #FBFAF7;
   --c-text: #1C1B19;
-  --c-muted: #8A857C;
+  --c-muted: #726D64;
   --c-rule: #8A857C;
   --c-wash: #D9CFBF;
   --c-accent: #8C6A43;

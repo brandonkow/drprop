@@ -3,3 +3,5 @@ dist/
 *.local
 .DS_Store
 /web/.screens/
+/web/src/styles/cjk.generated.css
+/web/src/styles/cjk-fonts/

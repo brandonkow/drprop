@@ -3,5 +3,5 @@
   "compilerOptions": {
     "types": ["node"]
   },
-  "include": ["tokens", "pulse", "scripts", "test", "pricing.ts"]
+  "include": ["tokens", "pulse", "fonts", "scripts", "test", "types", "pricing.ts"]
 }

@@ -20,12 +20,20 @@ if (calc) {
 // The WebGL scene loads after first paint; if it cannot start, the static SVG
 // Pulse Roof comes back (brief §7.4).
 if (root.classList.contains('motion') && calc) {
-  import('./scene/index.ts')
-    .then(({ startScene }) => startScene())
-    .catch((error: unknown) => {
-      root.classList.remove('motion');
-      if (import.meta.env.DEV) console.warn('[drprop] WebGL scene unavailable, using SVG line.', error);
+  // Wait for an idle moment after load so the scene never competes with the text (LCP).
+  const whenIdle = (fn: () => void) =>
+    'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 300);
+  const start = () =>
+    whenIdle(() => {
+      import('./scene/index.ts')
+        .then(({ startScene }) => startScene())
+        .catch((error: unknown) => {
+          root.classList.remove('motion');
+          if (import.meta.env.DEV) console.warn('[drprop] WebGL scene unavailable, using SVG line.', error);
+        });
     });
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
 } else {
   root.classList.remove('motion');
 }

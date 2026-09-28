@@ -35,7 +35,7 @@ describe('rendered pages', () => {
 
   it('only the Chinese pages load the CJK font stylesheet', () => {
     for (const entry of pages) {
-      expect(html(entry).includes('cjk.css')).toBe(entry.lang === 'zh');
+      expect(html(entry).includes('cjk.generated.css')).toBe(entry.lang === 'zh');
     }
   });
 

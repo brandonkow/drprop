@@ -17,12 +17,9 @@
  * the static SVG line.
  */
 import { FORM } from '@drprop/brand/pulse/forms';
-import { OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import { PULSE_BREAKPOINT, PULSE_LAYOUT, type PulseLayout } from '../config/pulse.ts';
 import { FEE_INPUT_EVENT, type FeeInputDetail } from '../features/events.ts';
-import { InkPaper } from './fluid/fluid.ts';
-import { createPulseLine } from './pulse-line.ts';
-import { initSmoothScroll } from './smooth-scroll.ts';
+import type { InkPaper } from './fluid/fluid.ts';
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -38,23 +35,16 @@ export async function startScene(): Promise<void> {
   canvas.className = 'scene';
   canvas.setAttribute('aria-hidden', 'true');
 
-  let shaderFailed = false;
-  const renderer = new WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true,
-    powerPreference: 'low-power',
-    // Software-only WebGL is too slow for a full-screen canvas: keep the SVG line.
-    failIfMajorPerformanceCaveat: true,
-  });
-  renderer.debug.onShaderError = () => {
-    shaderFailed = true;
-  };
-  renderer.setClearColor(0x000000, 0);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  // Three chunks (three.js line, scroll libraries, fluid), each loaded in its own
+  // task so no single long task blocks input on mid-range phones.
+  const yieldToMain = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+  const { createLineStage, createPulseLine } = await import('./pulse-line.ts');
+  await yieldToMain();
 
-  const scene = new Scene();
-  const camera = new OrthographicCamera(0, 1, 1, 0, -1, 1);
+  let shaderFailed = false;
+  const { renderer, scene, camera } = createLineStage(canvas, () => {
+    shaderFailed = true;
+  });
 
   const variantFor = () => (window.innerWidth < PULSE_BREAKPOINT ? 'narrow' : 'wide');
   let layout: PulseLayout = PULSE_LAYOUT[variantFor()];
@@ -66,6 +56,8 @@ export async function startScene(): Promise<void> {
   const coarse = window.matchMedia('(pointer: coarse)').matches;
   let paper: InkPaper | null = null;
   try {
+    await yieldToMain();
+    const { InkPaper } = await import('./fluid/fluid.ts');
     paper = new InkPaper({
       simulate: memory === undefined || memory >= 4,
       mobile: coarse || layout.variant === 'narrow',
@@ -122,6 +114,8 @@ export async function startScene(): Promise<void> {
     lastInput = performance.now();
   });
 
+  await yieldToMain();
+  const { initSmoothScroll } = await import('./smooth-scroll.ts');
   const { gsap, ScrollTrigger } = initSmoothScroll();
 
   ScrollTrigger.create({

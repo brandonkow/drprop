@@ -11,8 +11,13 @@ export const color = {
   paper: '#FBFAF7',
   /** Primary text — ink, never pure black */
   ink: '#1C1B19',
-  /** Secondary text, hairlines */
+  /** Hairlines, large secondary text */
   stone: '#8A857C',
+  /**
+   * Small secondary text. Stone deepened to 4.5:1 on bone (WCAG AA); plain stone
+   * is 3.25:1, which is fine for lines and large type but not for 13px labels.
+   */
+  stoneText: '#726D64',
   /** Large supporting surfaces, section dividers */
   travertine: '#D9CFBF',
   /** The only accent. Max three uses per page. */
@@ -29,7 +34,7 @@ export const scheme = {
     bg: color.bone,
     surface: color.paper,
     text: color.ink,
-    muted: color.stone,
+    muted: color.stoneText,
     rule: color.stone,
     wash: color.travertine,
     accent: color.bronze,

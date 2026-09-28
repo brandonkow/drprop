@@ -59,7 +59,7 @@ function head(t: Dict, lang: Lang, page: PageId): string {
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <script>matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.add('motion')</script>
     ${alternates}
-    <link rel="stylesheet" href="/src/styles/main.css">${lang === 'zh' ? '\n    <link rel="stylesheet" href="/src/styles/cjk.css">' : ''}
+    <link rel="stylesheet" href="/src/styles/main.css">${lang === 'zh' ? '\n    <link rel="stylesheet" href="/src/styles/cjk.generated.css">' : ''}
     <script type="module" src="/src/main.ts"></script>
   </head>`;
 }
