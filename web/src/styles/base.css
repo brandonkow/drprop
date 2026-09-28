@@ -1,0 +1,137 @@
+/* Reset, type and shared text styles. Colours and sizes come from brand tokens only. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--space-10);
+}
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-body);
+  font-weight: var(--weight-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+figure {
+  margin: 0;
+}
+
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+svg {
+  display: block;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--travertine);
+  color: var(--ink);
+}
+
+/* ---- Type roles: one display size, one body size, one small size per screen (§5.3) ---- */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display-latin);
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+
+/* Noto Serif SC Light; CJK needs more air than Latin display type. */
+:lang(zh) .display {
+  font-weight: var(--weight-display-cjk);
+  line-height: 1.18;
+  letter-spacing: 0.02em;
+}
+
+.small {
+  font-size: var(--text-small);
+  line-height: 1.5;
+}
+
+/* Section labels: small, tracked, quiet. */
+.label {
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: var(--weight-body);
+  line-height: 1.5;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+/* Numbers: fees, dates, times, registration numbers. */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* Text links: underline, no colour change (§5.4). */
+.link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: var(--rule);
+  text-underline-offset: 0.3em;
+  text-decoration-color: var(--c-muted);
+  transition: text-decoration-color var(--duration-short) var(--ease);
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+:focus-visible {
+  outline: var(--rule) solid currentColor;
+  outline-offset: 4px;
+}
+
+.skip {
+  position: absolute;
+  left: var(--space-2);
+  top: var(--space-2);
+  z-index: 10;
+  padding: var(--space-1) var(--space-2);
+  background: var(--c-text);
+  color: var(--c-bg);
+  transform: translateY(-200%);
+}
+
+.skip:focus-visible {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+  }
+}

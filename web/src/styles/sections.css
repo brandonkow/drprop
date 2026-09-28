@@ -1,0 +1,416 @@
+/* §1–§5. No cards, no shadows, no radii: type, space and 1px lines. */
+
+/* ---- §1 Hero ---- */
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: calc(88svh - 64px);
+  padding-bottom: var(--space-6);
+  overflow: hidden;
+}
+
+.pulse {
+  position: absolute;
+  inset: 18% 0 auto 0;
+  color: var(--c-text);
+  pointer-events: none;
+}
+
+.pulse svg {
+  width: 100%;
+}
+
+.pulse__narrow {
+  height: 120px;
+}
+
+.pulse__wide {
+  display: none;
+  height: 160px;
+}
+
+.hero__inner {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.hero__title {
+  max-width: 13ch;
+}
+
+:lang(zh) .hero__title {
+  max-width: 10.5em;
+}
+
+.hero__sub {
+  max-width: 34ch;
+  text-wrap: balance;
+}
+
+:lang(zh) .hero__sub {
+  max-width: 24em;
+}
+
+@media (min-width: 900px) {
+  .hero {
+    min-height: calc(100svh - 80px);
+    padding-bottom: var(--space-10);
+  }
+
+  .pulse {
+    top: 20%;
+  }
+
+  .pulse__narrow {
+    display: none;
+  }
+
+  .pulse__wide {
+    display: block;
+  }
+
+  .hero__inner {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--space-3);
+    row-gap: var(--space-5);
+  }
+
+  .hero__title {
+    grid-column: 1 / span 11;
+  }
+
+  .hero__sub {
+    grid-column: 1 / span 5;
+  }
+}
+
+/* ---- §2 Consults ---- */
+
+.consult {
+  display: grid;
+  gap: var(--space-2);
+  padding-block: var(--space-4);
+  border-bottom: var(--rule) solid var(--c-rule);
+}
+
+.consult:first-child {
+  padding-top: 0;
+}
+
+.consult:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.consult__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+}
+
+.consult__no {
+  font-family: var(--font-display);
+  color: var(--c-muted);
+}
+
+.consult__text {
+  max-width: 36ch;
+}
+
+:lang(zh) .consult__text {
+  max-width: 22em;
+}
+
+.consult__fee {
+  color: var(--c-muted);
+}
+
+@media (min-width: 900px) {
+  .consult {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+    grid-template-rows: auto auto;
+    column-gap: var(--space-3);
+    align-items: end;
+    padding-block: var(--space-5);
+  }
+
+  .consult__head {
+    grid-row: 1 / span 2;
+  }
+
+  .consult__text {
+    align-self: end;
+  }
+
+  .consult__fee {
+    grid-column: 2;
+  }
+}
+
+/* ---- §3 Fee ---- */
+
+.fee {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  justify-items: start;
+}
+
+.fee__intro,
+.fee__note {
+  max-width: 40ch;
+}
+
+.calc {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  max-width: 11.5em;
+  /* Display size, capped so "RM 999,999,999" fits a 360px phone in mono. */
+  font-size: min(var(--text-display), 10.5vw);
+}
+
+.calc__label {
+  font-size: var(--text-small);
+  color: var(--c-muted);
+}
+
+.calc__label + .calc__field,
+.calc__label + .calc__result {
+  margin-top: var(--space-1);
+}
+
+.calc__field + .calc__label {
+  margin-top: var(--space-4);
+}
+
+.calc__field {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+  line-height: 1.15;
+  border-bottom: var(--rule) solid var(--c-rule);
+  transition: border-color var(--duration-short) var(--ease);
+}
+
+.calc__field:focus-within {
+  border-bottom-color: var(--c-text);
+}
+
+.calc__prefix {
+  color: var(--c-muted);
+}
+
+.calc__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-none);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  caret-color: var(--c-text);
+}
+
+.calc__input::placeholder {
+  color: var(--c-muted);
+  opacity: 0.4;
+}
+
+.calc__input:focus-visible {
+  outline: none;
+}
+
+.calc__result {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+  line-height: 1.15;
+}
+
+/* Bronze, use 1 of 2 on the page. */
+.calc__fee {
+  color: var(--c-accent);
+}
+
+.bands {
+  width: 100%;
+  max-width: 34rem;
+  border-collapse: collapse;
+}
+
+.bands caption {
+  caption-side: top;
+  padding-bottom: var(--space-2);
+  text-align: left;
+  color: var(--c-muted);
+}
+
+.bands th,
+.bands td {
+  padding-block: 12px;
+  border-top: var(--rule) solid var(--c-rule);
+  font-weight: inherit;
+  text-align: left;
+  transition: color var(--duration-short) var(--ease);
+}
+
+.bands tr:last-child > * {
+  border-bottom: var(--rule) solid var(--c-rule);
+}
+
+.bands td {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.bands th {
+  position: relative;
+  padding-left: var(--space-4);
+  padding-right: var(--space-2);
+}
+
+/* Bronze, use 2 of 2: a short stroke marks the visitor's band. */
+.bands th::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: var(--space-2);
+  border-top: var(--rule-pulse) solid var(--c-accent);
+  opacity: 0;
+  transition: opacity var(--duration-short) var(--ease);
+}
+
+.bands tr[data-active] th::before {
+  opacity: 1;
+}
+
+.bands:has(tr[data-active]) tr:not([data-active]) > * {
+  color: var(--c-muted);
+}
+
+.fee__rules {
+  max-width: 48ch;
+  color: var(--c-muted);
+}
+
+/* ---- §4 Lounge ---- */
+
+.lounge__figure {
+  max-width: 360px;
+}
+
+.lounge__figure figcaption {
+  margin-top: var(--space-2);
+  color: var(--c-muted);
+}
+
+.lounge__text {
+  display: grid;
+  gap: var(--space-3);
+  align-content: end;
+}
+
+.lounge__text p {
+  max-width: 36ch;
+}
+
+:lang(zh) .lounge__text p {
+  max-width: 22em;
+}
+
+.lounge__places {
+  color: var(--c-muted);
+}
+
+@media (min-width: 900px) {
+  .lounge__figure {
+    grid-column: 4 / span 4;
+    max-width: none;
+  }
+
+  .lounge__text {
+    grid-column: 9 / -1;
+  }
+}
+
+@media (max-width: 899px) {
+  .lounge__text {
+    order: -1;
+  }
+
+  .grid > .label {
+    order: -2;
+  }
+}
+
+.apothecary {
+  width: 100%;
+  height: auto;
+}
+
+.ap-line {
+  fill: none;
+  stroke: var(--c-muted);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.ap-card {
+  fill: var(--paper);
+  stroke: var(--c-muted);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.ap-rx {
+  font-family: var(--font-display);
+  font-size: 10px;
+  fill: var(--c-text);
+  text-anchor: middle;
+}
+
+.ap-name {
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  fill: var(--c-muted);
+  text-anchor: middle;
+}
+
+/* ---- §5 Visit ---- */
+
+.visit {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.visit__details {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 36ch;
+}
+
+.visit__details .link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min);
+}
+
+/* ---- Privacy ---- */
+
+.prose {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 60ch;
+}
+
+.prose h1 {
+  margin-bottom: var(--space-3);
+}

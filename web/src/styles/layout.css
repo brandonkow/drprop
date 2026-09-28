@@ -1,0 +1,232 @@
+/* Page frame: gutters, 12-column grid, section rhythm, header and footer. */
+
+.wrap {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: max(var(--gutter-mobile), env(safe-area-inset-left));
+}
+
+@media (min-width: 900px) {
+  .wrap {
+    padding-inline: var(--gutter-desktop);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-4);
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--space-3);
+  }
+
+  .grid > .label {
+    grid-column: 1 / span 3;
+  }
+
+  .grid > .section__body {
+    grid-column: 4 / -1;
+  }
+}
+
+/* A hairline opens every section, then the label; space does the rest. */
+.section {
+  margin-top: var(--section-gap-mobile);
+}
+
+.section > .wrap {
+  position: relative;
+  padding-top: var(--space-2);
+}
+
+.section > .wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--gutter-mobile);
+  right: var(--gutter-mobile);
+  border-top: var(--rule) solid var(--c-rule);
+}
+
+@media (min-width: 900px) {
+  .section {
+    margin-top: var(--section-gap-desktop);
+  }
+
+  .section > .wrap::before {
+    left: var(--gutter-desktop);
+    right: var(--gutter-desktop);
+  }
+}
+
+.section--first > .wrap::before {
+  content: none;
+}
+
+/* ---- Header ---- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--c-bg);
+  border-bottom: var(--rule) solid transparent;
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 64px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  min-height: var(--touch-min);
+  margin-right: auto;
+  color: var(--c-text);
+}
+
+.brand__logo {
+  height: 22px;
+  width: auto;
+}
+
+@media (min-width: 900px) {
+  .site-header__inner {
+    min-height: 80px;
+    gap: var(--space-4);
+  }
+
+  .brand__logo {
+    height: 28px;
+  }
+}
+
+.langs {
+  display: flex;
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-label);
+}
+
+.langs a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: var(--touch-min);
+  color: var(--c-muted);
+  text-decoration: none;
+  transition: color var(--duration-short) var(--ease);
+}
+
+.langs a:hover,
+.langs a[aria-current] {
+  color: var(--c-text);
+}
+
+.langs a[aria-current] {
+  text-decoration: underline;
+  text-decoration-thickness: var(--rule);
+  text-underline-offset: 0.45em;
+}
+
+/* The one solid button on the site (§5.4). */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-none);
+  background: var(--c-text);
+  color: var(--c-bg);
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-label);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--duration-short) var(--ease);
+}
+
+.cta:hover {
+  background: #33312d;
+}
+
+@media (min-width: 900px) {
+  .cta {
+    padding-inline: var(--space-3);
+  }
+}
+
+/* Narrow phones: the short label keeps logo, languages and CTA on one line. */
+.cta__short {
+  display: none;
+}
+
+@media (max-width: 479px) {
+  .cta__full {
+    display: none;
+  }
+
+  .cta__short {
+    display: inline;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand__logo {
+    height: 18px;
+  }
+
+  .langs a {
+    min-width: 30px;
+  }
+
+  .cta {
+    padding-inline: 12px;
+  }
+}
+
+/* ---- Footer ---- */
+
+.site-footer {
+  margin-top: var(--section-gap-mobile);
+  padding-block: var(--space-4) var(--space-6);
+  border-top: var(--rule) solid var(--c-rule);
+  color: var(--c-muted);
+}
+
+@media (min-width: 900px) {
+  .site-footer {
+    margin-top: var(--section-gap-desktop);
+  }
+
+  .site-footer__disclaimer {
+    grid-column: 1 / span 7;
+  }
+
+  .site-footer__meta {
+    grid-column: 9 / -1;
+  }
+}
+
+.site-footer__disclaimer {
+  max-width: 62ch;
+}
+
+.site-footer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  align-content: start;
+}
+
+.site-footer__meta .link {
+  display: inline-flex;
+  align-items: center;
+}

@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Dr Prop — Independent property clinic, Petaling Jaya",
+    "description": "Fixed-fee property diagnosis before you sign. We don't sell property and we take no commission, so we can tell you what we actually see.",
+    "privacyTitle": "Privacy — Dr Prop"
+  },
+  "a11y": {
+    "skip": "Skip to content",
+    "home": "Dr Prop, home",
+    "languages": "Language"
+  },
+  "cta": {
+    "label": "Book a consult",
+    "short": "Book",
+    "message": "Hi Dr Prop, I'd like to book a consult.",
+    "messageWithFee": "Hi Dr Prop, I'd like to book a consult. My property is about {value} (fee {fee})."
+  },
+  "hero": {
+    "title": "Before you sign, see the doctor.",
+    "sub": "Independent property diagnosis. We don't sell, we don't take commission — we're only on your side."
+  },
+  "consults": {
+    "label": "Consults",
+    "items": [
+      {
+        "name": "Consult",
+        "text": "Book 30 minutes. Bring your questions.",
+        "fee": "Fee by property value"
+      },
+      {
+        "name": "Urgent",
+        "text": "Deciding today? Video consult within two hours.",
+        "fee": "Fee + 50%"
+      },
+      {
+        "name": "Review",
+        "text": "The last look before you pay the deposit. 15 minutes.",
+        "fee": "Half fee"
+      }
+    ]
+  },
+  "fee": {
+    "label": "Fee",
+    "intro": "The fee follows the property's value. Published, and capped.",
+    "inputLabel": "Property value",
+    "placeholder": "500,000",
+    "resultLabel": "Your fee",
+    "note": "Every consult comes with a written diagnosis.",
+    "rules": "Urgent consult: fee + 50%. Pre-signing review: half fee.",
+    "tableCaption": "All fees",
+    "upTo": "Up to",
+    "above": "Above"
+  },
+  "lounge": {
+    "label": "Members",
+    "title": "Lounge",
+    "text": "Members drop in any time. Coffee, kuih, and the latest market talk — it's all here.",
+    "promise": "No sales pitch. Come in just for the coffee.",
+    "cap": "{cap} member places at this clinic.",
+    "left": "{left} remaining.",
+    "figure": "The apothecary wall. Photographs when we open."
+  },
+  "visit": {
+    "label": "Visit",
+    "days": "Tuesday – Sunday",
+    "closed": "Closed on Mondays.",
+    "map": "Directions on Google Maps"
+  },
+  "footer": {
+    "disclaimer": "Dr Prop provides property information and analysis. We do not buy, sell, act as agent for, or value property, and we take no transaction commission of any kind. Our diagnosis is not legal, tax or financial advice.",
+    "privacy": "Privacy"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "body": [
+      "This website uses no cookies, analytics or tracking, and does not collect personal data.",
+      "The fee calculator runs in your browser. The number you type is not sent anywhere.",
+      "“Book a consult” opens WhatsApp with a pre-filled message. Nothing is sent until you press send, and from then on WhatsApp's own privacy policy also applies.",
+      "Personal data you share with us when booking is handled under Malaysia's Personal Data Protection Act 2010. To see or correct what we hold about you, message us on the same WhatsApp number."
+    ],
+    "back": "Back to Dr Prop"
+  }
+}

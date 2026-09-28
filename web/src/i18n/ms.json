@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Dr Prop — Klinik hartanah bebas, Petaling Jaya",
+    "description": "Diagnosis hartanah berbayar tetap sebelum anda menandatangani. Kami tidak menjual hartanah dan tidak mengambil komisen, jadi kami boleh berterus terang.",
+    "privacyTitle": "Privasi — Dr Prop"
+  },
+  "a11y": {
+    "skip": "Langkau ke kandungan",
+    "home": "Dr Prop, laman utama",
+    "languages": "Bahasa"
+  },
+  "cta": {
+    "label": "Tempah konsultasi",
+    "short": "Tempah",
+    "message": "Hai Dr Prop, saya ingin menempah konsultasi.",
+    "messageWithFee": "Hai Dr Prop, saya ingin menempah konsultasi. Nilai hartanah saya lebih kurang {value} (yuran {fee})."
+  },
+  "hero": {
+    "title": "Sebelum tandatangan, jumpa doktor dulu.",
+    "sub": "Diagnosis hartanah yang bebas. Kami tidak menjual dan tidak mengambil komisen — kami hanya di pihak anda."
+  },
+  "consults": {
+    "label": "Konsultasi",
+    "items": [
+      {
+        "name": "Klinik",
+        "text": "Tempah 30 minit. Bawa soalan anda.",
+        "fee": "Yuran ikut nilai hartanah"
+      },
+      {
+        "name": "Segera",
+        "text": "Perlu buat keputusan hari ini? Konsultasi video dalam masa dua jam.",
+        "fee": "Yuran + 50%"
+      },
+      {
+        "name": "Semakan",
+        "text": "Semakan terakhir sebelum anda bayar deposit. 15 minit.",
+        "fee": "Separuh yuran"
+      }
+    ]
+  },
+  "fee": {
+    "label": "Yuran",
+    "intro": "Yuran ikut nilai hartanah. Dipaparkan secara terbuka, dan ada had maksimum.",
+    "inputLabel": "Nilai hartanah",
+    "placeholder": "500,000",
+    "resultLabel": "Yuran anda",
+    "note": "Setiap konsultasi disertakan laporan diagnosis bertulis.",
+    "rules": "Konsultasi segera: yuran + 50%. Semakan sebelum tandatangan: separuh yuran.",
+    "tableCaption": "Semua yuran",
+    "upTo": "Sehingga",
+    "above": "Melebihi"
+  },
+  "lounge": {
+    "label": "Ahli",
+    "title": "Lounge",
+    "text": "Ahli boleh singgah bila-bila masa. Kopi, kuih dan cerita pasaran terkini — semuanya di sini.",
+    "promise": "Tiada jualan. Datang minum kopi saja pun boleh.",
+    "cap": "{cap} tempat ahli di klinik ini.",
+    "left": "Baki {left}.",
+    "figure": "Dinding almari ubat. Gambar sebenar selepas kami dibuka."
+  },
+  "visit": {
+    "label": "Lawatan",
+    "days": "Selasa – Ahad",
+    "closed": "Tutup pada hari Isnin.",
+    "map": "Arah di Google Maps"
+  },
+  "footer": {
+    "disclaimer": "Dr Prop menyediakan maklumat dan analisis hartanah. Kami tidak menjalankan jual beli, perkhidmatan ejen atau penilaian hartanah, dan tidak menerima sebarang komisen transaksi. Diagnosis kami bukan nasihat undang-undang, cukai atau kewangan.",
+    "privacy": "Privasi"
+  },
+  "privacy": {
+    "title": "Privasi",
+    "body": [
+      "Laman web ini tidak menggunakan kuki, analitik atau penjejakan, dan tidak mengumpul data peribadi.",
+      "Kalkulator yuran berjalan dalam pelayar anda. Nombor yang anda taip tidak dihantar ke mana-mana.",
+      "“Tempah konsultasi” membuka WhatsApp dengan mesej yang telah diisi. Tiada apa dihantar sehingga anda tekan hantar, dan selepas itu dasar privasi WhatsApp turut terpakai.",
+      "Data peribadi yang anda kongsi semasa menempah dikendalikan di bawah Akta Perlindungan Data Peribadi 2010. Untuk melihat atau membetulkan data anda, hubungi kami melalui nombor WhatsApp yang sama."
+    ],
+    "back": "Kembali ke Dr Prop"
+  }
+}
