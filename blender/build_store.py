@@ -2,9 +2,10 @@
 build_store.py — the store's digital twin as a base model (brief §6, 3D-3, §9.4).
 
 Generates walls, storefront, the halo-lit bronze sign, reception table, Lounge
-(sofa, chairs, market-brief table, apothecary wall), consult rooms with frosted
-glass doors, round tables and wall screens, the urgent video booth and the
-private entrance, with 2700 K light. Exports:
+(sofa, chairs, rug, market-brief table, apothecary wall), a pantry for kopi and
+cold towels, consult rooms with frosted glass doors, round tables and wall
+screens, the urgent video booth and a private entrance straight into consult
+room B, with 2700 K pendants. Exports:
 
     brand/3d/store.glb        used by reel R7 and the website §4 still
     blender/out/store.blend   for the 3D artist to refine (materials, light)
@@ -56,9 +57,9 @@ def build_shell(cfg: dict, m: dict) -> None:
     box("wall-back", (W, WALL, H), (W / 2, D + WALL / 2, H / 2), m["limewash"], col)
     box("wall-left", (WALL, D, H), (-WALL / 2, D / 2, H / 2), m["limewash"], col)
 
-    # Right wall, with an optional private entrance near the back (§6.2).
+    # Right wall, with an optional private entrance straight into consult room B (§6.2).
     if cfg.get("privateEntrance"):
-        door_y, door_w = D - 2.2, 1.0
+        door_y, door_w = plan(cfg)["private_door"][1] - 0.5, 1.0
         box("wall-right-front", (WALL, door_y, H), (W + WALL / 2, door_y / 2, H / 2), m["limewash"], col)
         rest = D - door_y - door_w
         box("wall-right-back", (WALL, rest, H), (W + WALL / 2, D - rest / 2, H / 2), m["limewash"], col)
@@ -73,7 +74,8 @@ def build_shell(cfg: dict, m: dict) -> None:
     box("pier-left", (pier, WALL * 2, H), (pier / 2, -WALL, H / 2), m["travertine"], col)
     box("pier-right", (pier, WALL * 2, H), (W - pier / 2, -WALL, H / 2), m["travertine"], col)
     header_h = 0.9
-    box("fascia", (W, WALL * 2, header_h), (W / 2, -WALL, H - header_h / 2), m["travertine"], col)
+    # Between the piers, so no faces overlap (overlapping faces render black in Cycles).
+    box("fascia", (W - 2 * pier, WALL * 2, header_h), (W / 2, -WALL, H - header_h / 2), m["travertine"], col)
     glass_h = H - header_h
     left_w = ex - pier
     box("window-left", (left_w, GLASS, glass_h), (pier + left_w / 2, -WALL, glass_h / 2), m["glass"], col)
@@ -108,17 +110,77 @@ def build_shell(cfg: dict, m: dict) -> None:
     box("price-plate", (0.32, 0.01, 0.44), (ex + ew + 0.35, -WALL * 2 - 0.01, 1.35), m["brass"], col)
 
 
+def plan(cfg: dict) -> dict[str, tuple[float, float]]:
+    """
+    Named points of the floor plan (metres, Blender coordinates: street along
+    y = 0, back wall at y = depth). Furniture is placed from these, and
+    build_layout_plan.py walks people between them, so the two never drift.
+
+        back-left:  urgent booth, pantry (kopi, cold towels)
+        back-right: consult room A, consult room B (private entrance)
+        front-left: entrance, reception table
+        front-right: Lounge, apothecary wall
+    """
+    W, D = cfg["width"], cfg["depth"]
+    rw, rd = cfg["consultRoomWidth"], cfg["consultRoomDepth"]
+    n = cfg["consultRooms"]
+    x0 = W - n * rw
+    ex = cfg["entrance"]["x"] + cfg["entrance"]["width"] / 2
+    ty = D - rd / 2 - 0.1
+    p: dict[str, tuple[float, float]] = {
+        "street": (ex, -3.0),
+        "door_out": (ex, -0.5),
+        "door_in": (ex, 0.6),
+        "reception": (ex + 1.6, 1.6),
+        "reception_guest": (ex + 1.4, 0.95),
+        "reception_host": (ex + 1.6, 2.25),
+        "brief_table": (ex + 2.4, 3.6),
+        "lounge": (W - 3.2, 1.9),
+        "lounge_sofa": (W - 3.2, 0.9),
+        "lounge_chair_1": (W - 4.0, 2.9),
+        "lounge_chair_2": (W - 2.4, 2.9),
+        # Between the two lounge chairs, facing the guest.
+        "lounge_serve": (W - 3.2, 2.8),
+        "apothecary": (W, 2.3),
+        "pantry": (x0 - 3.0, D - 0.4),
+        "pantry_staff": (x0 - 3.0, D - 0.95),
+        "booth": (0.65, D - 0.55),
+        "private_street": (W + 1.2, D - 1.3),
+        "private_door": (W - 0.1, D - 1.3),
+    }
+    for i in range(n):
+        tag = "AB"[i] if i < 2 else str(i + 1)
+        cx = x0 + i * rw + rw / 2
+        p[f"room_{tag}"] = (cx, ty)
+        p[f"room_{tag}_door_out"] = (cx, D - rd - 0.45)
+        p[f"room_{tag}_door_in"] = (cx, D - rd + 0.45)
+        for k in range(3):
+            a = math.pi / 2 + k * 2 * math.pi / 3
+            p[f"room_{tag}_seat_{k}"] = (cx + math.cos(a) * 0.9, ty + math.sin(a) * 0.9)
+    return p
+
+
+def pendant(name: str, xy: tuple[float, float], cfg: dict, m: dict, col) -> None:
+    """A brass pendant over a table, with its 2700 K light."""
+    H = cfg["height"]
+    cylinder(f"{name}-cord", 0.004, 0.75, (xy[0], xy[1], H - 0.375), m["ink"], col, segments=8)
+    cylinder(f"{name}-shade", 0.16, 0.16, (xy[0], xy[1], H - 0.83), m["brass"], col)
+    point_light(f"{name}-light", (xy[0], xy[1], H - 0.95), 55, col, radius=0.15)
+
+
 def build_reception(cfg: dict, m: dict) -> None:
     col = collection("Reception")
+    x, y = plan(cfg)["reception"]
     # A long walnut table instead of a high counter (§6.2).
-    x, y = cfg["entrance"]["x"] + 1.8, 1.6
     box("reception-top", (2.4, 0.8, 0.05), (x, y, 0.75), m["walnut"], col)
     for dx in (-1.0, 1.0):
         box(f"reception-leg-{dx:+.0f}", (0.06, 0.7, 0.72), (x + dx, y, 0.36), m["walnut"], col)
     box("towel-tray", (0.3, 0.2, 0.03), (x - 0.6, y, 0.79), m["bronze"], col)
+    pendant("reception-pendant", (x, y), cfg, m, col)
 
 
 def sofa(name: str, center: tuple[float, float], length: float, m: dict, col, rotation: float = 0.0) -> None:
+    """Back towards +y before rotation; seated guests face −y."""
     root = bpy.data.objects.new(name, None)
     col.objects.link(root)
     parts = [
@@ -134,6 +196,7 @@ def sofa(name: str, center: tuple[float, float], length: float, m: dict, col, ro
 
 
 def chair(name: str, center: tuple[float, float], m: dict, col, rotation: float = 0.0, lounge: bool = False) -> None:
+    """Back towards +y before rotation; the sitter faces −y."""
     root = bpy.data.objects.new(name, None)
     col.objects.link(root)
     seat_h = 0.4 if lounge else 0.46
@@ -153,74 +216,102 @@ def chair(name: str, center: tuple[float, float], m: dict, col, rotation: float 
 
 def build_lounge(cfg: dict, m: dict) -> None:
     col = collection("Lounge")
-    W, D = cfg["width"], cfg["depth"]
-    rooms_w = cfg["consultRooms"] * cfg["consultRoomWidth"]
-    # Lounge: the front-right of the plan, in front of the consult rooms.
-    sofa("lounge-sofa", (W - 2.2, 2.1), 2.2, m, col, rotation=math.pi / 2)
-    chair("lounge-chair-1", (W - 4.2, 1.5), m, col, rotation=-math.pi / 2, lounge=True)
-    chair("lounge-chair-2", (W - 4.2, 2.8), m, col, rotation=-math.pi / 2, lounge=True)
-    cylinder("lounge-coffee-table", 0.45, 0.04, (W - 3.2, 2.15, 0.42), m["walnut"], col)
-    cylinder("lounge-coffee-table-base", 0.12, 0.4, (W - 3.2, 2.15, 0.2), m["walnut"], col)
+    P = plan(cfg)
+    lx, ly = P["lounge"]
+    # Low linen sofa with its back to the window, two chairs facing it (§6.2).
+    box("lounge-rug", (3.6, 2.8, 0.01), (lx, ly, 0.005), m["linen"], col)
+    sofa("lounge-sofa", P["lounge_sofa"], 2.2, m, col, rotation=math.pi)
+    chair("lounge-chair-1", P["lounge_chair_1"], m, col, lounge=True)
+    chair("lounge-chair-2", P["lounge_chair_2"], m, col, lounge=True)
+    cylinder("lounge-coffee-table", 0.45, 0.04, (lx, ly + 0.05, 0.42), m["walnut"], col)
+    cylinder("lounge-coffee-table-base", 0.12, 0.4, (lx, ly + 0.05, 0.2), m["walnut"], col)
+    pendant("lounge-pendant", (lx, ly), cfg, m, col)
 
     # A large table with this month's market brief (§6.2).
-    table_y = D - cfg["consultRoomDepth"] - 1.3
-    box("brief-table-top", (2.6, 1.0, 0.05), (rooms_w + 2.2, table_y, 0.75), m["walnut"], col)
+    bx, by = P["brief_table"]
+    box("brief-table-top", (2.6, 1.0, 0.05), (bx, by, 0.75), m["walnut"], col)
     for dx in (-1.1, 1.1):
-        box(f"brief-table-leg{dx:+.1f}", (0.08, 0.8, 0.72), (rooms_w + 2.2 + dx, table_y, 0.36), m["walnut"], col)
+        box(f"brief-table-leg{dx:+.1f}", (0.08, 0.8, 0.72), (bx + dx, by, 0.36), m["walnut"], col)
     for i in range(3):
-        box(f"brief-{i}", (0.21, 0.297, 0.004), (rooms_w + 1.4 + i * 0.5, table_y, 0.777), m["paper"], col)
+        box(f"brief-{i}", (0.21, 0.297, 0.004), (bx - 0.8 + i * 0.5, by, 0.777), m["paper"], col)
+    pendant("brief-pendant", (bx, by), cfg, m, col)
 
     # Apothecary snack wall on the right wall (§4.3).
     rows, cols = cfg["apothecary"]["rows"], cfg["apothecary"]["cols"]
-    build_apothecary.build(origin=(W, 3.9, 0), rotation_z=-math.pi / 2, rows=rows, cols=cols)
+    ax, ay = P["apothecary"]
+    build_apothecary.build(origin=(ax, ay, 0), rotation_z=-math.pi / 2, rows=rows, cols=cols)
 
-    for i, (x, y) in enumerate(((W - 3.0, 2.0), (rooms_w + 2.2, table_y), (3.6, 1.6))):
-        point_light(f"lounge-light-{i}", (x, y, cfg["height"] - 0.35), 60, col, radius=0.3)
+
+def build_pantry(cfg: dict, m: dict) -> None:
+    """Where kopi and cold towels are prepared: the start of every serve (§4)."""
+    col = collection("Pantry")
+    x, y = cfg["width"] - cfg["consultRooms"] * cfg["consultRoomWidth"] - 3.0, cfg["depth"] - 0.35
+    box("pantry-counter", (3.0, 0.6, 0.9), (x, y, 0.45), m["walnut"], col)
+    box("pantry-top", (3.04, 0.64, 0.03), (x, y, 0.915), m["travertine"], col)
+    box("pantry-espresso", (0.45, 0.4, 0.42), (x - 0.8, y, 1.14), m["bronze"], col)
+    box("pantry-towel-fridge", (0.5, 0.4, 0.5), (x + 0.9, y, 1.18), m["limewash"], col)
+    point_light("pantry-light", (x, y - 0.4, cfg["height"] - 0.35), 40, col, radius=0.3)
 
 
 def build_consult_rooms(cfg: dict, m: dict) -> None:
     col = collection("Consult rooms")
-    D, H = cfg["depth"], cfg["height"]
+    W, D, H = cfg["width"], cfg["depth"], cfg["height"]
     rw, rd = cfg["consultRoomWidth"], cfg["consultRoomDepth"]
+    n = cfg["consultRooms"]
     front_y = D - rd
-    for i in range(cfg["consultRooms"]):
-        x0 = i * rw
+    P = plan(cfg)
+    for i in range(n):
+        x0 = W - n * rw + i * rw
         cx = x0 + rw / 2
-        name = f"consult-{i + 1}"
-        # Partition between rooms, and the room's front: limewash + frosted glass door.
-        if i > 0:
-            box(f"{name}-side", (WALL, rd, H), (x0, D - rd / 2, H / 2), m["limewash"], col)
+        tag = "AB"[i] if i < 2 else str(i + 1)
+        name = f"consult-{tag}"
+        # Side wall on the left of every room (the right-most room uses the store wall).
+        box(f"{name}-side", (WALL, rd, H), (x0, D - rd / 2, H / 2), m["limewash"], col)
         door_w = 0.95
         side_w = (rw - door_w) / 2
         box(f"{name}-front-l", (side_w, WALL, H), (x0 + side_w / 2, front_y, H / 2), m["limewash"], col)
         box(f"{name}-front-r", (side_w, WALL, H), (x0 + rw - side_w / 2, front_y, H / 2), m["limewash"], col)
         box(f"{name}-lintel", (door_w, WALL, H - 2.3), (cx, front_y, 2.3 + (H - 2.3) / 2), m["limewash"], col)
-        box(f"{name}-door", (door_w, 0.03, 2.3), (cx, front_y, 1.15), m["frosted"], col)
+        # Frosted glass door, swung open into the room so the plan shows the way in.
+        door = box(f"{name}-door", (door_w, 0.03, 2.3), (x0 + side_w, front_y + WALL / 2 + door_w / 2, 1.15), m["frosted"], col)
+        door.rotation_euler = (0, 0, math.pi / 2)
         # A round table, not a negotiating table (§6.2), three chairs.
-        ty = D - rd / 2 - 0.1
-        cylinder(f"{name}-table", 0.55, 0.04, (cx, ty, 0.74), m["walnut"], col)
-        cylinder(f"{name}-table-base", 0.1, 0.72, (cx, ty, 0.36), m["walnut"], col)
+        tx, ty = P[f"room_{tag}"]
+        cylinder(f"{name}-table", 0.55, 0.04, (tx, ty, 0.74), m["walnut"], col)
+        cylinder(f"{name}-table-base", 0.1, 0.72, (tx, ty, 0.36), m["walnut"], col)
         for k in range(3):
             a = math.pi / 2 + k * 2 * math.pi / 3
-            chair(f"{name}-chair-{k}", (cx + math.cos(a) * 0.9, ty + math.sin(a) * 0.9), m, col, rotation=a + math.pi / 2)
+            sx, sy = P[f"room_{tag}_seat_{k}"]
+            chair(f"{name}-chair-{k}", (sx, sy), m, col, rotation=a - math.pi / 2)
         # One wall carries the analysis screen.
         box(f"{name}-screen", (1.4, 0.04, 0.8), (cx, D - 0.03, 1.45), m["screen"], col)
-        point_light(f"{name}-light", (cx, ty, H - 0.35), 45, col, radius=0.3)
+        pendant(f"{name}-pendant", (tx, ty), cfg, m, col)
 
 
 def build_booth(cfg: dict, m: dict) -> None:
     if not cfg.get("urgentBooth"):
         return
     col = collection("Urgent booth")
-    rooms_w = cfg["consultRooms"] * cfg["consultRoomWidth"]
-    x, y = rooms_w + 0.1 + 0.55, cfg["depth"] - 0.55
-    # 1 m² acoustic booth for urgent video consults.
+    x, y = plan(cfg)["booth"]
+    # 1 m² acoustic booth for urgent video consults, back-left corner.
     box("booth-back", (1.1, 0.06, 2.3), (x, y + 0.52, 1.15), m["walnut"], col)
     box("booth-left", (0.06, 1.1, 2.3), (x - 0.52, y, 1.15), m["walnut"], col)
     box("booth-right", (0.06, 1.1, 2.3), (x + 0.52, y, 1.15), m["walnut"], col)
     box("booth-roof", (1.1, 1.1, 0.06), (x, y, 2.33), m["walnut"], col)
     box("booth-door", (0.98, 0.03, 2.2), (x, y - 0.53, 1.1), m["frosted"], col)
     box("booth-shelf", (0.7, 0.3, 0.03), (x, y + 0.35, 0.95), m["walnut"], col)
+
+
+def build(cfg: dict) -> dict:
+    """The whole store. Returns the materials."""
+    m = store_materials()
+    build_shell(cfg, m)
+    build_reception(cfg, m)
+    build_consult_rooms(cfg, m)
+    build_booth(cfg, m)
+    build_pantry(cfg, m)
+    build_lounge(cfg, m)
+    return m
 
 
 def add_camera(cfg: dict) -> bpy.types.Object:
@@ -282,12 +373,7 @@ def main() -> None:
     cfg = json.loads(args.config.read_text())
     reset_scene()
     bpy.context.scene["drprop_width"] = cfg["width"]
-    m = store_materials()
-    build_shell(cfg, m)
-    build_reception(cfg, m)
-    build_consult_rooms(cfg, m)
-    build_booth(cfg, m)
-    build_lounge(cfg, m)
+    build(cfg)
     add_camera(cfg)
 
     save_blend(args.blend)

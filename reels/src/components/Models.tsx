@@ -119,7 +119,7 @@ function proceduralStore(): Group {
   add(0.15, H, D, W, H / 2, -D / 2, m.clay);
   add(2.4, 0.05, 0.8, 4.2, 0.75, -1.6, m.walnut);
   const cab = buildApothecary();
-  cab.position.set(W - 0.02, 0, -3.9);
+  cab.position.set(W - 0.02, 0, -2.3);
   cab.rotation.y = -Math.PI / 2;
   g.add(cab);
   return g;

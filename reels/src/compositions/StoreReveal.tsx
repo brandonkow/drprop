@@ -17,13 +17,14 @@ import { FPS } from '../layout';
 export const storeRevealFrames = 20 * FPS;
 
 type V3 = [number, number, number];
-// glTF coordinates (y up, the street at z = 0, the back wall at z = −8).
+// glTF coordinates (y up, the street at z = 0, the back wall at z = −8). Layout
+// from blender/build_store.py: Lounge front-right, consult rooms back-right.
 const KEYS: { f: number; pos: V3; look: V3 }[] = [
   { f: 0, pos: [3.0, 1.6, 7.0], look: [5.5, 1.9, -2] },
-  { f: 5 * FPS, pos: [3.0, 1.55, 0.7], look: [6.0, 1.3, -4] },
-  { f: 11 * FPS, pos: [6.6, 1.5, -1.8], look: [12, 1.0, -3.9] },
-  { f: 16 * FPS, pos: [3.6, 1.5, -3.4], look: [1.6, 1.25, -6.2] },
-  { f: 20 * FPS, pos: [2.2, 1.5, -4.2], look: [1.6, 1.2, -6.8] },
+  { f: 5 * FPS, pos: [3.0, 1.55, 0.7], look: [7.5, 1.3, -3] },
+  { f: 11 * FPS, pos: [7.0, 1.5, -1.2], look: [12.5, 1.0, -2.3] },
+  { f: 16 * FPS, pos: [6.6, 1.5, -3.2], look: [7.7, 1.25, -6.4] },
+  { f: 20 * FPS, pos: [7.6, 1.5, -4.2], look: [7.7, 1.2, -7.2] },
 ];
 
 function at(frame: number, key: 'pos' | 'look'): V3 {
@@ -35,11 +36,11 @@ function at(frame: number, key: 'pos' | 'look'): V3 {
 }
 
 const LAMPS: V3[] = [
-  [4.2, 2.8, -1.6],
-  [9.5, 2.8, -2.1],
-  [9.0, 2.8, -4.7],
-  [1.6, 2.8, -6.4],
-  [4.8, 2.8, -6.4],
+  [4.6, 2.3, -1.6],
+  [9.3, 2.3, -1.9],
+  [5.4, 2.3, -3.6],
+  [7.7, 2.3, -6.4],
+  [10.9, 2.3, -6.4],
 ];
 
 function Body({ lang, ratio }: ReelProps) {
