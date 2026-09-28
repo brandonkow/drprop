@@ -40,7 +40,9 @@ Market data requires geography, metric, unit, frequency, source/date, retrieval 
 
 Run browser checks and inspect safe-zone stills for every new episode. Tests cover shipped samples, not arbitrary copy. Vertical text reserves 14% top, 35% bottom, 65px left and 230px right. Other ratios reserve 7% left, 10% right/top and 13% bottom. These are conservative project defaults, not universal platform guarantees. `showSafeZone` is also a Studio prop.
 
-Educational reels retain “General information, not personal advice.” Browser QA checks text bounds at five moments across all ratios. `scripts/verify-media.mjs` validates encoded codecs, dimensions, durations, hashes and decode integrity and extracts contact sheets.
+Educational reels retain “General information, not personal advice.” Browser QA checks text bounds at five moments across all ratios. `scripts/verify-media.mjs` validates encoded codecs, dimensions, durations, hashes, limited-range BT.709/yuv420p and decode integrity and extracts contact sheets. `--partial` checks only completed manifest entries and writes a separately labelled incomplete report. The final command requires all 28 files.
+
+Rendering explicitly selects BT.709. The first batch began before this setting was corrected; `scripts/normalize-media.mjs` provides a one-time FFmpeg conversion for a completed full-range legacy batch, updating hashes and preserving AAC. It must run only after rendering finishes. New correctly tagged renders need no conversion.
 
 ## Audio and licensing
 

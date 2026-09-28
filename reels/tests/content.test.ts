@@ -7,3 +7,10 @@ test('all three layouts reserve platform furniture and remain usable',()=>{for (
 test('all eight named reel series are present with brief durations',()=>{assert.equal(reelDefinitions.length,8);assert.ok(reelDefinitions.every(item=>item.seconds>=7 && item.seconds<=45));assert.equal(new Set(reelDefinitions.map(item=>item.id)).size,8);});
 test('source and period metadata cannot be removed from observed statistics',()=>{const data=JSON.parse(readFileSync(new URL('../src/data/market/sample.json',import.meta.url),'utf8'));assert.equal(validateMarket(data).status,'demo');assert.throws(()=>validateMarket({...data,status:'observed',sourceUrl:''}));assert.throws(()=>validateMarket({...data,series:[{label:'2025',value:1},{label:'2025',value:2}]}));});
 test('cases must remain short, English and anonymous by design',()=>{const data=JSON.parse(readFileSync(new URL('../src/data/cases/sample.json',import.meta.url),'utf8'));assert.equal(validateCase(data).status,'fictional');assert.throws(()=>validateCase({...data,language:'ms'}));assert.throws(()=>validateCase({...data,lines:['a'.repeat(101)]}));});
+
+test('malformed episode metadata fails before React rendering',()=>{
+  const data=JSON.parse(readFileSync(new URL('../src/data/market/selangor-2025.json',import.meta.url),'utf8'));
+  assert.equal(validateMarket(data).status,'observed');
+  for(const patch of [{source:{label:'NAPIC'}},{geography:['Selangor']},{metric:42},{series:[null,null]},{unit:' '},{title:'x'.repeat(91)}]) assert.throws(()=>validateMarket({...data,...patch}));
+  const sample=JSON.parse(readFileSync(new URL('../src/data/cases/sample.json',import.meta.url),'utf8'));assert.throws(()=>validateCase({...sample,hook:' '}));
+});

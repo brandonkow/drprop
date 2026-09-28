@@ -44,7 +44,7 @@ No default theme, noisy transitions, bounce/overshoot, emoji stickers, stock pro
 
 - Website: five unit tests; original 15 browser regressions plus three store integration/fallback checks passed. TypeScript/production build passed. No-JavaScript/WebGL, reduced motion, memory/DPR, pointer ink, hidden-page/context-loss behavior, keyboard, responsive overflow and automated accessibility checks are covered.
 - App: nine unit tests, TypeScript, web export and Android/iOS Hermes exports passed. Three end-to-end browser journeys passed after the dependency overrides. Production dependency audit: zero known vulnerabilities on the recorded date. Export success is not physical native acceptance.
-- Reels: type checking and four data/layout unit tests passed. Browser checks sample five moments in each of eight series across three ratios, with missing-GLB fallback coverage. Final encoded media evidence is pending below.
+- Reels: type checking and five data/layout unit tests passed, including rejection of malformed episode metadata before rendering. Browser checks sample five moments in each of eight series across three ratios, with missing-GLB fallback coverage. Final encoded media evidence is pending below.
 - Blender: store and apothecary scripts executed successfully. Both Cycles stills were visually inspected. Shared assets have hashes in `brand/3d/artifact-manifest.json`.
 - PDF: the fictional sample report was generated, rendered and visually inspected; it contains no assessed property facts.
 
@@ -69,6 +69,8 @@ These are separate local runs subject to normal variability, not a controlled co
 ### Final media evidence
 
 Pending: complete 28-file MP4 manifest, FFprobe dimensions/frame counts/codecs, full FFmpeg decode checks and contact-sheet visual review. Do not treat stills or registered compositions as proof of completed video rendering.
+
+Early encoded-file inspection found Remotion's default JPEG color path produced full-range BT.601/yuvj420p despite the pixel-format option. Future renders now request BT.709 explicitly. The current batch will be converted to limited-range BT.709/yuv420p with `scripts/normalize-media.mjs`, preserving AAC and recording the source/output hashes, then checked again. No video is accepted solely on encoder option names.
 
 ## Remaining inputs and acceptance boundaries
 
