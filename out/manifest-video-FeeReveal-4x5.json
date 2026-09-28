@@ -1,0 +1,74 @@
+{
+  "createdAt": "2026-09-28T18:57:32.055Z",
+  "mode": "video",
+  "language": "en",
+  "inputs": {
+    "language": "en",
+    "showSafeZone": false,
+    "forceModelFallback": false,
+    "caseData": {
+      "id": "sample-questions",
+      "language": "en",
+      "status": "fictional",
+      "hook": "A home you like.\nA few questions first.",
+      "lines": [
+        "What does the title say?",
+        "Which costs keep coming?",
+        "What needs a closer look?",
+        "Put the unanswered questions on paper."
+      ],
+      "houseType": "terrace",
+      "highlight": "title",
+      "note": "Fictional educational scenario. No client, development or transaction is depicted."
+    },
+    "marketData": {
+      "id": "selangor-residential-value-2025",
+      "language": "en",
+      "status": "observed",
+      "title": "Read the flow.\nKeep the context.",
+      "metric": "Residential transaction value",
+      "unit": "RM million",
+      "frequency": "annual",
+      "geography": "Selangor",
+      "series": [
+        {
+          "label": "2021",
+          "value": 26490.71
+        },
+        {
+          "label": "2022",
+          "value": 30578.01
+        },
+        {
+          "label": "2023",
+          "value": 30255.16
+        },
+        {
+          "label": "2024",
+          "value": 31684.46
+        },
+        {
+          "label": "2025",
+          "value": 30528.85
+        }
+      ],
+      "source": "NAPIC, Property Market Report 2025, Central Region, Chart 8, p. 5",
+      "sourceUrl": "https://napic.jpph.gov.my/storage/app/media/3-penerbitan/Shahrul/Bahagian%20Pasaran%20Harta%20Tanah/Laporan%20Pasaran%20Harta%20Separuh%20Tahun%20dan%20Jadual/Q4%202025/Laporan%20Pasaran%20Harta%202025.pdf",
+      "asOf": "2025",
+      "retrievedAt": "2026-09-29",
+      "note": "Transcribed from PDF page 98 (printed Central Region page 5). Annual aggregate value of residential transactions, not median prices, asking prices, a house-price index, or monthly observations. Historical annual edition; no claim to be the latest release."
+    },
+    "storeStatus": "concept"
+  },
+  "outputs": [
+    {
+      "file": "FeeReveal-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 935539,
+      "sha256": "9f33870dda6df3cd6a639f897b0708f609f756c0ca4ad600652b57e655eadea7"
+    }
+  ]
+}

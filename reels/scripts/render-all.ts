@@ -34,11 +34,12 @@ try {
     const destination = path.join(out, `${composition.id}${suffix}.${stills?'png':'mp4'}`);
     console.log(`Rendering ${composition.id} (${manifest.outputs.length+1}/${selected.length})`);
     const common = {serveUrl, composition, inputProps, puppeteerInstance:browser, chromiumOptions, timeoutInMilliseconds:120_000};
+    const frame = Math.min(composition.durationInFrames-1, option('frame') ? stillFrame : composition.id.startsWith('FeeReveal-') ? 45 : stillFrame);
     let lastMilestone = -1;
-    if (stills) await renderStill({...common, frame:Math.min(composition.durationInFrames-1, stillFrame), output:destination, imageFormat:'png'});
+    if (stills) await renderStill({...common, frame, output:destination, imageFormat:'png'});
     else await renderMedia({...common, outputLocation:destination, codec:'h264', crf:22, pixelFormat:'yuv420p', colorSpace:'bt709', audioCodec:'aac', enforceAudioTrack:true, concurrency, imageFormat:'jpeg', jpegQuality:90, onProgress:({progress})=>{const milestone=Math.floor(progress*4)*25;if(milestone>lastMilestone){console.log(`${composition.id}: ${milestone}%`);lastMilestone=milestone;}}});
     const buffer = await readFile(destination);
-    manifest.outputs.push({file:path.basename(destination), width:composition.width, height:composition.height, fps:composition.fps, durationInFrames:composition.durationInFrames, bytes:buffer.length, sha256:createHash('sha256').update(buffer).digest('hex')});
+    manifest.outputs.push({file:path.basename(destination), width:composition.width, height:composition.height, fps:composition.fps, durationInFrames:composition.durationInFrames, ...(stills?{frame}:{}), bytes:buffer.length, sha256:createHash('sha256').update(buffer).digest('hex')});
     await writeFile(path.join(out,`manifest-${stills?'stills':'video'}${filter?'-'+filter:''}${ratio?'-'+ratio:''}${suffix}.json`),JSON.stringify(manifest,null,2)+'\n');
   }
 } finally { await browser.close({silent:true}); }

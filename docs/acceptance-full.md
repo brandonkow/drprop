@@ -2,7 +2,7 @@
 
 Updated 2026-09-29 (Asia/Kuala_Lumpur). Repository: `brandonkow/drprop`. Branch: **feat/brand-static-landing**. All authored product copy and documentation are English. The user authorized completing Chapter 10 after the earlier website phases. `main`, deployment and real outbound messaging remain untouched.
 
-**Status: implementation and local app/website checks complete; final media batch and its encoded-file review are in progress.** This is not a launch-readiness certificate. The historical [steps 1–5 report](acceptance.md) remains available.
+**Status: Chapter 10 implementation, local checks and all 28 English media exports are complete.** This is not a launch-readiness certificate. The historical [steps 1–5 report](acceptance.md) remains available.
 
 ## Chapter 10 coverage
 
@@ -20,7 +20,7 @@ Updated 2026-09-29 (Asia/Kuala_Lumpur). Repository: `brandonkow/drprop`. Branch:
 | 10 | Shared 3D-1/2/4/5 | Original procedural constructors and seven exported GLBs |
 | 11 | All eight reel templates | 28 registered English compositions; typography/safe-zone/model-fallback checks |
 | 12 | Blender store and GLB integration | Executed Cycles scripts, editable `.blend`, GLBs, PNG/WebP; actual measured plan absent |
-| 13 | Batch command and media verification | Still batch built; final MP4 batch and encoded-file verification in progress |
+| 13 | Batch command and media verification | 28 stills and 28 MP4s; hashes, format/frame/decode checks and sampled visual review passed |
 | 14 | Handoff | README, app/reel/3D/effects guides, provenance and this ledger |
 
 ## Section 5.6 — item-by-item self-audit
@@ -42,9 +42,9 @@ No default theme, noisy transitions, bounce/overshoot, emoji stickers, stock pro
 
 ## Verified local results
 
-- Website: five unit tests; original 15 browser regressions plus three store integration/fallback checks passed. TypeScript/production build passed. No-JavaScript/WebGL, reduced motion, memory/DPR, pointer ink, hidden-page/context-loss behavior, keyboard, responsive overflow and automated accessibility checks are covered.
+- Website: five unit tests; original 15 browser regressions plus three store integration/fallback checks passed. TypeScript/production build passed. An additional approved-photo smoke check confirmed the detached preload replaces the concept poster and caption. No-JavaScript/WebGL, reduced motion, memory/DPR, pointer ink, hidden-page/context-loss behavior, keyboard, responsive overflow and automated accessibility checks are covered.
 - App: nine unit tests, TypeScript, web export and Android/iOS Hermes exports passed. Three end-to-end browser journeys passed after the dependency overrides. Production dependency audit: zero known vulnerabilities on the recorded date. Export success is not physical native acceptance.
-- Reels: type checking and five data/layout unit tests passed, including rejection of malformed episode metadata before rendering. Browser checks sample five moments in each of eight series across three ratios, with missing-GLB fallback coverage. Final encoded media evidence is pending below.
+- Reels: type checking and five data/layout unit tests passed, including rejection of malformed episode metadata before rendering. Four browser checks sample five moments in each of eight series across three ratios, with missing-GLB fallback coverage. Final encoded media evidence is recorded below.
 - Blender: store and apothecary scripts executed successfully. Both Cycles stills were visually inspected. Shared assets have hashes in `brand/3d/artifact-manifest.json`.
 - PDF: the fictional sample report was generated, rendered and visually inspected; it contains no assessed property facts.
 
@@ -54,23 +54,27 @@ Local production preview, Lighthouse 13.5.0 through Edge with simulated mobile n
 
 | Metric | Result |
 | --- | --- |
-| Performance / Accessibility / Best practices / SEO | 97 / 100 / 100 / 92 |
-| First Contentful Paint | 1.07 s |
-| Largest Contentful Paint | 1.29 s — below 2.5 s target |
-| Total Blocking Time | 183 ms |
-| Cumulative Layout Shift | 0.00023 |
-| Speed Index | 1.43 s |
-| All JavaScript chunks, gzipped | 218,086 bytes — below 250,000-byte budget |
+| Performance / Accessibility / Best practices / SEO | 87 / 100 / 100 / 92 |
+| First Contentful Paint | 1.08 s |
+| Largest Contentful Paint | 1.30 s — below 2.5 s target |
+| Total Blocking Time | 365 ms |
+| Cumulative Layout Shift | 0 |
+| Speed Index | 5.35 s |
+| All JavaScript chunks, gzipped | 218,084 bytes — below 250,000-byte budget |
 
-These are separate local runs subject to normal variability, not a controlled comparison or guarantee of production results. The Lighthouse report predates the small approved-photo caption handler; the bundle number is from the subsequent final build. The report records the actual environment. A Windows temporary-profile cleanup warning occurred after the completed audit; its saved results remain valid.
+This final-build audit ran after rendering and media verification stopped. The earlier local run scored 97 with 1.29 s LCP and 183 ms blocking time; the final run scored 87 with slower Speed Index and more blocking. These separate runs are not a controlled comparison, and the variation has not been isolated to a specific cause. The latest result is reported here rather than selecting the best score. Both the stated LCP and gzip targets pass; physical-device smoothness and deployed-host performance remain unverified. A Windows temporary-profile cleanup warning occurred after the completed audit; its saved results remain valid.
 
-[Lighthouse summary](qa/lighthouse-summary.json), [full report](qa/lighthouse-mobile.html), [bundle breakdown](qa/bundle-size.json), [app audit](qa/app-dependency-audit.json), [app screenshots](qa/app/), [reel screenshots](qa/reels/) and [website model screenshot](qa/store-model-website.png).
+[Latest Lighthouse summary](qa/lighthouse-summary.json), [earlier local summary](qa/lighthouse-pre-delivery-summary.json), [full report](qa/lighthouse-mobile.html), [bundle breakdown](qa/bundle-size.json), [app audit](qa/app-dependency-audit.json), [app screenshots](qa/app/), [reel screenshots](qa/reels/) and [website model screenshot](qa/store-model-website.png).
 
 ### Final media evidence
 
-Pending: complete 28-file MP4 manifest, FFprobe dimensions/frame counts/codecs, full FFmpeg decode checks and contact-sheet visual review. Do not treat stills or registered compositions as proof of completed video rendering.
+All 28 MP4s passed FFprobe checks for H.264 video, AAC audio, limited-range BT.709/yuv420p, expected dimensions, 30 fps, exact frame counts and duration. SHA-256 hashes match the manifest, and full FFmpeg decoding passed without errors. The final files total **39,823,198 bytes** and **532 seconds** across all variants; the largest file is 3,104,841 bytes. The canonical 28 stills and two additional store-camera stills also match their manifests.
 
-Early encoded-file inspection found Remotion's default JPEG color path produced full-range BT.601/yuvj420p despite the pixel-format option. Future renders now request BT.709 explicitly. The current batch will be converted to limited-range BT.709/yuv420p with `scripts/normalize-media.mjs`, preserving AAC and recording the source/output hashes, then checked again. No video is accepted solely on encoder option names.
+All 28 contact sheets were visually reviewed at three sampled moments per file (84 frames). Captions, fees, historical market provenance, concept labels, model visibility and scene progression passed this sampled review. This is not a claim of frame-by-frame playback review. Audio remains silent AAC evaluation audio.
+
+Early encoded-file inspection found Remotion's default JPEG color path produced full-range BT.601/yuvj420p despite the pixel-format option. Rendering now requests BT.709 explicitly; FeeReveal 4:5 was re-rendered to verify that setting. The other 27 files were converted with `scripts/normalize-media.mjs`, preserving AAC and recording source/output hashes. A representative RGB comparison measured SSIM 0.999535, with acceptable tonal preservation on visual review. Acceptance is based on final file checks, not encoder option names.
+
+[Video manifest](../out/manifest-video.json), [encoded-file checks](qa/media-verification.json), [visual-review record](qa/media-visual-review.json), [contact sheets](qa/media/) and [color-conversion comparison](qa/media-color-validation.json).
 
 ## Remaining inputs and acceptance boundaries
 

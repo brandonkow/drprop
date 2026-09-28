@@ -1,17 +1,17 @@
 {
   "limitBytes": 250000,
-  "gzipBytes": 218086,
+  "gzipBytes": 218084,
   "passed": true,
   "chunks": [
     {
-      "file": "index-XdXo3JgI.js",
-      "bytes": 7814,
-      "gzipBytes": 3285
+      "file": "index-DjcRjtan.js",
+      "bytes": 7815,
+      "gzipBytes": 3284
     },
     {
-      "file": "scene-DL0cxMtd.js",
+      "file": "scene-DYUIplhL.js",
       "bytes": 167055,
-      "gzipBytes": 59961
+      "gzipBytes": 59960
     },
     {
       "file": "store-model-DxAeOkgy.js",

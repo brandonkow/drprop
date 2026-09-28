@@ -23,10 +23,10 @@ for(const item of manifest.outputs){
   assert.equal(Number(video.nb_frames),item.durationInFrames);
   assert.ok(Math.abs(Number(probe.format.duration)-item.durationInFrames/item.fps)<.1);
   run('ffmpeg',['-v','error','-xerror','-i',file,'-f','null','-']);
-  const sheet=`docs/qa/media/${path.parse(item.file).name}.jpg`;
+  const sheet=`docs/qa/media/${path.parse(item.file).name}.png`;
   const frames=[Math.round(item.fps),Math.floor(item.durationInFrames/2),item.durationInFrames-item.fps];
   const selection=frames.map(frame=>`eq(n\\,${frame})`).join('+');
-  run('ffmpeg',['-v','error','-y','-i',file,'-vf',`select='${selection}',scale=320:-2,tile=3x1`,'-frames:v','1','-q:v','3',sheet]);
+  run('ffmpeg',['-v','error','-y','-i',file,'-vf',`select='${selection}',scale=320:-2,format=rgb24,tile=3x1`,'-frames:v','1',sheet]);
   outputs.push({file:item.file,codec:video.codec_name,audio:audio.codec_name,pixelFormat:video.pix_fmt,colorRange:video.color_range,colorSpace:video.color_space,width:video.width,height:video.height,frames:Number(video.nb_frames),duration:Number(probe.format.duration),sha256:item.sha256,decode:'pass',contactSheet:sheet});
   console.log(`Verified ${item.file}`);
 }

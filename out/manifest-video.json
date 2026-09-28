@@ -1,0 +1,432 @@
+{
+  "createdAt": "2026-09-28T18:03:54.086Z",
+  "mode": "video",
+  "language": "en",
+  "inputs": {
+    "language": "en",
+    "showSafeZone": false,
+    "forceModelFallback": false,
+    "caseData": {
+      "id": "sample-questions",
+      "language": "en",
+      "status": "fictional",
+      "hook": "A home you like.\nA few questions first.",
+      "lines": [
+        "What does the title say?",
+        "Which costs keep coming?",
+        "What needs a closer look?",
+        "Put the unanswered questions on paper."
+      ],
+      "houseType": "terrace",
+      "highlight": "title",
+      "note": "Fictional educational scenario. No client, development or transaction is depicted."
+    },
+    "marketData": {
+      "id": "selangor-residential-value-2025",
+      "language": "en",
+      "status": "observed",
+      "title": "Read the flow.\nKeep the context.",
+      "metric": "Residential transaction value",
+      "unit": "RM million",
+      "frequency": "annual",
+      "geography": "Selangor",
+      "series": [
+        {
+          "label": "2021",
+          "value": 26490.71
+        },
+        {
+          "label": "2022",
+          "value": 30578.01
+        },
+        {
+          "label": "2023",
+          "value": 30255.16
+        },
+        {
+          "label": "2024",
+          "value": 31684.46
+        },
+        {
+          "label": "2025",
+          "value": 30528.85
+        }
+      ],
+      "source": "NAPIC, Property Market Report 2025, Central Region, Chart 8, p. 5",
+      "sourceUrl": "https://napic.jpph.gov.my/storage/app/media/3-penerbitan/Shahrul/Bahagian%20Pasaran%20Harta%20Tanah/Laporan%20Pasaran%20Harta%20Separuh%20Tahun%20dan%20Jadual/Q4%202025/Laporan%20Pasaran%20Harta%202025.pdf",
+      "asOf": "2025",
+      "retrievedAt": "2026-09-29",
+      "note": "Transcribed from PDF page 98 (printed Central Region page 5). Annual aggregate value of residential transactions, not median prices, asking prices, a house-price index, or monthly observations. Historical annual edition; no claim to be the latest release."
+    },
+    "storeStatus": "concept"
+  },
+  "outputs": [
+    {
+      "file": "BrandPulse-en-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 1043257,
+      "sha256": "6c0d6a0c6673b9b43542f0a24acd7ad80524ec18953a8b426d7ed2918795ff01",
+      "normalization": {
+        "sourceSha256": "efcdb5a85bdad6861f1f2f05c1376f14c4f01dd6978342cb4079935eb147e60c",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "CaseOfWeek-en-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 1080,
+      "bytes": 2822286,
+      "sha256": "8f2c5f5306f00dff2fa040995d6d1ec8eba44d882d3e7b2097bc524bdb1aeb08",
+      "normalization": {
+        "sourceSha256": "2fbb524bc906c87ea143d17a67a464ea9d23b349412d0ab4c367fa2fb504c556",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "BeforeYouSign-en-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 1419434,
+      "sha256": "9c87224095405479b281e36bd0db21c675d053c8d3befbcb4529bb1eff4c08db",
+      "normalization": {
+        "sourceSha256": "8ccaba940f869d590c811341f7c974649295efbdddc190988951557e2fa11c42",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "FeeReveal-en-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 964739,
+      "sha256": "55dc6aba48d46e1c24b1005ee9242eccdde2ab2009dbc6e0f8095c896b8c3f78",
+      "normalization": {
+        "sourceSha256": "92e55f6a9c5cee5482cac1fb498a08c8f47a16d6beb6589b33a5e505c5b2cc46",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "MarketPulse-en-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 1265387,
+      "sha256": "0fcdc36eef30088aca237f1991e0f86295b3e425e6dadef215088c94547356e7",
+      "normalization": {
+        "sourceSha256": "a4bfc7b485b2d0e95c23e2c4054744edcbf4a887299f20cca09ac4554772935d",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "LoungeMoment-en-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 360,
+      "bytes": 999778,
+      "sha256": "517263ac7938cbecd7fbea2b8337b1c12c45606710b2655c1c44097ea6f660d1",
+      "normalization": {
+        "sourceSha256": "7c80b60c99ac53238452f169f8a7c614710948be0c42f555ccf4a2d2990719be",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "StoreReveal-en-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 600,
+      "bytes": 2376158,
+      "sha256": "216780c0d1dc444327ce3bf4d0981c1233c5c8b4bdc2beac2f71709e6a0f6656",
+      "normalization": {
+        "sourceSha256": "2471310232aac14812837ee32e3468a90a12eac9711c23cbecae8642158f40f7",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "MemberCardReveal-en-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 270,
+      "bytes": 557063,
+      "sha256": "5fdf311d6bb62c4411e0084638d9e3f33ac533eabad3b7c5321ec9c1a422c074",
+      "normalization": {
+        "sourceSha256": "777a3b3488c193a11080533139c36697d8aa7d24db07771d370aae474f255ff1",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "BrandPulse-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 1069963,
+      "sha256": "fe653ce1793372aa066af7d3ebecc87d6dc70dbfa8610ab17302deb1b4da263a",
+      "normalization": {
+        "sourceSha256": "9b67bccc7bfc5da65ad4631e3586170c7dddda558c3ec40aff3f014513b4790e",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "CaseOfWeek-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 1080,
+      "bytes": 2875120,
+      "sha256": "81d51369837ebd6ea4276891fba287bcaa191657cdcb0321aa642c7643095b3a",
+      "normalization": {
+        "sourceSha256": "cfc760e4c0f2c51e5637ad46bded95b2d9db54f80a842beef89662a677181b38",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "BeforeYouSign-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 1456777,
+      "sha256": "9ed8994ae96d971b16cc4f1d09f015aa73df74296b0765262538d208c4acf7f9",
+      "normalization": {
+        "sourceSha256": "70c6381c0db2c7d7702f6f62eca89997b94bc8bc0bb3060ada5553db35366736",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "FeeReveal-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 935539,
+      "sha256": "9f33870dda6df3cd6a639f897b0708f609f756c0ca4ad600652b57e655eadea7"
+    },
+    {
+      "file": "MarketPulse-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 1251459,
+      "sha256": "52250453769e3471b478237a43361f0ce176a0c506c81d99630a85f10df32441",
+      "normalization": {
+        "sourceSha256": "4f4dca239e02a59efe8cf283b2a02787cdc3d1e71417dacab2ffc8cea03dcb02",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "LoungeMoment-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 360,
+      "bytes": 1039026,
+      "sha256": "df7a9220b0388be861d9d9b1f9dcb36e2e4181d2e11cf908325ccbf3cd8d1b36",
+      "normalization": {
+        "sourceSha256": "47d7099f836fbf5aa2ccbf6298f38f23354f83c2db87ef554fc83cd006bf168e",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "StoreReveal-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 600,
+      "bytes": 2563164,
+      "sha256": "1d540d974d74480aa68b734de1eb65314e954253fb5cffd46aa0a25d637bce6f",
+      "normalization": {
+        "sourceSha256": "249f2c6e3897399afbe12d857e0542b6cec070ece322d4367e433d922607d804",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "MemberCardReveal-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 270,
+      "bytes": 562619,
+      "sha256": "89717696bc5c2e71c69e8929c61737c1dcfde86cbae8ad5d6e1bdedc59c71354",
+      "normalization": {
+        "sourceSha256": "c0a8ef7b20632fb25038060ce8474ad6b95021ebe3c36cd256f3ada931eaecca",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "BrandPulse-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 1133572,
+      "sha256": "20c4c5a96bb47d9e22ddb5b031d925ebba1bf4ba92e411418f8d605fbd08d6b4",
+      "normalization": {
+        "sourceSha256": "193a9ef160996af1ca9bad18b857aee90e0a4f521ea2d9757ef4ebb8358ec462",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "CaseOfWeek-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 1080,
+      "bytes": 3104841,
+      "sha256": "1827a1042bee90133b1fff66140cf0511611437bf589d001f4ebb197ef220cbd",
+      "normalization": {
+        "sourceSha256": "a8b6f1f258a5850aca7fdc82845faa84e716de09d754a9d0ecbe03b5792d7047",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "BeforeYouSign-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 1416936,
+      "sha256": "5921e163d261f6eb5428d5328ff4acbc4966bf9362ada5c8833764481ba1e95b",
+      "normalization": {
+        "sourceSha256": "b55ea33128869239ecd73f072b6fe34998c27784306358e7e0982dd9f703c61f",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "FeeReveal-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 450,
+      "bytes": 1030681,
+      "sha256": "d28db4b12c53a1e8b674503f415aaa620d7fe826b0fbfe09881dc0409265f63c",
+      "normalization": {
+        "sourceSha256": "35ff1424c0bc8ff2d08456c55d4d71b9d98ea76f2d6bf94c5f0c8434eb0a4c6f",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "MarketPulse-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 750,
+      "bytes": 1264376,
+      "sha256": "720d338839d142f2301ae8368ede57a4a48ee4959134af9016cd7e89385e8a06",
+      "normalization": {
+        "sourceSha256": "117033f4fefdbbbda293550cd37e8301e56af19b31f1f1bae30fc09a020576ac",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "LoungeMoment-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 360,
+      "bytes": 1298866,
+      "sha256": "1f29a866870961a97afb1ae5d7dec6c16bed09a3a2d601a2d1826b3ee38a9ae9",
+      "normalization": {
+        "sourceSha256": "f8944bd6bd87d50dd09105c54cdbd417036d206f7bca36e75c5f337ed646954f",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "StoreReveal-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 600,
+      "bytes": 2578665,
+      "sha256": "b7f65aa1b6e41c03eefcc56daab2fa83f3bd0067ffcc773d0bd66db88258146c",
+      "normalization": {
+        "sourceSha256": "0be191fd60abd73b9ec02ba647ed8f5f66318d65d743eaabc5c26f6099054014",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "MemberCardReveal-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 270,
+      "bytes": 664446,
+      "sha256": "036b03f37c6f6ed0e546852dbd590d101300901693ea4aaf244e0553ae3145c9",
+      "normalization": {
+        "sourceSha256": "5e99dcb5a744f2aa3e413ed66d06ca95efc905dd44e24621260bee79211bb55c",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "BrandPulseShort-en-9x16.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "durationInFrames": 210,
+      "bytes": 553871,
+      "sha256": "e4634b790ba58db13129041dff22db4d68d45037c5cff0221f7fae5fe3896fca",
+      "normalization": {
+        "sourceSha256": "10648ed4d2db6e0307f3fd13876aa824b5fd53735b9e321139cf63d89ec6bc97",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "BrandPulseShort-en-4x5.mp4",
+      "width": 1080,
+      "height": 1350,
+      "fps": 30,
+      "durationInFrames": 210,
+      "bytes": 568373,
+      "sha256": "43433b5c7fe6649f361502a083670e5b3f0a22d8b52a7b717242444b8d51a3e4",
+      "normalization": {
+        "sourceSha256": "83604695a68f385249b5ee192fd45ca0988e237723865f93eb3c1060d5d5939c",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "BrandPulseShort-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 210,
+      "bytes": 604953,
+      "sha256": "2fffa2560d11ad39c54b4d2d92009e757f1e8de6528305f3a0c473bf1d4dad82",
+      "normalization": {
+        "sourceSha256": "90c12c3ee79866ef9ce35ffbb459a9160a356d3943784a146ab7d77b48821600",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    },
+    {
+      "file": "StoreLoop-en-16x9.mp4",
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "durationInFrames": 1200,
+      "bytes": 2401849,
+      "sha256": "aa241bac084424da496092f7b276379a9a5d71c84eca139300045018ecba44d3",
+      "normalization": {
+        "sourceSha256": "ac0be9ba9620c6e682c3859e750783def9c8c856f02ef8b82d69551177e9a96c",
+        "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      }
+    }
+  ],
+  "delivery": {
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "colorSpace": "bt709",
+    "colorRange": "tv",
+    "audio": "silent AAC"
+  }
+}

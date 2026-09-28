@@ -50,7 +50,8 @@ if (site.mapsUrl && site.address) {
 if (site.loungeImage) {
   const image = new Image();
   image.alt = site.loungeImage.alt;
-  image.loading = 'lazy';
+  // A detached lazy image may never load; preload before replacing the concept.
+  image.loading = 'eager';
   image.decoding = 'async';
   image.addEventListener('load', () => {
     const media = document.querySelector('#lounge-media')!;

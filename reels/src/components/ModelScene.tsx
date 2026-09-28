@@ -30,6 +30,7 @@ export function ModelScene({ kind, width, height, fallback = false, highlight = 
   const [handle] = useState(() => delayRender(`Loading ${kind} model`));
   useEffect(() => {
     let active = true; let loaded: Group | undefined;
+    setModel(initial);
     if (fallback || highlight !== 'none') { continueRender(handle); return; }
     new GLTFLoader().load(staticFile(`models/${files[kind]}.glb`), async gltf => {
       try {
@@ -46,7 +47,7 @@ export function ModelScene({ kind, width, height, fallback = false, highlight = 
       } catch (error) { if (active) cancelRender(error); }
     }, undefined, () => { if (active) { console.warn(`Using procedural fallback for ${kind}`); continueRender(handle); } });
     return () => { active = false; if (loaded) dispose(loaded); };
-  }, [kind, fallback, highlight, handle]);
+  }, [kind, fallback, highlight, handle, initial]);
   useEffect(() => () => dispose(initial), [initial]);
   const normalized = useMemo(() => { const bounds = new Box3().setFromObject(model); const size = bounds.getSize(new Vector3()); const centre = bounds.getCenter(new Vector3()); const scale=4/Math.max(size.x,size.y,size.z);return { scale, floor:-size.y*scale/2-.02, offset: centre.multiplyScalar(-1).toArray() as [number, number, number] }; }, [model]);
   return <ThreeCanvas shadows="percentage" width={width} height={height} style={{ width, height }} camera={{ fov: 40, position: [0.8, 1.5, 6.5] }} gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}>

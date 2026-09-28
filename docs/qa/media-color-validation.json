@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-09-28T18:24:56.006Z",
+  "sourceSha256": "efcdb5a85bdad6861f1f2f05c1376f14c4f01dd6978342cb4079935eb147e60c",
+  "testOutputSha256": "6c0d6a0c6673b9b43542f0a24acd7ad80524ec18953a8b426d7ed2918795ff01",
+  "frames": 450,
+  "method": "RGB SSIM after matched AVTB timebase and zero-based PTS",
+  "ssim": {
+    "red": 0.999521,
+    "green": 0.999639,
+    "blue": 0.999443,
+    "all": 0.999535
+  },
+  "conversion": "Full-range BT.601 to limited-range BT.709; libx264 CRF 18; AAC copied",
+  "visualReview": "PNG contact sheet inspected; acceptable tonal preservation"
+}

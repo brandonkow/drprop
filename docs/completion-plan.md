@@ -38,7 +38,7 @@ Confirmed contact/store details, approved prices/membership terms, registration 
 
 ## Progress
 
-- Steps 1–5: delivered in commits `0341f16` and `102db1b`; refreshed local website LCP 1.29 s, TBT 183 ms and bundle budget pass. Physical-device verification remains open.
+- Steps 1–5: delivered in commits `0341f16` and `102db1b`; final local website LCP 1.30 s, TBT 365 ms and 218,084-byte gzip bundle budget pass. Final Lighthouse performance score is 87; physical-device verification remains open.
 - Steps 6–12: implemented and locally checked. Native runtime and a measured store plan remain external acceptance gaps.
-- Step 13: all 28 review stills rendered; final MP4 batch and encoded-file inspection in progress.
+- Step 13: all 28 review stills and 28 English MP4s complete. Hashes, H.264/AAC, limited-range BT.709/yuv420p, dimensions, 30 fps, frame counts, durations and full decode checks passed. All 28 contact sheets were visually reviewed at three sampled moments each.
 - Step 14: README and app/reel/3D/provenance guides written. The full acceptance ledger separates verified evidence from launch inputs.

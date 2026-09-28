@@ -36,6 +36,10 @@ Chrome Headless Shell and ANGLE are the supported rendering defaults. First use 
 
 `--case=src/data/cases/example.json` and `--market=src/data/market/example.json` resolve relative to `reels/`. Cases accept a hook, 1–6 concise lines, terrace/condo/bungalow and none/roof/title/facade highlight. Sample cases are fictional. Use anonymized status only after actual clearance; do not include identifiable clients/projects.
 
+Each selected composition reuses its standard output filename. Commit or archive the previous edition before rendering a different episode into that filename.
+
+Review stills default to frame 90, except FeeReveal uses frame 45 so the first price is visible between transitions. `--frame` overrides that choice, and the still manifest records the actual frame.
+
 Market data requires geography, metric, unit, frequency, source/date, retrieval date and 2–6 comparable nonnegative values. Observed data requires a direct HTTPS source URL. The default is Selangor annual residential transaction value, 2021–2025, from NAPIC. It is not a price index, median price, asking price or monthly series. [Provenance](market-provenance.md) records the chart and transcription.
 
 Run browser checks and inspect safe-zone stills for every new episode. Tests cover shipped samples, not arbitrary copy. Vertical text reserves 14% top, 35% bottom, 65px left and 230px right. Other ratios reserve 7% left, 10% right/top and 13% bottom. These are conservative project defaults, not universal platform guarantees. `showSafeZone` is also a Studio prop.

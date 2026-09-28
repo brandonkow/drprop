@@ -1,0 +1,43 @@
+{
+  "reviewedAt": "2026-09-28T19:17:12.116Z",
+  "scope": "All 28 encoded MP4 contact sheets, three sampled frames each; 84 frames total. This is sampled visual review, not frame-by-frame playback.",
+  "result": "pass",
+  "checks": [
+    "Captions and fee figures remain visible and inside the intended frame",
+    "Pulse and case scenes show the expected progression",
+    "Concept-store camera samples show the entrance, lounge and consultation area",
+    "Market chart retains historical source, dates and metric labels",
+    "Membership remains labelled as a demo with readable external captions",
+    "No unexpected blank models, clipped captions or missing scenes in sampled frames"
+  ],
+  "contactSheets": [
+    "docs/qa/media/BrandPulse-en-9x16.png",
+    "docs/qa/media/CaseOfWeek-en-9x16.png",
+    "docs/qa/media/BeforeYouSign-en-9x16.png",
+    "docs/qa/media/FeeReveal-en-9x16.png",
+    "docs/qa/media/MarketPulse-en-9x16.png",
+    "docs/qa/media/LoungeMoment-en-9x16.png",
+    "docs/qa/media/StoreReveal-en-9x16.png",
+    "docs/qa/media/MemberCardReveal-en-9x16.png",
+    "docs/qa/media/BrandPulse-en-4x5.png",
+    "docs/qa/media/CaseOfWeek-en-4x5.png",
+    "docs/qa/media/BeforeYouSign-en-4x5.png",
+    "docs/qa/media/FeeReveal-en-4x5.png",
+    "docs/qa/media/MarketPulse-en-4x5.png",
+    "docs/qa/media/LoungeMoment-en-4x5.png",
+    "docs/qa/media/StoreReveal-en-4x5.png",
+    "docs/qa/media/MemberCardReveal-en-4x5.png",
+    "docs/qa/media/BrandPulse-en-16x9.png",
+    "docs/qa/media/CaseOfWeek-en-16x9.png",
+    "docs/qa/media/BeforeYouSign-en-16x9.png",
+    "docs/qa/media/FeeReveal-en-16x9.png",
+    "docs/qa/media/MarketPulse-en-16x9.png",
+    "docs/qa/media/LoungeMoment-en-16x9.png",
+    "docs/qa/media/StoreReveal-en-16x9.png",
+    "docs/qa/media/MemberCardReveal-en-16x9.png",
+    "docs/qa/media/BrandPulseShort-en-9x16.png",
+    "docs/qa/media/BrandPulseShort-en-4x5.png",
+    "docs/qa/media/BrandPulseShort-en-16x9.png",
+    "docs/qa/media/StoreLoop-en-16x9.png"
+  ]
+}
