@@ -9,8 +9,8 @@
     "start": "expo start",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "export:web": "expo export --platform web --max-workers 1",
-    "export:native": "expo export --platform android --platform ios --max-workers 1 --output-dir dist-native",
+    "export:web": "expo export --platform web --clear --max-workers 1",
+    "export:native": "expo export --platform android --platform ios --clear --max-workers 1 --output-dir dist-native",
     "test": "node --test tests/*.test.ts"
   },
   "dependencies": {
@@ -19,15 +19,18 @@
     "@expo-google-fonts/instrument-serif": "^0.4.1",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@shopify/react-native-skia": "2.6.2",
+    "@supabase/supabase-js": "2.117.2",
     "expo": "~57.0.25",
     "expo-asset": "^57.0.18",
     "expo-constants": "~57.0.19",
+    "expo-crypto": "57.0.3",
     "expo-document-picker": "~57.0.2",
     "expo-file-system": "~57.0.7",
     "expo-font": "~57.0.4",
     "expo-haptics": "~57.0.3",
     "expo-linking": "~57.0.11",
     "expo-router": "~57.0.23",
+    "expo-secure-store": "57.0.4",
     "expo-sensors": "~57.0.3",
     "expo-sharing": "~57.0.22",
     "expo-status-bar": "~57.0.1",
@@ -39,6 +42,7 @@
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
     "react-native-svg": "15.15.4",
+    "react-native-url-polyfill": "4.0.0",
     "react-native-web": "^0.21.2",
     "react-native-worklets": "0.10.1"
   },
@@ -52,6 +56,8 @@
   },
   "overrides": {
     "decode-uri-component": "0.5.0",
-    "xcode": { "uuid": "11.1.1" }
+    "xcode": {
+      "uuid": "11.1.1"
+    }
   }
 }

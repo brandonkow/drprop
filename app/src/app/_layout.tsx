@@ -4,6 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { DemoProvider, useDemo } from '../state/demo';
 import { Copy, Screen, useReducedMotion, useTheme } from '../components/ui';
+import { runtime } from '../backend/config';
+import { LiveApp } from '../backend/LiveApp';
 
 function Routes() {
   const { state, ready } = useDemo(); const t = useTheme(); const reduce = useReducedMotion();
@@ -22,4 +24,4 @@ function Routes() {
     <Stack.Screen name="+not-found" />
   </Stack></>;
 }
-export default function Root() { return <DemoProvider><Routes /></DemoProvider>; }
+export default function Root() { return runtime.mode === 'preview' ? <DemoProvider><Routes /></DemoProvider> : <LiveApp />; }

@@ -4,6 +4,8 @@ Updated 2026-09-29 (Asia/Kuala_Lumpur). Repository: `brandonkow/drprop`. Branch:
 
 **Status: Chapter 10 implementation, local checks and all 28 English media exports are complete.** This is not a launch-readiness certificate. The historical [steps 1–5 report](acceptance.md) remains available.
 
+The subsequent authentication/scheduling increment has its own [backend acceptance report](backend-acceptance.md); the phase-one measurements below are preserved as historical evidence.
+
 ## Chapter 10 coverage
 
 | Step | Delivery | Evidence/status |

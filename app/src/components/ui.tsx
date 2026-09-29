@@ -2,11 +2,11 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, StyleSheet, Text, TextInput, View, useColorScheme, type TextInputProps, type TextStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { tokens } from '../../../brand/tokens';
-import { useDemo } from '../state/demo';
+import { usePresentation } from '../state/presentation';
 export const ThemeOverride = createContext<'dark' | 'light' | null>(null);
 export function useTheme() {
-  const { state } = useDemo(); const system = useColorScheme();
-  const preference = useContext(ThemeOverride) ?? state.theme;
+  const { theme } = usePresentation(); const system = useColorScheme();
+  const preference = useContext(ThemeOverride) ?? theme;
   const dark = preference === 'dark' || (preference === 'system' && system === 'dark');
   return { ...tokens, dark, background: dark ? tokens.night : tokens.bone, text: dark ? tokens['night-text'] : tokens.ink, muted: dark ? '#BAB4A9' : '#686259', rule: dark ? '#514C44' : tokens.travertine, surface: dark ? '#22211E' : tokens.paper };
 }
@@ -20,8 +20,8 @@ export function Copy({ children, kind = 'body', style, testID }: { children: Rea
   return <Text testID={testID} accessibilityRole={kind === 'title' || kind === 'heading' ? 'header' : undefined} style={[styles[kind], { color: kind === 'small' || kind === 'label' ? t.muted : t.text }, style]}>{children}</Text>;
 }
 export function Screen({ children, title, eyebrow, scroll = true }: { children: React.ReactNode; title?: string; eyebrow?: string; scroll?: boolean }) {
-  const t = useTheme(); const { storageError } = useDemo();
-  const content = <View style={styles.content}><View style={styles.masthead}><Copy kind="label">DR. PROP / PROPERTY CLINIC</Copy><Copy kind="small">Preview · no live bookings</Copy></View>{eyebrow && <Copy kind="label">{eyebrow}</Copy>}{title && <Copy kind="title">{title}</Copy>}{storageError ? <Message>{storageError}</Message> : null}{children}</View>;
+  const t = useTheme(); const { storageError, mode } = usePresentation();
+  const content = <View style={styles.content}><View style={styles.masthead}><Copy kind="label">DR. PROP / PROPERTY CLINIC</Copy><Copy kind="small">{mode === 'preview' ? 'Preview · no live bookings' : 'Your consultation, in confidence'}</Copy></View>{eyebrow && <Copy kind="label">{eyebrow}</Copy>}{title && <Copy kind="title">{title}</Copy>}{storageError ? <Message>{storageError}</Message> : null}{children}</View>;
   return <SafeAreaView style={{ flex: 1, backgroundColor: t.background }} edges={['top', 'left', 'right']}>{scroll ? <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1 }}>{content}</ScrollView> : content}</SafeAreaView>;
 }
 export function Button({ title, onPress, solid = false, disabled = false, testID }: { title: string; onPress: () => void; solid?: boolean; disabled?: boolean; testID?: string }) {

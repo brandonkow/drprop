@@ -1,0 +1,98 @@
+{
+  "checkedAt": "2026-09-29T17:10:22.258Z",
+  "branch": "feat/brand-static-landing",
+  "node": "v24.15.0",
+  "tests": {
+    "database": 17,
+    "appUnit": 14,
+    "connectedBrowser": 6,
+    "previewBrowser": 3,
+    "total": 40,
+    "result": "pass"
+  },
+  "types": "pass",
+  "exports": [
+    {
+      "platform": "web",
+      "file": "entry-8ac01e54be6df2d0b32ef15ffefc183b.js",
+      "bytes": 2436008,
+      "sha256": "0476171d8063c9eb69fbe6e5f1378c00313009c79f0b63fc54b990d833a7bd67"
+    },
+    {
+      "platform": "android",
+      "file": "entry-6aabebbf0640de05a0627abde2c4bdb9.hbc",
+      "bytes": 5758360,
+      "sha256": "e66489b8e2f46b3dd44977213229c7e5176b8f6166b1be834ffe0cc8c161ad5b"
+    },
+    {
+      "platform": "ios",
+      "file": "entry-cf2b8ceb0b9b973c8ddc34f8014749a3.hbc",
+      "bytes": 5560756,
+      "sha256": "d7e8adb800b018a988bcf6ffb01d3c13f67334ed80c7a2c9682cf056db16553a"
+    }
+  ],
+  "productionDependencyVulnerabilities": 0,
+  "buildConfiguration": "Supabase mode with local HTTP fixture values; fresh Metro cache; evaluation exports only.",
+  "sourceHashNormalization": "UTF-8 text normalized to LF",
+  "sources": [
+    {
+      "file": "supabase/migrations/202609300001_auth_scheduling.sql",
+      "sha256": "a823ef535936da0d4a50a7ffef54791410db37587587ac066b54a230f6d89c54"
+    },
+    {
+      "file": "app/src/backend/api.ts",
+      "sha256": "f0e348bcc6afb9aab0fefd3a5e61937e6a8dcd9a3b1afae1bf33ab91d8ef6256"
+    },
+    {
+      "file": "app/src/backend/BookingFlow.tsx",
+      "sha256": "cfa4d00d9d63e0800e7664a9c467d2d4a8199c8e0d64b3b615971e12cdfe5326"
+    },
+    {
+      "file": "app/src/backend/client.ts",
+      "sha256": "8e0fe3f8a80614da43833c5424dfd06cb9b1043add44c92e5600b38fb48b3b5a"
+    },
+    {
+      "file": "app/src/backend/config.ts",
+      "sha256": "c07d4f3079456d52137ee3f626c2e4cfe9cb349995f17bbfb9be0a8a53a67297"
+    },
+    {
+      "file": "app/src/backend/LiveApp.tsx",
+      "sha256": "a06285f50b042583ab29b9354713c74d70f690b2caafce2e5da516d71960d5c3"
+    },
+    {
+      "file": "app/src/backend/schedule-time.ts",
+      "sha256": "f455ab3d2eef707881a5ea689febd7a869ffbb38d7626b2f9e9e8da5b59e09ad"
+    },
+    {
+      "file": "app/src/backend/secure-session.ts",
+      "sha256": "fc3d66956f897cb4a61262b3541bcc6253e2db100ab7c37df4236b672ae2ab62"
+    },
+    {
+      "file": "app/src/backend/SignIn.tsx",
+      "sha256": "3c52b126918373389cf560d5617faac267be2b8034a365a8d39d4d89a2530b95"
+    },
+    {
+      "file": "app/src/backend/StaffSchedule.tsx",
+      "sha256": "35ac5fc2d9d64dc655500713ca213c715e42c325141f0908d565641948fb4f19"
+    }
+  ],
+  "visualReview": [
+    "Requested booking record at 390px",
+    "Adviser schedule at 320px"
+  ],
+  "unresolved": [
+    "Hosted Supabase migration and real Data API validation",
+    "Actual SMS delivery, expiry, provider limits and public abuse controls",
+    "Multi-connection hosted concurrency tests",
+    "Physical Android/iOS secure storage and app lifecycle",
+    "Confirmed fees, staff identities and business readiness"
+  ],
+  "subsequentScope": [
+    "Private attachments and reports",
+    "Real payments and payment webhooks",
+    "Membership and check-in"
+  ],
+  "mainChanged": false,
+  "deployed": false,
+  "realMessagesSent": false
+}

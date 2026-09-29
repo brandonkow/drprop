@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { bookingError, feeFor } from '../domain/booking';
 import type { BookingDraft, Consultation, DemoState, Store } from '../domain/models';
 import { decodeState } from '../domain/storage';
+import { PresentationContext } from './presentation';
 
 const STORAGE_KEY = 'drprop.preview.v1';
 export const emptyState = (): DemoState => ({ version: 1, user: null, membership: null, consultations: [], theme: 'system' });
@@ -58,6 +59,6 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     renew() { const data = current.current; if (!data.membership) return; const from = Math.max(Date.now(), Date.parse(data.membership.renewsAt ?? '') || 0); commit({ ...data, membership: { ...data.membership, status: 'active', renewsAt: new Date(from + 30 * 86400_000).toISOString() } }); },
     async logout() { await writes.current; await AsyncStorage.removeItem(STORAGE_KEY).catch(() => setStorageError('Device storage could not be cleared.')); commit(emptyState()); },
   };
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  return <PresentationContext.Provider value={{ theme: state.theme, storageError, mode: 'preview' }}><Context.Provider value={value}>{children}</Context.Provider></PresentationContext.Provider>;
 }
 export function useDemo() { const value = useContext(Context); if (!value) throw new Error('DemoProvider required'); return value; }

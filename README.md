@@ -1,6 +1,6 @@
 # DR. PROP
 
-English brand system, website, Expo mock app, shared 3D assets and Remotion studio. The authorized scope extends through Chapter 10, step 14 of [the working brief](docs/brief.md). See [the delivery ledger](docs/acceptance-full.md) for verification and remaining gates.
+English brand system, website, Expo app with preview and connected modes, shared 3D assets and Remotion studio. Chapter 10 through step 14 is delivered; the subsequent authentication/scheduling increment is documented separately. See [the delivery ledger](docs/acceptance-full.md) and [backend acceptance](docs/backend-acceptance.md) for verification and remaining gates.
 
 **All work belongs to `feat/brand-static-landing`.** Another session owns `main` and deployment. This branch has not been merged or deployed.
 
@@ -37,6 +37,10 @@ npm --prefix app run export:native
 Exactly three tabs: Home, Records and Me. Includes launch, preview OTP, four-screen booking, metadata-only attachments, simulated payment, records/sample PDF, profile and Skia membership card with optional gyroscope. Use preview code **246810** and sample details only. Local AsyncStorage is cleared on sign out. No SMS, backend, real payment or valid check-in credential is present.
 
 Web output is `app/dist`; native JavaScript/assets output is `app/dist-native`. Neither is a signed native release. See [app guide](docs/app.md) for flows and phase-two boundaries.
+
+## Connected authentication and scheduling
+
+The app also supports explicit Supabase mode with SMS authentication, private profiles, published adviser availability, server-priced booking requests and cancellation. Preview mode remains the default. Database migrations, authorization tests and setup instructions are in [the backend guide](docs/backend.md). Hosted setup and SMS delivery have not been performed; bookings are disabled in a fresh database until the operator confirms readiness and fees. Payments, private uploads and membership/check-in remain subsequent work.
 
 ## 3D and reels
 

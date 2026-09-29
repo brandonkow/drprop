@@ -11,7 +11,8 @@
       "expo-font",
       "expo-document-picker",
       "expo-status-bar",
-      "expo-sharing"
+      "expo-sharing",
+      "expo-secure-store"
     ],
     "web": {
       "bundler": "metro",
