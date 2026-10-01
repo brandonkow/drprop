@@ -3,6 +3,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
+import { measureAudio, videoStreamHash } from './audio-master.mjs';
 const run=(command,args)=>{const result=spawnSync(command,args,{encoding:'utf8',windowsHide:true,maxBuffer:4*1024*1024});if(result.error)throw result.error;if(result.status!==0)throw new Error(`${command}: ${result.stderr}`);return result.stdout;};
 const manifest=JSON.parse(await readFile('out/manifest-video.json','utf8'));
 const partial=process.argv.includes('--partial');
@@ -22,12 +23,21 @@ for(const item of manifest.outputs){
   assert.equal(video.width,item.width);assert.equal(video.height,item.height);assert.equal(video.r_frame_rate,`${item.fps}/1`);
   assert.equal(Number(video.nb_frames),item.durationInFrames);
   assert.ok(Math.abs(Number(probe.format.duration)-item.durationInFrames/item.fps)<.1);
+  const loudness=measureAudio(file),silent=item.file.startsWith('StoreLoop-');
+  if(silent) assert.equal(loudness.integratedLufs,-Infinity,'Store loop must remain silent.');
+  else {
+    assert.ok(Math.abs(loudness.integratedLufs+14)<=.5,`${item.file}: -14 LUFS ±0.5 required`);
+    assert.ok(loudness.truePeakDbtp<=-1,`${item.file}: true peak must be <= -1 dBTP`);
+    assert.equal(audio.sample_rate,'48000');assert.equal(audio.channels,2);
+    assert.ok(Math.abs(Number(audio.duration)-item.durationInFrames/item.fps)<.1,`${item.file}: audio must cover the full video`);
+    assert.equal(videoStreamHash(file).replace('SHA256=',''),item.audioMaster?.videoStreamSha256);
+  }
   run('ffmpeg',['-v','error','-xerror','-i',file,'-f','null','-']);
   const sheet=`docs/qa/media/${path.parse(item.file).name}.png`;
   const frames=[Math.round(item.fps),Math.floor(item.durationInFrames/2),item.durationInFrames-item.fps];
   const selection=frames.map(frame=>`eq(n\\,${frame})`).join('+');
   run('ffmpeg',['-v','error','-y','-i',file,'-vf',`select='${selection}',scale=320:-2,format=rgb24,tile=3x1`,'-frames:v','1',sheet]);
-  outputs.push({file:item.file,codec:video.codec_name,audio:audio.codec_name,pixelFormat:video.pix_fmt,colorRange:video.color_range,colorSpace:video.color_space,width:video.width,height:video.height,frames:Number(video.nb_frames),duration:Number(probe.format.duration),sha256:item.sha256,decode:'pass',contactSheet:sheet});
+  outputs.push({file:item.file,codec:video.codec_name,audio:audio.codec_name,loudness:silent?{silent:true}:loudness,pixelFormat:video.pix_fmt,colorRange:video.color_range,colorSpace:video.color_space,width:video.width,height:video.height,frames:Number(video.nb_frames),duration:Number(probe.format.duration),sha256:item.sha256,decode:'pass',contactSheet:sheet});
   console.log(`Verified ${item.file}`);
 }
-await writeFile(`docs/qa/media-verification${partial?'-partial':''}.json`,JSON.stringify({checkedAt:new Date().toISOString(),complete:!partial,count:outputs.length,audio:'Silent AAC evaluation track; no loudness master claimed.',outputs},null,2)+'\n');
+await writeFile(`docs/qa/media-verification${partial?'-partial':''}.json`,JSON.stringify({checkedAt:new Date().toISOString(),complete:!partial,count:outputs.length,audio:'Original synthesized draft: -14 LUFS ±0.5 and true peak <= -1 dBTP; store loop is silent.',outputs},null,2)+'\n');

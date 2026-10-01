@@ -67,11 +67,22 @@
       "height": 1920,
       "fps": 30,
       "durationInFrames": 450,
-      "bytes": 1043257,
-      "sha256": "6c0d6a0c6673b9b43542f0a24acd7ad80524ec18953a8b426d7ed2918795ff01",
+      "bytes": 798138,
+      "sha256": "0d3654995d81d0ae936669c75a6077f6949d2d094dce026f4b1e7f999961bfc0",
       "normalization": {
         "sourceSha256": "efcdb5a85bdad6861f1f2f05c1376f14c4f01dd6978342cb4079935eb147e60c",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.9,
+        "threshold": -24.25,
+        "offset": 0.19,
+        "videoStreamSha256": "9b2c3a643c816b943290d454de8967a983c2f252a6490afbf5907e45b5cd904b",
+        "videoUnchanged": true
       }
     },
     {
@@ -80,11 +91,22 @@
       "height": 1920,
       "fps": 30,
       "durationInFrames": 1080,
-      "bytes": 2822286,
-      "sha256": "8f2c5f5306f00dff2fa040995d6d1ec8eba44d882d3e7b2097bc524bdb1aeb08",
+      "bytes": 2248539,
+      "sha256": "f574a6c05ec3347dc55783959de7727cc2e55f9a234fc2069c9ee97d26524a34",
       "normalization": {
         "sourceSha256": "2fbb524bc906c87ea143d17a67a464ea9d23b349412d0ab4c367fa2fb504c556",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.01,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 0.7,
+        "threshold": -24.1,
+        "offset": 0.03,
+        "videoStreamSha256": "d63783a7ad481e9677e3eb1ade7131c7581787357fe5547bd1027a0654b6eeee",
+        "videoUnchanged": true
       }
     },
     {
@@ -93,11 +115,22 @@
       "height": 1920,
       "fps": 30,
       "durationInFrames": 750,
-      "bytes": 1419434,
-      "sha256": "9c87224095405479b281e36bd0db21c675d053c8d3befbcb4529bb1eff4c08db",
+      "bytes": 1018225,
+      "sha256": "926b76bab2b91c53176349b59e3116547e873ce737fbf3041e69496328da1f8c",
       "normalization": {
         "sourceSha256": "8ccaba940f869d590c811341f7c974649295efbdddc190988951557e2fa11c42",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.08,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.3,
+        "threshold": -24.14,
+        "offset": 0.05,
+        "videoStreamSha256": "a43b0f6b8dc585867a32602c4fa7f4eb8db9b8a13c58f69925f0f67a842971c0",
+        "videoUnchanged": true
       }
     },
     {
@@ -106,11 +139,22 @@
       "height": 1920,
       "fps": 30,
       "durationInFrames": 450,
-      "bytes": 964739,
-      "sha256": "55dc6aba48d46e1c24b1005ee9242eccdde2ab2009dbc6e0f8095c896b8c3f78",
+      "bytes": 719620,
+      "sha256": "0efc637ab54368d3483aa72b3f33f8c7de5ee14c7439a3b4d8f9f97d255a8380",
       "normalization": {
         "sourceSha256": "92e55f6a9c5cee5482cac1fb498a08c8f47a16d6beb6589b33a5e505c5b2cc46",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.9,
+        "threshold": -24.25,
+        "offset": 0.19,
+        "videoStreamSha256": "96d9ecdcd1faef9ad272bff9cc0ae7c10d036fd6d52d142cb61925bfbdb5458d",
+        "videoUnchanged": true
       }
     },
     {
@@ -119,11 +163,22 @@
       "height": 1920,
       "fps": 30,
       "durationInFrames": 750,
-      "bytes": 1265387,
-      "sha256": "0fcdc36eef30088aca237f1991e0f86295b3e425e6dadef215088c94547356e7",
+      "bytes": 864178,
+      "sha256": "7951d72447c1e96b72c1e0e914d5547ad65565886af167f5b53cff47cac1708c",
       "normalization": {
         "sourceSha256": "a4bfc7b485b2d0e95c23e2c4054744edcbf4a887299f20cca09ac4554772935d",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.08,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.3,
+        "threshold": -24.14,
+        "offset": 0.05,
+        "videoStreamSha256": "4dfb4c424b74b98468894b90493f3625cfd47841fd2bb43bb535d70cc397d8e3",
+        "videoUnchanged": true
       }
     },
     {
@@ -132,11 +187,22 @@
       "height": 1920,
       "fps": 30,
       "durationInFrames": 360,
-      "bytes": 999778,
-      "sha256": "517263ac7938cbecd7fbea2b8337b1c12c45606710b2655c1c44097ea6f660d1",
+      "bytes": 802703,
+      "sha256": "89a96c05205d7f52aa5d9f541c007e4ec9f1e292799dcd3f3972bbf81e8e3cee",
       "normalization": {
         "sourceSha256": "7c80b60c99ac53238452f169f8a7c614710948be0c42f555ccf4a2d2990719be",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.52,
+        "rangeLu": 1.5,
+        "threshold": -24.27,
+        "offset": 0.19,
+        "videoStreamSha256": "90b652618230dcd3d903eb31aee463c796c702ff447e43749cc9b2768e9d5d13",
+        "videoUnchanged": true
       }
     },
     {
@@ -145,11 +211,22 @@
       "height": 1920,
       "fps": 30,
       "durationInFrames": 600,
-      "bytes": 2376158,
-      "sha256": "216780c0d1dc444327ce3bf4d0981c1233c5c8b4bdc2beac2f71709e6a0f6656",
+      "bytes": 2053160,
+      "sha256": "7ec31d33d226acbf3d6c846520d8c8df9dd0ddf8708137ac5e76afa1de8bcda8",
       "normalization": {
         "sourceSha256": "2471310232aac14812837ee32e3468a90a12eac9711c23cbecae8642158f40f7",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14,
+        "truePeakDbtp": -4.52,
+        "rangeLu": 0.6,
+        "threshold": -24.14,
+        "offset": 0.07,
+        "videoStreamSha256": "bf15efa437cddfd54f602b4b6aa6e521ece8764ccd7388d1efdc40b37e8e50cf",
+        "videoUnchanged": true
       }
     },
     {
@@ -158,11 +235,22 @@
       "height": 1920,
       "fps": 30,
       "durationInFrames": 270,
-      "bytes": 557063,
-      "sha256": "5fdf311d6bb62c4411e0084638d9e3f33ac533eabad3b7c5321ec9c1a422c074",
+      "bytes": 406612,
+      "sha256": "37fc0340259da1ace8c5d9625adad3a2d00bf892f080c94c15ce8237e184174e",
       "normalization": {
         "sourceSha256": "777a3b3488c193a11080533139c36697d8aa7d24db07771d370aae474f255ff1",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.18,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.4,
+        "threshold": -24.33,
+        "offset": 0.11,
+        "videoStreamSha256": "386d99dc0a8233e842e47c3bfa08ada66ac49bb76f96e39faf221fe8f590d4cd",
+        "videoUnchanged": true
       }
     },
     {
@@ -171,11 +259,22 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 450,
-      "bytes": 1069963,
-      "sha256": "fe653ce1793372aa066af7d3ebecc87d6dc70dbfa8610ab17302deb1b4da263a",
+      "bytes": 824844,
+      "sha256": "0e7197f92e899759dbca93d55bec65ca9f8ea46b3770927f31c06f338d350b08",
       "normalization": {
         "sourceSha256": "9b67bccc7bfc5da65ad4631e3586170c7dddda558c3ec40aff3f014513b4790e",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.9,
+        "threshold": -24.25,
+        "offset": 0.19,
+        "videoStreamSha256": "22194bb48f39afdcce9f003aea28c9bc2b89cc55885cc774e5fe3d1ef36e5777",
+        "videoUnchanged": true
       }
     },
     {
@@ -184,11 +283,22 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 1080,
-      "bytes": 2875120,
-      "sha256": "81d51369837ebd6ea4276891fba287bcaa191657cdcb0321aa642c7643095b3a",
+      "bytes": 2301373,
+      "sha256": "3ad106d227be2215440c7f8e5f8d7d441cb96e7666cb41ab0306d982ffcb4f8b",
       "normalization": {
         "sourceSha256": "cfc760e4c0f2c51e5637ad46bded95b2d9db54f80a842beef89662a677181b38",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.01,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 0.7,
+        "threshold": -24.1,
+        "offset": 0.03,
+        "videoStreamSha256": "2431ef4483cdd2423fd3906940b721408e27dab8a1f528cdf79b54c114f964de",
+        "videoUnchanged": true
       }
     },
     {
@@ -197,11 +307,22 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 750,
-      "bytes": 1456777,
-      "sha256": "9ed8994ae96d971b16cc4f1d09f015aa73df74296b0765262538d208c4acf7f9",
+      "bytes": 1055568,
+      "sha256": "5d4c1dce489404205a75a5f24e066707501285c8956e9bd7180705e667e0c587",
       "normalization": {
         "sourceSha256": "70c6381c0db2c7d7702f6f62eca89997b94bc8bc0bb3060ada5553db35366736",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.08,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.3,
+        "threshold": -24.14,
+        "offset": 0.05,
+        "videoStreamSha256": "f88db3d9627a698cba11f4a96dcbc3a891e76ad4528dbf71b6691c891e5674a7",
+        "videoUnchanged": true
       }
     },
     {
@@ -210,8 +331,19 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 450,
-      "bytes": 935539,
-      "sha256": "9f33870dda6df3cd6a639f897b0708f609f756c0ca4ad600652b57e655eadea7"
+      "bytes": 690421,
+      "sha256": "876a29d3e57c5dbde2f99733369dd6df57c6cd659ab36f151c9e7f05cb1c35f1",
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.9,
+        "threshold": -24.25,
+        "offset": 0.19,
+        "videoStreamSha256": "8b0dd1b3d1bc766f89981a2fad972efd38f39368677c52810f28363187aa119c",
+        "videoUnchanged": true
+      }
     },
     {
       "file": "MarketPulse-en-4x5.mp4",
@@ -219,11 +351,22 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 750,
-      "bytes": 1251459,
-      "sha256": "52250453769e3471b478237a43361f0ce176a0c506c81d99630a85f10df32441",
+      "bytes": 850250,
+      "sha256": "d211a79228a08976f9270e24e51f229639839f35511323a9f4a123027350c8cd",
       "normalization": {
         "sourceSha256": "4f4dca239e02a59efe8cf283b2a02787cdc3d1e71417dacab2ffc8cea03dcb02",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.08,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.3,
+        "threshold": -24.14,
+        "offset": 0.05,
+        "videoStreamSha256": "09764d45a47edccb972ea2c4a0f8af55458e6e940de625dbdeed8f8c9521f3aa",
+        "videoUnchanged": true
       }
     },
     {
@@ -232,11 +375,22 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 360,
-      "bytes": 1039026,
-      "sha256": "df7a9220b0388be861d9d9b1f9dcb36e2e4181d2e11cf908325ccbf3cd8d1b36",
+      "bytes": 841951,
+      "sha256": "783f4449e17e92a1f35ebdfc60fbd9f338625598fe7fdd23112f348a31ff3e5a",
       "normalization": {
         "sourceSha256": "47d7099f836fbf5aa2ccbf6298f38f23354f83c2db87ef554fc83cd006bf168e",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.52,
+        "rangeLu": 1.5,
+        "threshold": -24.27,
+        "offset": 0.19,
+        "videoStreamSha256": "5a3fbec834ba88a9d616bca161d9689b40b0ced265c3b98a76772616d1ab1790",
+        "videoUnchanged": true
       }
     },
     {
@@ -245,11 +399,22 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 600,
-      "bytes": 2563164,
-      "sha256": "1d540d974d74480aa68b734de1eb65314e954253fb5cffd46aa0a25d637bce6f",
+      "bytes": 2240166,
+      "sha256": "01a73607737e2c87b6a277afc75944c4985a6ebe6498bbbf1e61130152bb6ba0",
       "normalization": {
         "sourceSha256": "249f2c6e3897399afbe12d857e0542b6cec070ece322d4367e433d922607d804",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14,
+        "truePeakDbtp": -4.52,
+        "rangeLu": 0.6,
+        "threshold": -24.14,
+        "offset": 0.07,
+        "videoStreamSha256": "8413829fcc8933001067560e2474dcf6e87341c487148e118c81bed96bbdd617",
+        "videoUnchanged": true
       }
     },
     {
@@ -258,11 +423,22 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 270,
-      "bytes": 562619,
-      "sha256": "89717696bc5c2e71c69e8929c61737c1dcfde86cbae8ad5d6e1bdedc59c71354",
+      "bytes": 412168,
+      "sha256": "4e81a8583392fe4c37029d7cb4ae756a0512e8e64a8b369bd9c25564f9a0eaad",
       "normalization": {
         "sourceSha256": "c0a8ef7b20632fb25038060ce8474ad6b95021ebe3c36cd256f3ada931eaecca",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.18,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.4,
+        "threshold": -24.33,
+        "offset": 0.11,
+        "videoStreamSha256": "f9aba874c9c33c182b854aab2ed6d568d6d878be7aad7a7ae735cc6797cfc03e",
+        "videoUnchanged": true
       }
     },
     {
@@ -271,11 +447,22 @@
       "height": 1080,
       "fps": 30,
       "durationInFrames": 450,
-      "bytes": 1133572,
-      "sha256": "20c4c5a96bb47d9e22ddb5b031d925ebba1bf4ba92e411418f8d605fbd08d6b4",
+      "bytes": 888453,
+      "sha256": "1974645442b217e9dd224b31be0660bec28138456cd2b9093f23a4898f335186",
       "normalization": {
         "sourceSha256": "193a9ef160996af1ca9bad18b857aee90e0a4f521ea2d9757ef4ebb8358ec462",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.9,
+        "threshold": -24.25,
+        "offset": 0.19,
+        "videoStreamSha256": "c636b52597d645570dc06208eb62e3d484498dac2176cc90da68cabdf6c90704",
+        "videoUnchanged": true
       }
     },
     {
@@ -284,11 +471,22 @@
       "height": 1080,
       "fps": 30,
       "durationInFrames": 1080,
-      "bytes": 3104841,
-      "sha256": "1827a1042bee90133b1fff66140cf0511611437bf589d001f4ebb197ef220cbd",
+      "bytes": 2531094,
+      "sha256": "06933d44c1568520c5f76b01ca0164006410c8ef29a91fb13d08fdecd56a1edb",
       "normalization": {
         "sourceSha256": "a8b6f1f258a5850aca7fdc82845faa84e716de09d754a9d0ecbe03b5792d7047",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.01,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 0.7,
+        "threshold": -24.1,
+        "offset": 0.03,
+        "videoStreamSha256": "4fe9b0508643d7b365e22d4374c00daace09d8746476c0cc264b23c82dda022b",
+        "videoUnchanged": true
       }
     },
     {
@@ -297,11 +495,22 @@
       "height": 1080,
       "fps": 30,
       "durationInFrames": 750,
-      "bytes": 1416936,
-      "sha256": "5921e163d261f6eb5428d5328ff4acbc4966bf9362ada5c8833764481ba1e95b",
+      "bytes": 1015727,
+      "sha256": "06fff66a7a9b55cd60efd094bbf2cf587a189b70ce51e6966f4e9a7d0c323c17",
       "normalization": {
         "sourceSha256": "b55ea33128869239ecd73f072b6fe34998c27784306358e7e0982dd9f703c61f",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.08,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.3,
+        "threshold": -24.14,
+        "offset": 0.05,
+        "videoStreamSha256": "e6a3b186eeef631e4135a31b5185fccdfad1ee9922dfd123c4137920b4dc32e4",
+        "videoUnchanged": true
       }
     },
     {
@@ -310,11 +519,22 @@
       "height": 1080,
       "fps": 30,
       "durationInFrames": 450,
-      "bytes": 1030681,
-      "sha256": "d28db4b12c53a1e8b674503f415aaa620d7fe826b0fbfe09881dc0409265f63c",
+      "bytes": 785562,
+      "sha256": "20fa44d39c0facf953b8352e7f715a14a344c99d9e7fa8d5d038edb98ed14ab2",
       "normalization": {
         "sourceSha256": "35ff1424c0bc8ff2d08456c55d4d71b9d98ea76f2d6bf94c5f0c8434eb0a4c6f",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.9,
+        "threshold": -24.25,
+        "offset": 0.19,
+        "videoStreamSha256": "78028f917b0830336da26540cdfe968cabfdbec936b02894cdcfd17759f781e8",
+        "videoUnchanged": true
       }
     },
     {
@@ -323,11 +543,22 @@
       "height": 1080,
       "fps": 30,
       "durationInFrames": 750,
-      "bytes": 1264376,
-      "sha256": "720d338839d142f2301ae8368ede57a4a48ee4959134af9016cd7e89385e8a06",
+      "bytes": 863167,
+      "sha256": "8845ded133309d4acd740fcab89247c202be90e8ae529b9935300ce1a9234469",
       "normalization": {
         "sourceSha256": "117033f4fefdbbbda293550cd37e8301e56af19b31f1f1bae30fc09a020576ac",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.08,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.3,
+        "threshold": -24.14,
+        "offset": 0.05,
+        "videoStreamSha256": "003fff91c52794b7f348206e2ba85920a8dbefe69a2502e3521b12a22b7f57b2",
+        "videoUnchanged": true
       }
     },
     {
@@ -336,11 +567,22 @@
       "height": 1080,
       "fps": 30,
       "durationInFrames": 360,
-      "bytes": 1298866,
-      "sha256": "1f29a866870961a97afb1ae5d7dec6c16bed09a3a2d601a2d1826b3ee38a9ae9",
+      "bytes": 1101791,
+      "sha256": "3deac1a8adfda1f35db6c383a701b44b963b31fa61081a49686074ffb8c9198e",
       "normalization": {
         "sourceSha256": "f8944bd6bd87d50dd09105c54cdbd417036d206f7bca36e75c5f337ed646954f",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.52,
+        "rangeLu": 1.5,
+        "threshold": -24.27,
+        "offset": 0.19,
+        "videoStreamSha256": "244760bbedb7f32c9e33b30e01db6156ea0dd1fa32aaf606fbbd842a5e08bfd9",
+        "videoUnchanged": true
       }
     },
     {
@@ -349,11 +591,22 @@
       "height": 1080,
       "fps": 30,
       "durationInFrames": 600,
-      "bytes": 2578665,
-      "sha256": "b7f65aa1b6e41c03eefcc56daab2fa83f3bd0067ffcc773d0bd66db88258146c",
+      "bytes": 2255667,
+      "sha256": "d909349d0d6a027762d5251ddd02672aa9a3ce677c935ad57def44f991f5ad23",
       "normalization": {
         "sourceSha256": "0be191fd60abd73b9ec02ba647ed8f5f66318d65d743eaabc5c26f6099054014",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14,
+        "truePeakDbtp": -4.52,
+        "rangeLu": 0.6,
+        "threshold": -24.14,
+        "offset": 0.07,
+        "videoStreamSha256": "acb5a5124d4b0aa2c03f38e4bce79d7f153cfa4729f6b85b0ce020e9c524ac37",
+        "videoUnchanged": true
       }
     },
     {
@@ -362,11 +615,22 @@
       "height": 1080,
       "fps": 30,
       "durationInFrames": 270,
-      "bytes": 664446,
-      "sha256": "036b03f37c6f6ed0e546852dbd590d101300901693ea4aaf244e0553ae3145c9",
+      "bytes": 513995,
+      "sha256": "28d1f46dfea56c4d5f4f04258aa5dc34e593ff861c051aa91beb7748f8fabdc7",
       "normalization": {
         "sourceSha256": "5e99dcb5a744f2aa3e413ed66d06ca95efc905dd44e24621260bee79211bb55c",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.18,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.4,
+        "threshold": -24.33,
+        "offset": 0.11,
+        "videoStreamSha256": "ba6e25c88913470056542e36a755200a1eab4e77501701c04208bb0063394813",
+        "videoUnchanged": true
       }
     },
     {
@@ -375,11 +639,22 @@
       "height": 1920,
       "fps": 30,
       "durationInFrames": 210,
-      "bytes": 553871,
-      "sha256": "e4634b790ba58db13129041dff22db4d68d45037c5cff0221f7fae5fe3896fca",
+      "bytes": 434044,
+      "sha256": "a08000498819e179a26fdd9ecbef58fdcc131da1546cc353f7d28003fda8a327",
       "normalization": {
         "sourceSha256": "10648ed4d2db6e0307f3fd13876aa824b5fd53735b9e321139cf63d89ec6bc97",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -13.96,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 0.7,
+        "threshold": -24.23,
+        "offset": 0.26,
+        "videoStreamSha256": "04762ce679a1bcefae390a843436e36f377c99ccc8471843e4587a0da244107e",
+        "videoUnchanged": true
       }
     },
     {
@@ -388,11 +663,22 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 210,
-      "bytes": 568373,
-      "sha256": "43433b5c7fe6649f361502a083670e5b3f0a22d8b52a7b717242444b8d51a3e4",
+      "bytes": 448546,
+      "sha256": "175de36fe83e218e460e8e46490db4c282e84537d9a85e8415c9ec1a7ff0a6e1",
       "normalization": {
         "sourceSha256": "83604695a68f385249b5ee192fd45ca0988e237723865f93eb3c1060d5d5939c",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -13.96,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 0.7,
+        "threshold": -24.23,
+        "offset": 0.26,
+        "videoStreamSha256": "6d4a5fd20ac7c1195f6066b6ed8ca0df462bd21d9be83f036e6ee6c1be8ca253",
+        "videoUnchanged": true
       }
     },
     {
@@ -401,11 +687,22 @@
       "height": 1080,
       "fps": 30,
       "durationInFrames": 210,
-      "bytes": 604953,
-      "sha256": "2fffa2560d11ad39c54b4d2d92009e757f1e8de6528305f3a0c473bf1d4dad82",
+      "bytes": 485126,
+      "sha256": "ed157b9114bf816b309c1f18ff76fb7017358a5ff7992d2044bbce6058a01b20",
       "normalization": {
         "sourceSha256": "90c12c3ee79866ef9ce35ffbb459a9160a356d3943784a146ab7d77b48821600",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -13.96,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 0.7,
+        "threshold": -24.23,
+        "offset": 0.26,
+        "videoStreamSha256": "3b3583160dbfa29ad695c02123f032ebc3182cc8692e92c82a723051114b3eb5",
+        "videoUnchanged": true
       }
     },
     {
@@ -419,6 +716,10 @@
       "normalization": {
         "sourceSha256": "ac0be9ba9620c6e682c3859e750783def9c8c856f02ef8b82d69551177e9a96c",
         "conversion": "Full-range BT.601 JPEG-derived video to limited-range BT.709; libx264 CRF 18; AAC copied."
+      },
+      "audioMaster": {
+        "status": "silent-store-loop",
+        "integratedLufs": null
       }
     }
   ],
@@ -427,6 +728,7 @@
     "pixelFormat": "yuv420p",
     "colorSpace": "bt709",
     "colorRange": "tv",
-    "audio": "silent AAC"
-  }
+    "audio": "Original synthesized draft, -14 LUFS ±0.5, <= -1 dBTP; silent store loop"
+  },
+  "audioMasteredAt": "2026-10-01T15:47:50.719Z"
 }

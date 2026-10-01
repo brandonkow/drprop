@@ -1,0 +1,360 @@
+{
+  "checkedAt": "2026-10-01T15:55:36.441Z",
+  "result": "pass",
+  "checks": [
+    {
+      "file": "brand/3d/apothecary-blender.blend",
+      "sha256": "688eb5d638ccc88e8600f354539ad64f16dc44d229f569f0081943c0c465dbaa",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/apothecary-blender.glb",
+      "sha256": "df4dfdd4bd75e59aecbef93869f61d8abcb03c75bdd127fed1f9fd9d061b1364",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/apothecary.glb",
+      "sha256": "43820e89178f8f291ef08740291ac1d4c8fb7e778f5018b998e54c28da8eed9d",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/clay-bungalow.glb",
+      "sha256": "1b2285a1bc23c8821e58bcead0392e9b7e13e2119f73723ceb6c01fcee1564d6",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/clay-condo.glb",
+      "sha256": "006d051535f7bb6bbd4544567c00ace72299017452a538154b90c51efdf77712",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/clay-terrace.glb",
+      "sha256": "11a0badbae1dfa87922bfd9f2d75fbea5cb2c1822b044e622edcf12d30e235ec",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/member-card.glb",
+      "sha256": "ec5490dfba7cbf0b24dcfcad7fb7054cc2ab86141a8330f3c0156cb7072b0f54",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/pulse-roof.glb",
+      "sha256": "4e894768e14a6863a7abe07be412e08f51a9a9a8958fe2802d08bcdffee492b2",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/store-concept.glb",
+      "sha256": "e14903b325844f9ea4d7dccf6daf52c12debd740ca213a56b7080c151eb3fc3a",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/store.blend",
+      "sha256": "9dc4c0b6fe93e358761d8076e85eb17e6e341847971b319bf69bc3218579e5eb",
+      "result": "pass"
+    },
+    {
+      "file": "brand/3d/store.glb",
+      "sha256": "74ca39d1a2207b1eaee3bc09a19d3af90eab551d9bd2ef525560fb04320f417f",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulse-en-9x16.png",
+      "sha256": "40c7bb83b2f81dfecc15da5febb6f821cca03f5ebba7dd6606e8027490fc964d",
+      "result": "pass"
+    },
+    {
+      "file": "out/CaseOfWeek-en-9x16.png",
+      "sha256": "efd308b37c29c3b1af856c922ab3f4dee5863acaf40796a00836338a893ab3ee",
+      "result": "pass"
+    },
+    {
+      "file": "out/BeforeYouSign-en-9x16.png",
+      "sha256": "9987c49d40fb168b9f68a5303d59ccb997211ef3f0b0b593af32086a3af6f889",
+      "result": "pass"
+    },
+    {
+      "file": "out/FeeReveal-en-9x16.png",
+      "sha256": "9cca6005fefcbb7d77607166cce1bb690c935895de00acde413695d2dab5f512",
+      "result": "pass"
+    },
+    {
+      "file": "out/MarketPulse-en-9x16.png",
+      "sha256": "5f3feb74b1f3fb51b56650fb73575d7e28a170425647f3e36dd34d97ec725611",
+      "result": "pass"
+    },
+    {
+      "file": "out/LoungeMoment-en-9x16.png",
+      "sha256": "14c3e6fc6674e823fae1d93ad1da1055f38f7f80090b414aad05dfe890d99621",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreReveal-en-9x16.png",
+      "sha256": "e8bfe44eea5324e989a062604155895454244860007026c1cbc17f32ac4e14f4",
+      "result": "pass"
+    },
+    {
+      "file": "out/MemberCardReveal-en-9x16.png",
+      "sha256": "b46cff169505da882d6169caaf398890254b63141f804cf775f2212d0cf51610",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulse-en-4x5.png",
+      "sha256": "d662255f2a451ba7e0e836d317fa9040884b107c8ce1e7108de451c624b52877",
+      "result": "pass"
+    },
+    {
+      "file": "out/CaseOfWeek-en-4x5.png",
+      "sha256": "bef88e81d6c8ba1c51feecbf3b8e221504b59f1d3e9d448fbfeddbdda139502c",
+      "result": "pass"
+    },
+    {
+      "file": "out/BeforeYouSign-en-4x5.png",
+      "sha256": "cd57a1712a560ddfd80fe8da99670d8d52a2dfdd7a9315f803654877c256584c",
+      "result": "pass"
+    },
+    {
+      "file": "out/FeeReveal-en-4x5.png",
+      "sha256": "3a72febcc0c291f9b910f6175cca76ff21f2ab3e31591422cd293c5713efa77f",
+      "result": "pass"
+    },
+    {
+      "file": "out/MarketPulse-en-4x5.png",
+      "sha256": "64c57db74447d69d1312e05a4911ee8fac3e2e086de6bf66defb057fefd9bccb",
+      "result": "pass"
+    },
+    {
+      "file": "out/LoungeMoment-en-4x5.png",
+      "sha256": "34d092c6d669d7cb555add4ad5389c555f6bea8f3ebd2ec1db6198d26446760e",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreReveal-en-4x5.png",
+      "sha256": "4c27ca5ba88045e6937de8e5cfa91ee14417436f99884e27f72400b5f90a54cf",
+      "result": "pass"
+    },
+    {
+      "file": "out/MemberCardReveal-en-4x5.png",
+      "sha256": "efea76162957ac326134f4d9bdf79ea491854fe752ae778a5a65aa47d89762c4",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulse-en-16x9.png",
+      "sha256": "c3856b250769cb342472c86d8d7a84eb4518808cf7141843e6a0d7de004bc291",
+      "result": "pass"
+    },
+    {
+      "file": "out/CaseOfWeek-en-16x9.png",
+      "sha256": "549c74b423297141bd48e4061d64011523cc1896ae1578cae309cf8a941cc60b",
+      "result": "pass"
+    },
+    {
+      "file": "out/BeforeYouSign-en-16x9.png",
+      "sha256": "f68a9ff12c21dfefa82ff1d6939fdac858bc603b31a525ff974811f2d2962eed",
+      "result": "pass"
+    },
+    {
+      "file": "out/FeeReveal-en-16x9.png",
+      "sha256": "b22ce3755827d6547eca03c6c8ece9ec65d04bd6545988db6a668bc05906f27a",
+      "result": "pass"
+    },
+    {
+      "file": "out/MarketPulse-en-16x9.png",
+      "sha256": "c9ba336fffde8ef42899240b9cbeb525327d8d18210d9f3d1031620395a7bb9e",
+      "result": "pass"
+    },
+    {
+      "file": "out/LoungeMoment-en-16x9.png",
+      "sha256": "7741b9d64c0d123dbc53873f1c0eb2d32b07d9a74e1fb00557e7dd9fecf684c0",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreReveal-en-16x9.png",
+      "sha256": "81ed968396542d1a9b6e92283ebd2407680c49f295972da56a198069555ec89e",
+      "result": "pass"
+    },
+    {
+      "file": "out/MemberCardReveal-en-16x9.png",
+      "sha256": "65929ea662b69424ceb5a901114409f9386f8abf7d2fd31fdd73d63d164714d9",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulseShort-en-9x16.png",
+      "sha256": "0b70f1e7d48e5d996b373386b2c17750f2fec6aa4811d0d43494e5f0418d0425",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulseShort-en-4x5.png",
+      "sha256": "dbff3d78f5b870b57eb3d4d975535dba663570bfc270493b4021da500719fab7",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulseShort-en-16x9.png",
+      "sha256": "f16b5c71c35777a08e61e1cb8c5667702f0fdd2044cd45a44692c52e6bfe69aa",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreLoop-en-16x9.png",
+      "sha256": "c3856b250769cb342472c86d8d7a84eb4518808cf7141843e6a0d7de004bc291",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulse-en-9x16.mp4",
+      "sha256": "0d3654995d81d0ae936669c75a6077f6949d2d094dce026f4b1e7f999961bfc0",
+      "result": "pass"
+    },
+    {
+      "file": "out/CaseOfWeek-en-9x16.mp4",
+      "sha256": "f574a6c05ec3347dc55783959de7727cc2e55f9a234fc2069c9ee97d26524a34",
+      "result": "pass"
+    },
+    {
+      "file": "out/BeforeYouSign-en-9x16.mp4",
+      "sha256": "926b76bab2b91c53176349b59e3116547e873ce737fbf3041e69496328da1f8c",
+      "result": "pass"
+    },
+    {
+      "file": "out/FeeReveal-en-9x16.mp4",
+      "sha256": "0efc637ab54368d3483aa72b3f33f8c7de5ee14c7439a3b4d8f9f97d255a8380",
+      "result": "pass"
+    },
+    {
+      "file": "out/MarketPulse-en-9x16.mp4",
+      "sha256": "7951d72447c1e96b72c1e0e914d5547ad65565886af167f5b53cff47cac1708c",
+      "result": "pass"
+    },
+    {
+      "file": "out/LoungeMoment-en-9x16.mp4",
+      "sha256": "89a96c05205d7f52aa5d9f541c007e4ec9f1e292799dcd3f3972bbf81e8e3cee",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreReveal-en-9x16.mp4",
+      "sha256": "7ec31d33d226acbf3d6c846520d8c8df9dd0ddf8708137ac5e76afa1de8bcda8",
+      "result": "pass"
+    },
+    {
+      "file": "out/MemberCardReveal-en-9x16.mp4",
+      "sha256": "37fc0340259da1ace8c5d9625adad3a2d00bf892f080c94c15ce8237e184174e",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulse-en-4x5.mp4",
+      "sha256": "0e7197f92e899759dbca93d55bec65ca9f8ea46b3770927f31c06f338d350b08",
+      "result": "pass"
+    },
+    {
+      "file": "out/CaseOfWeek-en-4x5.mp4",
+      "sha256": "3ad106d227be2215440c7f8e5f8d7d441cb96e7666cb41ab0306d982ffcb4f8b",
+      "result": "pass"
+    },
+    {
+      "file": "out/BeforeYouSign-en-4x5.mp4",
+      "sha256": "5d4c1dce489404205a75a5f24e066707501285c8956e9bd7180705e667e0c587",
+      "result": "pass"
+    },
+    {
+      "file": "out/FeeReveal-en-4x5.mp4",
+      "sha256": "876a29d3e57c5dbde2f99733369dd6df57c6cd659ab36f151c9e7f05cb1c35f1",
+      "result": "pass"
+    },
+    {
+      "file": "out/MarketPulse-en-4x5.mp4",
+      "sha256": "d211a79228a08976f9270e24e51f229639839f35511323a9f4a123027350c8cd",
+      "result": "pass"
+    },
+    {
+      "file": "out/LoungeMoment-en-4x5.mp4",
+      "sha256": "783f4449e17e92a1f35ebdfc60fbd9f338625598fe7fdd23112f348a31ff3e5a",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreReveal-en-4x5.mp4",
+      "sha256": "01a73607737e2c87b6a277afc75944c4985a6ebe6498bbbf1e61130152bb6ba0",
+      "result": "pass"
+    },
+    {
+      "file": "out/MemberCardReveal-en-4x5.mp4",
+      "sha256": "4e81a8583392fe4c37029d7cb4ae756a0512e8e64a8b369bd9c25564f9a0eaad",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulse-en-16x9.mp4",
+      "sha256": "1974645442b217e9dd224b31be0660bec28138456cd2b9093f23a4898f335186",
+      "result": "pass"
+    },
+    {
+      "file": "out/CaseOfWeek-en-16x9.mp4",
+      "sha256": "06933d44c1568520c5f76b01ca0164006410c8ef29a91fb13d08fdecd56a1edb",
+      "result": "pass"
+    },
+    {
+      "file": "out/BeforeYouSign-en-16x9.mp4",
+      "sha256": "06fff66a7a9b55cd60efd094bbf2cf587a189b70ce51e6966f4e9a7d0c323c17",
+      "result": "pass"
+    },
+    {
+      "file": "out/FeeReveal-en-16x9.mp4",
+      "sha256": "20fa44d39c0facf953b8352e7f715a14a344c99d9e7fa8d5d038edb98ed14ab2",
+      "result": "pass"
+    },
+    {
+      "file": "out/MarketPulse-en-16x9.mp4",
+      "sha256": "8845ded133309d4acd740fcab89247c202be90e8ae529b9935300ce1a9234469",
+      "result": "pass"
+    },
+    {
+      "file": "out/LoungeMoment-en-16x9.mp4",
+      "sha256": "3deac1a8adfda1f35db6c383a701b44b963b31fa61081a49686074ffb8c9198e",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreReveal-en-16x9.mp4",
+      "sha256": "d909349d0d6a027762d5251ddd02672aa9a3ce677c935ad57def44f991f5ad23",
+      "result": "pass"
+    },
+    {
+      "file": "out/MemberCardReveal-en-16x9.mp4",
+      "sha256": "28d1f46dfea56c4d5f4f04258aa5dc34e593ff861c051aa91beb7748f8fabdc7",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulseShort-en-9x16.mp4",
+      "sha256": "a08000498819e179a26fdd9ecbef58fdcc131da1546cc353f7d28003fda8a327",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulseShort-en-4x5.mp4",
+      "sha256": "175de36fe83e218e460e8e46490db4c282e84537d9a85e8415c9ec1a7ff0a6e1",
+      "result": "pass"
+    },
+    {
+      "file": "out/BrandPulseShort-en-16x9.mp4",
+      "sha256": "ed157b9114bf816b309c1f18ff76fb7017358a5ff7992d2044bbce6058a01b20",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreLoop-en-16x9.mp4",
+      "sha256": "aa241bac084424da496092f7b276379a9a5d71c84eca139300045018ecba44d3",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreReveal-en-16x9-frame300.png",
+      "sha256": "4908bc43c0e648a2cfbd54aedf20ed204d700cc598817bad692bdc6f991d6b55",
+      "result": "pass"
+    },
+    {
+      "file": "out/StoreReveal-en-16x9-frame570.png",
+      "sha256": "f22e5aeba932bcd80af3dea23f67843bf9c402a68af37349fc231e381d07e53b",
+      "result": "pass"
+    },
+    {
+      "file": "out/FeeReveal-en-4x5.mp4",
+      "sha256": "876a29d3e57c5dbde2f99733369dd6df57c6cd659ab36f151c9e7f05cb1c35f1",
+      "result": "pass"
+    }
+  ],
+  "backendSourceHashesMatched": 10,
+  "mediaVerificationMatchesCurrentFiles": true,
+  "storeScope": "Labelled concept retained at user request; actual plan not supplied.",
+  "deviceAcceptance": "Pending at user request; see docs/device-acceptance.md."
+}

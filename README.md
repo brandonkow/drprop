@@ -52,7 +52,7 @@ npm --prefix reels run stills
 npm --prefix reels run render
 ```
 
-Eight series in three ratios, three short brand variants and one store loop produce **28 English compositions**. Review media and SHA-256 manifests go in `out/`. MP4 uses H.264, 30fps, yuv420p and a silent AAC track until rights-cleared sound is supplied. No -14 LUFS audio master is claimed.
+Eight series in three ratios, three short brand variants and one store loop produce **28 English compositions**. Review media and SHA-256 manifests go in `out/`. MP4 uses H.264, 30fps and yuv420p. The batch renderer adds an original synthesized audio draft and verifies the final AAC track at −14 LUFS ±0.5 with true peak at or below −1 dBTP. The store-screen loop stays silent. FFmpeg and FFprobe must be on PATH for video rendering and mastering.
 
 To add an episode, copy a JSON under `reels/src/data`, retain evidence status/provenance and pass it to the batch script:
 
@@ -63,7 +63,7 @@ npm --prefix reels run stills -- --only=StoreReveal --ratio=9x16 --safe-zones
 
 See [reel production](docs/reels.md) for schemas, safe zones, audio and licensing. Default market data is historical annual NAPIC transaction value, not monthly/current prices; [source evidence](docs/market-provenance.md) records the distinction.
 
-Original procedural geometry lives in `brand/three`; shared exports in `brand/3d`. Blender generates editable scenes, GLBs and Cycles stills. The store is an **unconfirmed 8 × 12 m concept**, not a measured twin or construction plan. See [3D production](docs/3d.md).
+Original procedural geometry lives in `brand/three`; shared exports in `brand/3d`. Blender generates editable scenes, GLBs and Cycles stills. The store is an **unconfirmed 8 × 12 m concept**, not a measured twin or construction plan. The user accepted retaining this concept for the current delivery on 2026-10-01. See [3D production](docs/3d.md).
 
 ## Verification
 
@@ -81,7 +81,9 @@ npm run test:reels
 
 Browser tests use installed Microsoft Edge through Playwright. App tests require `export:web` first. Remotion uses supported Chrome Headless Shell, downloaded on first use; `CHROME_PATH` optionally overrides it. Run `npm run audit:mobile` against production preview port 4173 with heavy work stopped. Run `node scripts/verify-media.mjs` after the full batch, with FFmpeg/FFprobe on PATH.
 
-The website enforces a combined JavaScript gzip budget below 250,000 bytes, including lazy chunks. This budget does not apply to the separate app or video-authoring environment. Local simulation does not certify physical-device or deployed-host performance. Current results and the item-by-item §5.6 review belong in [acceptance-full.md](docs/acceptance-full.md).
+Then run `node scripts/verify-delivery-artifacts.mjs` to check model, still and video manifests against the actual files and confirm that the media report matches the delivered batch. It also detects changes to the backend sources covered by the recorded verification; if those change, rerun and update their acceptance evidence.
+
+The website enforces a combined JavaScript gzip budget below 250,000 bytes, including lazy chunks. This budget does not apply to the separate app or video-authoring environment. Local simulation does not certify physical-device or deployed-host performance. Current results and the item-by-item §5.6 review belong in [acceptance-full.md](docs/acceptance-full.md). Physical Android/iOS checks remain explicitly pending in [the device acceptance record](device-acceptance.md), as requested by the user.
 
 ## Repository map
 

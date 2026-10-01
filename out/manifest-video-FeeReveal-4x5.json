@@ -67,8 +67,19 @@
       "height": 1350,
       "fps": 30,
       "durationInFrames": 450,
-      "bytes": 935539,
-      "sha256": "9f33870dda6df3cd6a639f897b0708f609f756c0ca4ad600652b57e655eadea7"
+      "bytes": 690421,
+      "sha256": "876a29d3e57c5dbde2f99733369dd6df57c6cd659ab36f151c9e7f05cb1c35f1",
+      "audioMaster": {
+        "status": "original-synthesized-draft",
+        "version": "pulse-roof-original-v1",
+        "integratedLufs": -14.21,
+        "truePeakDbtp": -4.51,
+        "rangeLu": 1.9,
+        "threshold": -24.25,
+        "offset": 0.19,
+        "videoStreamSha256": "8b0dd1b3d1bc766f89981a2fad972efd38f39368677c52810f28363187aa119c",
+        "videoUnchanged": true
+      }
     }
   ]
 }

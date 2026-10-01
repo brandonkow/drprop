@@ -6,6 +6,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { validateCase, validateMarket } from '../src/validate.ts';
+import { masterVideo } from '../../scripts/audio-master.mjs';
 
 const require = createRequire(import.meta.url);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -38,8 +39,9 @@ try {
     let lastMilestone = -1;
     if (stills) await renderStill({...common, frame, output:destination, imageFormat:'png'});
     else await renderMedia({...common, outputLocation:destination, codec:'h264', crf:22, pixelFormat:'yuv420p', colorSpace:'bt709', audioCodec:'aac', enforceAudioTrack:true, concurrency, imageFormat:'jpeg', jpegQuality:90, onProgress:({progress})=>{const milestone=Math.floor(progress*4)*25;if(milestone>lastMilestone){console.log(`${composition.id}: ${milestone}%`);lastMilestone=milestone;}}});
+    const audioMaster = stills ? undefined : await masterVideo(destination, composition.durationInFrames/composition.fps, {silent:composition.id.startsWith('StoreLoop-')});
     const buffer = await readFile(destination);
-    manifest.outputs.push({file:path.basename(destination), width:composition.width, height:composition.height, fps:composition.fps, durationInFrames:composition.durationInFrames, ...(stills?{frame}:{}), bytes:buffer.length, sha256:createHash('sha256').update(buffer).digest('hex')});
+    manifest.outputs.push({file:path.basename(destination), width:composition.width, height:composition.height, fps:composition.fps, durationInFrames:composition.durationInFrames, ...(stills?{frame}:{audioMaster}), bytes:buffer.length, sha256:createHash('sha256').update(buffer).digest('hex')});
     await writeFile(path.join(out,`manifest-${stills?'stills':'video'}${filter?'-'+filter:''}${ratio?'-'+ratio:''}${suffix}.json`),JSON.stringify(manifest,null,2)+'\n');
   }
 } finally { await browser.close({silent:true}); }

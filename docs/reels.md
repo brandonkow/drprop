@@ -50,7 +50,15 @@ Rendering explicitly selects BT.709. The first batch began before this setting w
 
 ## Audio and licensing
 
-Evaluation exports are silent with an AAC track. No commissioned sound or licensed music was supplied, so no -14 LUFS master is claimed. For approved sound, add it under `reels/public/audio`, set `audioSrc` in Studio/default props, re-render and separately normalize/verify the master using a two-pass loudness workflow.
+The 27 social/video variants include an original synthesized audio draft: a soft double heartbeat, a damped wood-like tap and a sparse sustained tone bed. `scripts/audio-master.mjs` generates every sample from equations; it uses no third-party recordings, music samples or voice. This is a proposed brand sound, not a claim of a commissioned or approved sound identity. The 40-second store-screen loop is silent as required by §9.3.
+
+The batch renderer runs two-pass FFmpeg loudness normalization after rendering. It measures the final AAC encode, requires −14 LUFS ±0.5 and true peak at or below −1 dBTP, and verifies that video packet hashes are unchanged. FFmpeg/FFprobe must be installed and on PATH. A mastering failure stops delivery rather than silently passing through an unmastered file.
+
+[Audition the 15-second draft](../out/pulse-roof-audio-preview.m4a). This AAC excerpt is copied directly from the mastered BrandPulse export.
+
+To apply the same process to an existing complete batch without re-rendering visuals, run `node scripts/master-media.mjs` from the repository root, then `node scripts/verify-media.mjs`. It resumes by retaining files whose hash and recorded audio version already match; use `--force` to remaster them. Increment `audioVersion` after changing the sound design. Canonical and matching filtered manifests are updated. Intermediate WAVs stay in the ignored `reels/.cache/audio` directory and are removed after each file. Studio playback remains silent unless `audioSrc` is supplied: mastering happens after export, not inside the preview. Listen to the exported draft before approving it for publication; objective loudness tests do not establish subjective sound approval.
+
+For a commissioned replacement, retain the written license/provenance, replace the synthesis source in `masterVideo`, and repeat final AAC loudness checks. Merely setting Studio's `audioSrc` does not replace the batch master's source. Avoid publishing a different audio edition under an old manifest.
 
 Remotion is source-available under its own license, not MIT. Its [official FAQ](https://www.remotion.dev/docs/license/faq), checked 2026-09-29, permits individuals, teams up to three people, qualifying nonprofits and noncommercial evaluation under the Free License. Other users need the applicable Company License. Operating-team eligibility is unconfirmed; these outputs are for evaluation. No paid service or publication was initiated.
 
