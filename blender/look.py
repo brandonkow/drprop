@@ -175,6 +175,7 @@ class View:
     cut: bool = False
     ortho: float | None = None  # orthographic scale; eye/target then set the direction
     light: str | None = None  # preferred lighting
+    ev: float = 0.0  # exposure offset for this view
 
 
 def views(cfg: dict) -> dict[str, View]:
@@ -200,11 +201,11 @@ def _views(W: float, D: float) -> dict[str, View]:
         # From the brief table back to the street: reception, fluted wall, window, daylight.
         "reception": View((6.6, 4.55, 1.5), (2.4, 0.4, 1.15), lens=22, fstop=5.6, light="golden"),
         # Consult room A from its door.
-        "consult": View((8.85, 5.35, 1.5), (7.0, 7.0, 0.95), lens=16, fstop=4.0),
+        "consult": View((8.85, 5.35, 1.5), (7.0, 7.0, 0.95), lens=16, fstop=4.0, ev=0.6),
         # The pantry, where kopi and cold towels are made.
-        "pantry": View((5.0, 5.2, 1.5), (2.6, 7.9, 1.15), lens=24, fstop=4.0),
+        "pantry": View((5.0, 5.2, 1.5), (2.6, 7.9, 1.15), lens=24, fstop=4.0, ev=0.4),
         # Cutaway, high from the front-left: the whole plan with its furniture.
-        "axo": View((-9.0, -12.0, 15.5), (W * 0.5, D * 0.6, 0.4), cut=True, ortho=max(W, D) + 7.0, light="overcast"),
+        "axo": View((-9.0, -12.0, 15.5), (W * 0.58, D * 0.48, 0.4), cut=True, ortho=max(W, D) + 6.0, light="overcast"),
         "plan": View((W / 2 + 0.3, D / 2 - 0.4, 40.0), (W / 2 + 0.3, D / 2 - 0.4, 0.0), cut=True, ortho=max(W, D) + 5.5, light="overcast"),
     }
 
@@ -269,6 +270,7 @@ def render_view(view: str, path: Path, size: tuple[int, int], samples: int, *, l
     wanted = light or v.light or scene.get("drprop_light", "day")
     if wanted != scene.get("drprop_light"):
         setup(wanted)
+    scene.view_settings.exposure = LIGHTING[wanted].exposure + v.ev
     scene.camera = camera(f"view-{view}", v)
     set_cut(v.cut)
     scene.render.resolution_x, scene.render.resolution_y = size

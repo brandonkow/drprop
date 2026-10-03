@@ -709,7 +709,8 @@ def build_consult_rooms(cfg: dict, m: dict) -> None:
         tag = "AB"[i] if i < 2 else str(i + 1)
         name = f"consult-{tag}"
         wall(f"{name}-side", (PART, rd, H), (x_left, D - rd / 2, H / 2), m["limewash"], col)
-        # Arched reeded-glass door in a slim bronze frame, standing open into the room.
+        # Arched reeded-glass door in a slim bronze frame, standing open against the wall outside,
+        # so the room itself stays clear.
         outer = kit.arch_outline(door_w - 0.02, spring, segments=24)
         leaf = prism(f"{name}-door-glass", [(x + (door_w - 0.02) / 2, z) for x, z in outer], 0.02, (0, 0, 0), m["reeded"], col)
         frame = prism(f"{name}-door-frame", [(x + (door_w - 0.02) / 2, z) for x, z in outer], 0.035, (0, 0, 0), m["bronze_dark"], col)
@@ -717,7 +718,7 @@ def build_consult_rooms(cfg: dict, m: dict) -> None:
         hole = prism(f"{name}-door-hole", [(x + (door_w - 0.02) / 2, z) for x, z in inner], 0.1, (0, 0, 0), None, col)
         kit.cut(frame, [hole])
         pull = kit.tube(f"{name}-door-pull", [(door_w - 0.12, -0.05, 0.85), (door_w - 0.12, -0.05, 1.25)], 0.01, m["bronze"], col)
-        kit.group(f"{name}-door", [leaf, frame, pull], (cx - door_w / 2 + 0.01, front_y + PART / 2 + 0.02, 0), math.pi / 2, col)
+        kit.group(f"{name}-door", [leaf, frame, pull], (cx - door_w / 2 + 0.01, front_y - PART / 2 - 0.02, 0), -math.pi / 2, col)
         # Round walnut table on a tulip base (§6.2: round, not a negotiating table).
         tx, ty = P[f"room_{tag}"]
         lathe(f"{name}-table-top", [(0, 0.72), (0.54, 0.72), (0.55, 0.735), (0.545, 0.755), (0, 0.755)], (tx, ty, 0), m["walnut"], col, segments=72)

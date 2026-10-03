@@ -563,8 +563,11 @@ def apply_shot(cfg: dict, edit: list[Shot], f: int) -> None:
         t = t * t * (3 - 2 * t)
         d0, d1 = Vector(s.move[0]), Vector(s.move[1])
         eye = Vector(v.eye) + d0.lerp(d1, t)
-        v = look.View(tuple(eye), v.target, v.lens, v.fstop, v.cut, v.ortho, v.light)
-    bpy.context.scene.camera = look.camera(f"view-{s.view}", v)
+        v = look.View(tuple(eye), v.target, v.lens, v.fstop, v.cut, v.ortho, v.light, v.ev)
+    scene = bpy.context.scene
+    scene.camera = look.camera(f"view-{s.view}", v)
+    if "drprop_video_ev" in scene:
+        scene.view_settings.exposure = scene["drprop_video_ev"] + v.ev
     look.set_cut(v.cut)
     overlays(v.cut)
 
@@ -607,6 +610,7 @@ def render_video(cfg: dict, edit: list[Shot], path: Path, step: int, size, sampl
     scene = bpy.context.scene
     look.setup(light)
     scene.view_settings.exposure += 0.3
+    scene["drprop_video_ev"] = scene.view_settings.exposure
     c = scene.cycles
     scene.render.resolution_x, scene.render.resolution_y = size
     c.samples = samples
