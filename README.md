@@ -9,7 +9,7 @@ brand/     品牌资产（唯一来源）：tokens、字体、Pulse Roof 线与�
 web/       官网（Vite + TypeScript，无框架）：三语静态页、诊金计算器、WebGL 背景（流体 + 脉搏线 + 颗粒）
 app/       会员 App（Expo SDK 57 + Expo Router）：首页、问诊流程、病历、会员卡、我
 reels/     营销视频（Remotion 4）：R1–R8，三语 × 三比例批量渲染
-blender/   门店数字孪生与药柜的 Blender 基础模型脚本（bpy）
+blender/   门店数字孪生（店屋 / 商场两种形态）、药柜与动线动画的 Blender 脚本（bpy）
 docs/      执行文档
 ```
 
@@ -80,7 +80,7 @@ App 也可在浏览器里预览（适合快速看界面）：`cd app && npm run 
 | App 门店信息（Lounge 座位、今日咖啡） | `app/src/data/mock.ts` | `STORE`（第二阶段接 Supabase 后改为读后端） |
 | App 文案 | `app/src/i18n/strings.ts` | |
 | Reels 文案 | `reels/src/copy.ts` | |
-| 门店平面尺寸 | `blender/store.config.json` | 改完运行 `python blender/build_store.py` |
+| 门店平面尺寸 | `blender/store.config.json`（店屋）、`blender/store.mall.json`（商场） | 改完运行 `python blender/build_layout_plan.py --stills brand/renders` |
 | 声音 Logo | `brand/audio/sound-logo.wav` | 放入后每支 Reel 片尾自动使用 |
 
 英文与马来文文案由开发时撰写，发布前请母语者审校；隐私页与免责声明请律师确认（见 brief §2）。
@@ -154,15 +154,25 @@ Remotion 对个人与 3 人以内公司免费（含商用），4 人以上需购
 ## 3D 与 Blender
 
 - `brand/3d/*.ts`：程序化生成 3D-1 脉搏屋顶雕塑、3D-2 白模房子、3D-4 药柜、3D-5 会员卡。Reels 直接调用；`npm run brand:3d` 导出 glb。
-- `blender/build_store.py`：按 `store.config.json` 生成门店基础模型（3D-3），导出 `brand/3d/store.glb`（R7 使用），并保存 `blender/out/store.blend` 给 3D 设计师精修。`--render` 可输出 Cycles 静帧。
-- `blender/build_layout_plan.py`：门店 3D 布局动画。平面标注与尺寸、顾客从街面进门 → 接待冷毛巾 → Lounge → 顾问送 kopi → 带进诊室问诊 → 送客；VIP 走私人入口直入诊室 B；急诊亭视频问诊。输出 `blender/out/store_layout.blend`（按空格播放）、平面图/轴测图静帧与动画视频。
+- `blender/build_store.py`：门店数字孪生（3D-3），两种形态共用同一平面：
+  - **店屋**（`store.config.json`）：五脚基、街道、对面店屋
+  - **商场**（`store.mall.json`）：大堂走廊、相邻商铺、深招牌带，私人入口走后勤通道
+- 材质与布置按 brief §6：石灰华、胡桃木、亚麻、拉丝古铜、灰泥墙，2700 K 暖光。另导出轻量版 `brand/3d/store.glb` 给 R7。
+- `blender/build_layout_plan.py`：门店动线动画。
+  - 人物关节可动，走路有步态，坐下屈膝。
+  - 动线随人物行走在地面上逐步画出。
+  - 剖切轴测图和平面图带区域标注。
+  - 视频在街景、室内平视镜头与剖切轴测之间剪辑。
+- 材质用 Poly Haven / ambientCG 的 CC0 扫描贴图与道具：先运行 `python blender/fetch_assets.py`（约 55 MB，不进 git）；没有下载时自动改用程序化材质。
 
 ```bash
 pip install bpy==4.2.0      # 或使用 Blender 4.2+：blender -b -P blender/build_layout_plan.py -- …
-python blender/build_layout_plan.py --plan brand/renders/layout-plan.jpg --axo brand/renders/layout-axo.jpg --video blender/out/layout-flow.mp4
+python blender/fetch_assets.py
+python blender/build_layout_plan.py --stills brand/renders --video blender/out/layout-flow.mp4
+python blender/build_layout_plan.py --config blender/store.mall.json --stills brand/renders --video blender/out/layout-flow-mall.mp4 --video-end 24
 ```
 
-详见 [`blender/README.md`](blender/README.md)。
+渲染图在 `brand/renders/`：`shophouse-*.jpg`、`mall-*.jpg`、`layout-flow*.mp4`。详见 [`blender/README.md`](blender/README.md)。
 
 ---
 

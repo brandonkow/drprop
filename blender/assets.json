@@ -1,0 +1,92 @@
+{
+  "_comment": "CC0 assets for the store renders, fetched by blender/fetch_assets.py into blender/assets/ (git-ignored). Poly Haven (polyhaven.com) and ambientCG (ambientcg.com) publish under CC0; credited in blender/README.md. Every material has a procedural fallback, so the scripts still run without these files.",
+  "textures": {
+    "walnut": {
+      "source": "polyhaven",
+      "id": "smoked_walnut_veneer",
+      "res": "2k"
+    },
+    "walnut_light": {
+      "source": "polyhaven",
+      "id": "walnut_veneer",
+      "res": "1k"
+    },
+    "linen": {
+      "source": "polyhaven",
+      "id": "rough_linen",
+      "res": "1k"
+    },
+    "boucle": {
+      "source": "polyhaven",
+      "id": "wool_boucle",
+      "res": "1k"
+    },
+    "plaster": {
+      "source": "polyhaven",
+      "id": "white_stucco",
+      "res": "1k"
+    },
+    "terry": {
+      "source": "polyhaven",
+      "id": "terry_cloth",
+      "res": "1k"
+    },
+    "pavers": {
+      "source": "polyhaven",
+      "id": "square_concrete_pavers",
+      "res": "1k"
+    },
+    "asphalt": {
+      "source": "polyhaven",
+      "id": "brushed_concrete_03",
+      "res": "1k"
+    },
+    "travertine": {
+      "source": "ambientcg",
+      "id": "Travertine009",
+      "res": "2K"
+    },
+    "travertine_veined": {
+      "source": "ambientcg",
+      "id": "Travertine004",
+      "res": "1K"
+    }
+  },
+  "models": {
+    "plant_tall": {
+      "source": "polyhaven",
+      "id": "potted_plant_02",
+      "res": "1k"
+    },
+    "plant_succulent": {
+      "source": "polyhaven",
+      "id": "potted_plant_04",
+      "res": "1k"
+    },
+    "plant_pachira": {
+      "source": "polyhaven",
+      "id": "pachira_aquatica_01",
+      "res": "1k"
+    },
+    "vase_tall": {
+      "source": "polyhaven",
+      "id": "ceramic_vase_01",
+      "res": "1k"
+    },
+    "vase_round": {
+      "source": "polyhaven",
+      "id": "ceramic_vase_02",
+      "res": "1k"
+    },
+    "vase_jug": {
+      "source": "polyhaven",
+      "id": "ceramic_vase_04",
+      "res": "1k"
+    },
+    "bowl": {
+      "source": "polyhaven",
+      "id": "wooden_bowl_01",
+      "res": "1k"
+    }
+  }
+}

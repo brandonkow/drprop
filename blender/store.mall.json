@@ -1,5 +1,5 @@
 {
-  "_comment": "Placeholder floor plan (brief §6.2: 80–120 m²). Replace with the real survey; all values in metres. The street is along y = 0, the back wall at y = depth.",
+  "_comment": "The same unit as store.config.json, set in a shopping mall (brief §6; a mall unit instead of a shophouse). All values in metres; the concourse is along y = 0, the back wall at y = depth, a service corridor down the right side.",
   "width": 12.5,
   "depth": 8.0,
   "height": 3.2,
@@ -17,5 +17,5 @@
     "cols": 4
   },
   "signage": "DR. PROP",
-  "setting": "shophouse"
+  "setting": "mall"
 }
