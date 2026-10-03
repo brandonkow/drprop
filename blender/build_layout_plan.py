@@ -28,8 +28,9 @@ switch cameras as the story moves.
 
 Stills (--stills DIR) are taken at story moments: store-street (dusk, the
 customer arriving), store-entrance (the welcome), store-lounge (kopi served),
-store-pantry, store-consult, store-reception (golden hour), layout-axo and
-layout-plan. The video renders frame by frame and resumes where it stopped.
+store-pantry, store-consult, store-reception (golden hour), the axonometric
+and the plan. The video renders frame by frame and resumes where it stopped
+(--video-max-frames splits a long render into sessions).
 """
 
 from __future__ import annotations
@@ -597,7 +598,7 @@ def ffmpeg_bin() -> tuple[str | None, dict | None]:
 
 
 def render_video(cfg: dict, edit: list[Shot], path: Path, step: int, size, samples: int, light: str,
-                 end: int | None = None) -> None:
+                 end: int | None = None, max_frames: int | None = None) -> bool:
     """
     Every `step`-th frame as PNG (resumable: frames already on disk are kept),
     then motion-interpolated back to 30 fps by ffmpeg. Video frames trade bounces
@@ -617,10 +618,16 @@ def render_video(cfg: dict, edit: list[Shot], path: Path, step: int, size, sampl
     frames_dir.mkdir(parents=True, exist_ok=True)
     scene.render.image_settings.file_format = "PNG"
     todo = list(range(scene.frame_start, min(end or scene.frame_end, scene.frame_end) + 1, step))
+    rendered = 0
     for i, f in enumerate(todo):
         out = frames_dir / f"{i:05d}.png"
         if out.exists() and out.stat().st_size > 0:
             continue
+        if max_frames is not None and rendered >= max_frames:
+            done = sum(1 for k in range(len(todo)) if (frames_dir / f"{k:05d}.png").exists())
+            print(f"video paused: {done}/{len(todo)} frames in {frames_dir}; run again to continue", flush=True)
+            return False
+        rendered += 1
         scene.frame_set(f)
         apply_shot(cfg, edit, f)
         scene.render.filepath = str(out)
@@ -629,12 +636,13 @@ def render_video(cfg: dict, edit: list[Shot], path: Path, step: int, size, sampl
     ffmpeg, env = ffmpeg_bin()
     if not ffmpeg:
         print(f"frames in {frames_dir} (no ffmpeg found to encode)")
-        return
+        return False
     subprocess.run([ffmpeg, "-v", "error", "-y", "-framerate", str(FPS / step), "-i", str(frames_dir / "%05d.png"),
                     "-vf", f"minterpolate=fps={FPS}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1:scd=fdiff" if step > 1 else "null",
                     "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "19", "-movflags", "+faststart", str(path)],
                    check=True, env=env)
     shutil.rmtree(frames_dir, ignore_errors=True)
+    return True
 
 
 # --------------------------------------------------------------------------- main
@@ -653,6 +661,7 @@ def main() -> None:
     parser.add_argument("--video-step", type=int, default=3, help="render every n-th frame; interpolated back to 30 fps")
     parser.add_argument("--video-samples", type=int, default=10)
     parser.add_argument("--video-end", type=float, help="stop the video after this many seconds")
+    parser.add_argument("--video-max-frames", type=int, help="render at most this many new frames, then stop (run again to resume)")
     parser.add_argument("--video-light", choices=list(look.LIGHTING), help="default: day (shophouse), mall (mall)")
     args = parser.parse_args(script_args())
 
@@ -709,8 +718,8 @@ def main() -> None:
         w, h = (int(x) for x in args.video_size.split("x"))
         light = args.video_light or ("mall" if place == "mall" else "day")
         end = round(args.video_end * FPS) if args.video_end else None
-        render_video(cfg, edit, args.video, args.video_step, (w, h), args.video_samples, light, end)
-        print(f"flow video → {args.video}")
+        if render_video(cfg, edit, args.video, args.video_step, (w, h), args.video_samples, light, end, args.video_max_frames):
+            print(f"flow video → {args.video}")
 
 
 if __name__ == "__main__":

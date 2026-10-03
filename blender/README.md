@@ -82,6 +82,7 @@ Open `blender/out/store_layout.blend` (or `store_layout-mall.blend`) in Blender 
         --video blender/out/layout-flow-mall.mp4 --video-end 24
 
 The video renders every third frame at 960×540 and is motion-interpolated back to 30 fps (`--video-step 1` for every frame).
+Frames already on disk are kept. Add `--video-max-frames 80` to split a long render into sessions; run the same command again to continue.
 - **Shophouse:** about 4 hours on a 4-core CPU.
 - **Mall:** the arrival sequence only (`--video-end 24`), about 1 hour.
 
