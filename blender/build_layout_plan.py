@@ -601,12 +601,24 @@ def render_frame_still(cfg: dict, view: str, frame: int, path: Path, size, sampl
 
 
 def ffmpeg_bin() -> tuple[str | None, dict | None]:
+    """A system ffmpeg, else the static build from `pip install imageio-ffmpeg`, else Remotion's (no minterpolate)."""
     found = shutil.which("ffmpeg")
     if found:
         return found, None
+    try:
+        import imageio_ffmpeg
+
+        return imageio_ffmpeg.get_ffmpeg_exe(), None
+    except (ImportError, RuntimeError):
+        pass
     for p in (ROOT / "node_modules/@remotion").glob("compositor-*/ffmpeg"):
         return str(p), {**os.environ, "LD_LIBRARY_PATH": str(p.parent)}
     return None, None
+
+
+def has_filter(ffmpeg: str, env: dict | None, name: str) -> bool:
+    out = subprocess.run([ffmpeg, "-hide_banner", "-filters"], capture_output=True, text=True, env=env).stdout
+    return f" {name} " in out
 
 
 def render_video(cfg: dict, edit: list[Shot], path: Path, step: int, size, samples: int, light: str,
@@ -650,8 +662,16 @@ def render_video(cfg: dict, edit: list[Shot], path: Path, step: int, size, sampl
     if not ffmpeg:
         print(f"frames in {frames_dir} (no ffmpeg found to encode)")
         return False
+    if step == 1:
+        vf = "null"
+    elif has_filter(ffmpeg, env, "minterpolate"):
+        # Motion-compensated in-betweens; scene-change detection keeps the cuts clean.
+        vf = f"minterpolate=fps={FPS}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1:scd=fdiff"
+    else:
+        print("ffmpeg has no minterpolate (pip install imageio-ffmpeg): frames are repeated instead")
+        vf = f"fps={FPS}"
     subprocess.run([ffmpeg, "-v", "error", "-y", "-framerate", str(FPS / step), "-i", str(frames_dir / "%05d.png"),
-                    "-vf", f"minterpolate=fps={FPS}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1:scd=fdiff" if step > 1 else "null",
+                    "-vf", vf,
                     "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "19", "-movflags", "+faststart", str(path)],
                    check=True, env=env)
     shutil.rmtree(frames_dir, ignore_errors=True)
