@@ -537,7 +537,8 @@ def shots(beats: dict[str, int]) -> list[Shot]:
         # …and to the Lounge camera once the consultant has passed it, stepping between the chairs.
         Shot(beats["served"] - FPS // 3, "lounge"),
         Shot(beats["served"] + 5 * FPS, "axo"),
-        Shot(beats["consult"] + 1 * FPS, "consult"),
+        # The longest held moment: a slow dolly towards the table keeps it alive.
+        Shot(beats["consult"] + 1 * FPS, "consult", ((0, 0, 0), (-0.45, 0.35, -0.06))),
         Shot(beats["consult"] + 12 * FPS, "axo"),
     ]
     edit.sort(key=lambda sh: sh.start)
