@@ -119,7 +119,9 @@ def figure(key: str) -> Rig:
         f.parent = k
         a = kit.empty(f"{key}-shoulder-{side}", (sx * 0.215, 0, 0.5), col=col)
         a.parent = hips
-        am = kit.lathe(f"{key}-arm-{side}", [(0, 0.05), (0.058, 0.0), (0.048, -0.28), (0.038, -0.54), (0, -0.56)], (0, 0, 0), cloth, col, segments=14)
+        # A rounded shoulder cap, then the arm tapering to the wrist.
+        am = kit.lathe(f"{key}-arm-{side}", [(0, 0.058), (0.025, 0.054), (0.045, 0.04), (0.056, 0.018), (0.058, 0.0),
+                                            (0.048, -0.28), (0.038, -0.54), (0.02, -0.555), (0, -0.56)], (0, 0, 0), cloth, col, segments=16)
         am.parent = a
         hand = kit.lathe(f"{key}-hand-{side}", [(0, 0), (0.035, 0.02), (0.04, 0.07), (0.022, 0.1), (0, 0.105)], (0, 0, -0.64), skin, col, segments=12)
         hand.parent = a

@@ -193,8 +193,8 @@ def _views(W: float, D: float) -> dict[str, View]:
     return {
         # From across the road, eye level: the storefront as a passer-by sees it.
         "street": View((W * 0.4, -9.0, 1.55), (W * 0.46, 0.0, 2.3), lens=24, fstop=8, light="dusk"),
-        # Just inside the door, towards the reception slab, the brief table and the consult arches.
-        "entrance": View((2.85, 1.15, 1.5), (7.6, 5.4, 1.2), lens=21, fstop=5.6),
+        # Just inside the door: the welcome at the reception slab, the store opening up beyond.
+        "entrance": View((2.85, 0.3, 1.6), (6.2, 3.4, 1.15), lens=19, fstop=5.6),
         # The Lounge: curved sofa, chairs, drum table, apothecary wall, lantern, the relief.
         "lounge": View((7.3, 4.45, 1.4), (11.0, 1.3, 0.85), lens=22, fstop=4.5),
         # From the brief table back to the street: reception, fluted wall, window, daylight.
