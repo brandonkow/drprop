@@ -469,44 +469,50 @@ def trails(actors: dict[str, Actor]) -> None:
 
 
 def annotations(cfg: dict) -> None:
+    """Zone labels, overall dimensions, a title and a legend, laid on the ground like a drawing."""
     col = kit.collection("Plan annotations")
     ink = materials.flat("annotation-ink", "#1C1B19", roughness=0.6)
     P = build_store.plan(cfg)
     W, D = cfg["width"], cfg["depth"]
     flat = (0.0, 0.0, 0.0)
     z = 0.026
-    labels = {
-        "ENTRANCE": (P["door_in"][0], 0.25),
-        "RECEPTION": (P["reception"][0], P["reception"][1] + 0.62),
-        "MARKET BRIEF": (P["brief_table"][0], P["brief_table"][1] - 0.7),
+
+    def label(name, body, size, x, y, *, rot=flat, align="CENTER", font="sans", spacing=1.12):
+        text(name, body, size, (x, y, z), ink, col, rotation=rot, align=align, font=font, spacing=spacing)
+
+    zones = {
+        "ENTRANCE": (P["door_in"][0], 0.3),
+        "RECEPTION": (P["reception"][0] + 0.55, P["reception"][1] - 0.62),
+        "MARKET BRIEF": (P["brief_table"][0], P["brief_table"][1] - 0.75),
         "LOUNGE": (P["lounge"][0], P["lounge"][1] + 1.62),
-        "APOTHECARY": (W - 0.95, P["apothecary"][1] - 1.0),
+        "APOTHECARY": (W - 0.95, P["apothecary"][1] - 1.05),
         "PANTRY": (P["pantry"][0], P["pantry"][1] - 1.05),
-        "BOOTH": (P["booth"][0] + 0.1, P["booth"][1] - 0.9),
-        "CONSULT A": (P["room_A"][0], P["room_A"][1] - 1.15),
-        "CONSULT B": (P["room_B"][0], P["room_B"][1] - 1.15),
-        "PRIVATE ENTRANCE": (W + 1.35, P["private_door"][1] + 0.75),
-        "FIVE-FOOT WAY": (W * 0.62, -1.3),
+        "BOOTH": (P["booth"][0] + 0.1, P["booth"][1] - 0.95),
+        "CONSULT A": (P["room_A"][0], P["room_A"][1] - 1.2),
+        "CONSULT B": (P["room_B"][0], P["room_B"][1] - 1.2),
+        "PRIVATE ENTRANCE": (W + 1.35, P["private_door"][1] - 0.9),
+        "FIVE-FOOT WAY" if build_store.setting(cfg) == "shophouse" else "MALL CONCOURSE": (W * 0.62, -1.3),
     }
-    for name, (x, y) in labels.items():
-        text(f"label-{name.lower()}", name, 0.17, (x, y, z), ink, col, rotation=flat, align="CENTER")
+    for body, (x, y) in zones.items():
+        label(f"label-{body.lower()}", body, 0.2, x, y)
     # Overall dimensions, outside the walls.
-    for name, size, c in (("dim-width", (W, 0.012, 0.004), (W / 2, D + 0.75, z)),
+    for name, size, c in (("dim-width", (W, 0.012, 0.004), (W / 2, D + 0.6, z)),
                           ("dim-depth", (0.012, D, 0.004), (-0.75, D / 2, z))):
         kit.rbox(name, size, c, ink, col, bevel=0)
     for x in (0.0, W):
-        kit.rbox(f"dim-tick-x{x}", (0.012, 0.22, 0.004), (x, D + 0.75, z), ink, col, bevel=0)
+        kit.rbox(f"dim-tick-x{x}", (0.012, 0.22, 0.004), (x, D + 0.6, z), ink, col, bevel=0)
     for y in (0.0, D):
         kit.rbox(f"dim-tick-y{y}", (0.22, 0.012, 0.004), (-0.75, y, z), ink, col, bevel=0)
-    text("dim-width-label", f"{W:g} m", 0.2, (W / 2, D + 0.95, z), ink, col, rotation=flat, align="CENTER")
-    text("dim-depth-label", f"{D:g} m", 0.2, (-0.95, D / 2, z), ink, col, rotation=(0, 0, math.pi / 2), align="CENTER")
-    text("title", f"DR. PROP · STORE LAYOUT · {W * D:.0f} m²", 0.3, (-0.75, D + 1.6, z), ink, col, rotation=flat)
-    # Legend: who is who.
-    for i, (key, (label, _, _, trail)) in enumerate(ROLES.items()):
-        lx, ly = W + 0.9, D + 1.6 - i * 0.42
-        kit.lathe(f"legend-dot-{key}", [(0, 0), (0.1, 0), (0.1, 0.004), (0, 0.004)], (lx, ly + 0.06, z - 0.002),
+    label("dim-width-label", f"{W:g} m", 0.2, W / 2, D + 0.78)
+    label("dim-depth-label", f"{D:g} m", 0.2, -0.95, D / 2, rot=(0, 0, math.pi / 2))
+    label("title", f"Dr Prop · store layout · {W * D:.0f} m²", 0.42, -0.75, D + 1.35, align="LEFT", font="serif", spacing=1.0)
+    # Legend: who is who, in a row along the top.
+    x = W * 0.28
+    for key, (body, _, _, trail) in ROLES.items():
+        kit.lathe(f"legend-dot-{key}", [(0, 0), (0.09, 0), (0.09, 0.004), (0, 0.004)], (x, D + 1.45, z - 0.002),
                   materials.flat(f"ring-{key}", trail, roughness=0.5), col, segments=24)
-        text(f"legend-{key}", label, 0.15, (lx + 0.22, ly, z), ink, col, rotation=flat)
+        label(f"legend-{key}", body, 0.19, x + 0.18, D + 1.38, align="LEFT", spacing=1.05)
+        x += 0.36 + 0.11 * len(body)
 
 
 # --------------------------------------------------------------------------- shots

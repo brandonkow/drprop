@@ -43,9 +43,16 @@ def _link(obj: bpy.types.Object, col: bpy.types.Collection | None) -> bpy.types.
     return obj
 
 
-def brand_font() -> bpy.types.VectorFont | None:
-    """Instrument Serif (OFL) from the repo's node_modules, if installed."""
-    path = ROOT / "node_modules/@expo-google-fonts/instrument-serif/400Regular/InstrumentSerif_400Regular.ttf"
+FONTS = {
+    # Brand fonts (brief §5.3, SIL OFL), as TTF from the app's node_modules.
+    "serif": "node_modules/@expo-google-fonts/instrument-serif/400Regular/InstrumentSerif_400Regular.ttf",
+    "sans": "node_modules/@expo-google-fonts/geist/500Medium/Geist_500Medium.ttf",
+}
+
+
+def brand_font(kind: str = "serif") -> bpy.types.VectorFont | None:
+    """Instrument Serif (display) or Geist (labels), if installed; Blender's default otherwise."""
+    path = ROOT / FONTS[kind]
     if path.exists():
         return bpy.data.fonts.load(str(path), check_existing=True)
     return None
@@ -62,6 +69,8 @@ def text(
     extrude: float = 0.0,
     rotation: tuple[float, float, float] = (math.pi / 2, 0.0, 0.0),
     align: str = "LEFT",
+    font: str = "serif",
+    spacing: float = 1.0,
 ) -> bpy.types.Object:
     """Text as a mesh (converted, so it exports to glTF). Upright facing −Y by default."""
     curve = bpy.data.curves.new(name, "FONT")
@@ -71,9 +80,10 @@ def text(
     curve.align_x = align
     # Low curve resolution: labels stay crisp at store scale and the glb stays small.
     curve.resolution_u = 2
-    font = brand_font()
-    if font:
-        curve.font = font
+    curve.space_character = spacing
+    face = brand_font(font)
+    if face:
+        curve.font = face
     obj = bpy.data.objects.new(name, curve)
     obj.location = location
     obj.rotation_euler = rotation
