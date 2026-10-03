@@ -200,7 +200,7 @@ def _views(W: float, D: float) -> dict[str, View]:
         # From the brief table back to the street: reception, fluted wall, window, daylight.
         "reception": View((6.6, 4.55, 1.5), (2.4, 0.4, 1.15), lens=22, fstop=5.6, light="golden"),
         # Consult room A from its door.
-        "consult": View((9.05, 5.3, 1.45), (7.3, 7.6, 1.05), lens=18, fstop=4.0),
+        "consult": View((8.85, 5.35, 1.5), (7.0, 7.0, 0.95), lens=16, fstop=4.0),
         # The pantry, where kopi and cold towels are made.
         "pantry": View((5.0, 5.2, 1.5), (2.6, 7.9, 1.15), lens=24, fstop=4.0),
         # Cutaway, high from the front-left: the whole plan with its furniture.

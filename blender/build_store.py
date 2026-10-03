@@ -214,7 +214,7 @@ def globe_pendant(name, xy, z, m, col, *, ceiling: float = 3.2) -> None:
     r = 0.16
     lathe(f"{name}-globe", [(0, -r)] + [(r * math.sin(math.pi * i / 16), -r * math.cos(math.pi * i / 16)) for i in range(1, 16)] + [(0, r)],
           (x, y, z), m["washi"], lc, segments=48)
-    point(f"{name}-light", (x, y, z), 40, kelvin=2900, radius=0.12)
+    point(f"{name}-light", (x, y, z), 60, kelvin=2900, radius=0.12)
 
 
 def washi_lantern(name, xy, m, col, *, height: float = 1.25) -> None:
@@ -747,7 +747,8 @@ def build_consult_rooms(cfg: dict, m: dict) -> None:
             lathe(f"{name}-vase", [(0, 0), (0.08, 0), (0.1, 0.14), (0.05, 0.28), (0, 0.28)], (cred_x, ty + 0.35, 0.6), m["ceramic"], col)
         book_stack(f"{name}-books", (cred_x, ty - 0.3, 0.6), m, col, n=3, rot_z=math.pi / 2)
         globe_pendant(f"{name}-pendant", (tx, ty), 1.95, m, col, ceiling=H)
-        spot(f"{name}-wallwash", (cx, D - 0.7, H - 0.01), 14, kelvin=3000, angle=60, aim=(0, 0.6, -1))
+        spot(f"{name}-wallwash", (cx, D - 0.7, H - 0.01), 28, kelvin=3000, angle=60, aim=(0, 0.6, -1))
+        spot(f"{name}-table-light", (tx + 0.45, ty - 0.6, H - 0.01), 20, kelvin=3000, angle=45, aim=(-0.25, 0.35, -1))
 
 
 def build_booth(cfg: dict, m: dict) -> None:
