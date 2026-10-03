@@ -330,7 +330,7 @@ def story(cfg: dict, m: dict) -> tuple[dict[str, Actor], dict[str, int]]:
 
     # Walk-in customer: along the five-foot way → door → reception.
     ex = P["door_out"][0]
-    c.place((ex - 7.0, -1.35), -math.pi / 2, frame=1)
+    c.place((ex - 5.5, -1.35), -math.pi / 2, frame=1)
     beats["arrive"] = c.frame
     c.walk((ex - 0.6, -1.35), P["door_out"], P["door_in"], P["reception_guest"]).face(P["reception_host"])
     beats["welcome"] = c.frame
@@ -529,11 +529,13 @@ def shots(beats: dict[str, int]) -> list[Shot]:
     """The edit: eye-level moments, the cutaway for the flow between them."""
     edit = [
         Shot(1, "street", ((0, 0, 0), (0, 2.8, 0))),
-        Shot(beats["welcome"] - 2 * FPS, "entrance"),
+        # Cut inside once the customer has reached the table (the camera stands by the door).
+        Shot(beats["welcome"], "entrance"),
         Shot(beats["welcome"] + 5 * FPS, "axo"),
         Shot(beats["kopi"] - 1 * FPS, "pantry"),
         Shot(beats["kopi"] + 5 * FPS, "axo"),
-        Shot(beats["served"] - 2 * FPS, "lounge"),
+        # …and to the Lounge camera once the consultant has passed it, stepping between the chairs.
+        Shot(beats["served"] - FPS // 3, "lounge"),
         Shot(beats["served"] + 5 * FPS, "axo"),
         Shot(beats["consult"] + 1 * FPS, "consult"),
         Shot(beats["consult"] + 12 * FPS, "axo"),
