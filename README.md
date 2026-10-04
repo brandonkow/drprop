@@ -112,6 +112,7 @@ npm run render:all -- --still --safe-zone
 | R6 | `lounge-moment` Lounge 片刻（渲染版） | 14.5 s |
 | R7 | `store-reveal` 门店揭幕（读取 `brand/3d/store.glb`） | 22.5 s |
 | R8 | `member-card` 会员卡 | 10.5 s |
+| 主片 | `hero-promo` 品牌宣传片（仅英文，16:9 与 9:16；用 `brand/renders` 的门店渲染图） | 48.5 s |
 
 ### 新增一集病例（R2）
 

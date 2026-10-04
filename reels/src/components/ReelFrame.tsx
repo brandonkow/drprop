@@ -29,13 +29,15 @@ export function EndCard({ ratio, dark = false }: { ratio: Ratio; dark?: boolean 
   const { width } = FRAME[ratio];
   const safe = safeRect(ratio);
   const ink = dark ? color.nightText : color.ink;
-  const lineW = safe.width;
+  // Sized to the safe area's shorter side, so the line and the wordmark fit any format (16:9 included).
+  const lineW = Math.min(safe.width, safe.height * 0.9);
+  const groupH = lineW * 0.44; // line + gap + wordmark
   const fold = progress(frame, 18, 48);
   const mark = progress(frame, 36, 62);
   const soundLogo = getStaticFiles().some((f) => f.name === 'audio/sound-logo.wav');
   return (
     <AbsoluteFill style={{ backgroundColor: dark ? color.night : color.bone }}>
-      <div style={{ position: 'absolute', left: safe.x, top: safe.y + safe.height * 0.32, width: lineW }}>
+      <div style={{ position: 'absolute', left: (width - lineW) / 2, top: safe.y + (safe.height - groupH) / 2, width: lineW }}>
         <PulseLine
           width={lineW}
           height={lineW * 0.16}

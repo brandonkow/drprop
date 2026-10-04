@@ -12,7 +12,7 @@ type TL = Record<Lang, string[]>;
 export const COPY = {
   /** Small line at the end of every educational reel (brief §9.7). */
   disclaimer: { en: 'General information, not personal advice.', zh: '一般资讯，非个人建议。', ms: 'Maklumat umum, bukan nasihat peribadi.' } as T,
-  tagline: { en: "We don't sell. We tell.", zh: '我们不卖房，所以敢说真话。', ms: 'Kami tak jual. Kami beritahu.' } as T,
+  tagline: { en: 'We don’t sell. We tell.', zh: '我们不卖房，所以敢说真话。', ms: 'Kami tak jual. Kami beritahu.' } as T,
 
   beforeYouSign: {
     title: { en: 'Before you sign: five checks.', zh: '签约之前，先做五件事。', ms: 'Sebelum tandatangan: lima semakan.' } as T,

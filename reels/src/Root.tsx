@@ -10,6 +10,7 @@ import { BeforeYouSign, beforeYouSignFrames } from './compositions/BeforeYouSign
 import { BrandPulse, type BrandPulseProps } from './compositions/BrandPulse';
 import { CaseOfWeek, caseBodyFrames, type CaseOfWeekProps } from './compositions/CaseOfWeek';
 import { FeeReveal, feeRevealFrames } from './compositions/FeeReveal';
+import { HeroPromo, heroPromoFrames } from './compositions/HeroPromo';
 import { LoungeMoment, loungeMomentFrames } from './compositions/LoungeMoment';
 import { MarketPulse, marketPulseFrames, type MarketPulseProps } from './compositions/MarketPulse';
 import { MemberCardReveal, memberCardFrames, type MemberCardRevealProps } from './compositions/MemberCardReveal';
@@ -86,6 +87,13 @@ export function Root() {
         {...common}
         defaultProps={{ ...base, memberNo: 'PJ-0001' } as MemberCardRevealProps}
         calculateMetadata={meta<MemberCardRevealProps>(() => memberCardFrames + END_CARD_FRAMES)}
+      />
+      <Composition
+        id="HeroPromo"
+        component={HeroPromo}
+        {...common}
+        defaultProps={{ ...base, lang: 'en', ratio: '16x9' } as ReelProps}
+        calculateMetadata={meta<ReelProps>(() => heroPromoFrames + END_CARD_FRAMES)}
       />
     </>
   );

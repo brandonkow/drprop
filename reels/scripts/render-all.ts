@@ -2,13 +2,15 @@
  * Renders every reel in every language and format (brief §9.5, §10 step 13):
  *   out/{name}-{lang}-{ratio}.mp4      H.264 + AAC, 30 fps
  *
+ * The hero promo (HeroPromo, ~48 s) is English only, 16:9 and 9:16.
+ *
  * R2 renders once per data/cases/*.json, R5 once per data/market/*.json, R1 at
  * 7 s and 15 s. Adding an episode = adding a JSON file.
  *
  *   npm run render:all                         # everything
  *   npm run render:all -- --only FeeReveal,CaseOfWeek --lang zh --ratio 9x16
  *   npm run render:all -- --still              # one PNG per job (45% in), for review
- *   npm run render:all -- --still --at 0.2     # …or at another point (0–1)
+ *   npm run render:all -- --still --at 0.2     # …or at other points (0–1, comma-separated)
  *   npm run render:all -- --safe-zone          # burn in the safe-zone overlay (review only)
  *   npm run render:all -- --frames 0-89        # a range, for quick checks
  *
@@ -34,7 +36,8 @@ const RATIOS = list('ratio') ?? ['9x16', '4x5', '16x9'];
 const ONLY = list('only');
 const frames = value('frames')?.split('-').map(Number) as [number, number] | undefined;
 const still = flag('still');
-const at = Number(value('at') ?? 0.45);
+// --at 0.2 or --at 0.1,0.5,0.9 (several stills per job).
+const ats = (value('at') ?? '0.45').split(',').map(Number);
 const gl = (process.env.REMOTION_GL ?? value('gl') ?? 'angle') as 'angle' | 'swangle' | 'swiftshader' | 'egl';
 const browserExecutable = process.env.REMOTION_BROWSER ?? value('browser') ?? null;
 const concurrency = Number(value('concurrency') ?? Math.max(1, Math.floor(cpus().length / 2)));
@@ -49,6 +52,9 @@ interface Job {
   id: string;
   name: string;
   props: Record<string, unknown>;
+  /** Limit a job to some languages or formats (the hero promo is English, 16:9 and 9:16). */
+  langs?: string[];
+  ratios?: string[];
 }
 
 const jobs: Job[] = [
@@ -61,16 +67,19 @@ const jobs: Job[] = [
   { id: 'LoungeMoment', name: 'lounge-moment', props: {} },
   { id: 'StoreReveal', name: 'store-reveal', props: {} },
   { id: 'MemberCardReveal', name: 'member-card', props: { memberNo: 'PJ-0001' } },
+  { id: 'HeroPromo', name: 'hero-promo', props: {}, langs: ['en'], ratios: ['16x9', '9x16'] },
 ].filter((j) => !ONLY || ONLY.includes(j.id) || ONLY.includes(j.name));
 
 console.log(`bundling… (${jobs.length} reels × ${LANGS.length} languages × ${RATIOS.length} formats)`);
 const serveUrl = await bundle({ entryPoint: here('../src/index.ts'), publicDir: here('../../brand') });
 
 let done = 0;
-const total = jobs.length * LANGS.length * RATIOS.length;
+const langsOf = (j: Job) => LANGS.filter((l) => !j.langs || j.langs.includes(l));
+const ratiosOf = (j: Job) => RATIOS.filter((r) => !j.ratios || j.ratios.includes(r));
+const total = jobs.reduce((n, j) => n + langsOf(j).length * ratiosOf(j).length, 0);
 for (const job of jobs) {
-  for (const lang of LANGS) {
-    for (const ratio of RATIOS) {
+  for (const lang of langsOf(job)) {
+    for (const ratio of ratiosOf(job)) {
       const inputProps = { ...job.props, lang, ratio, showSafeZone: flag('safe-zone') };
       const composition = await selectComposition({
         serveUrl,
@@ -82,15 +91,17 @@ for (const job of jobs) {
       const base = here(`../out/${job.name}-${lang}-${ratio}`);
       const started = Date.now();
       if (still) {
-        await renderStill({
-          serveUrl,
-          composition,
-          inputProps,
-          frame: Math.floor(composition.durationInFrames * at),
-          output: `${base}${value('at') ? `-at${at}` : ''}.png`,
-          browserExecutable,
-          chromiumOptions: { gl },
-        });
+        for (const at of ats) {
+          await renderStill({
+            serveUrl,
+            composition,
+            inputProps,
+            frame: Math.floor(composition.durationInFrames * at),
+            output: `${base}${value('at') ? `-at${at}` : ''}.png`,
+            browserExecutable,
+            chromiumOptions: { gl },
+          });
+        }
       } else {
         await renderMedia({
           serveUrl,
