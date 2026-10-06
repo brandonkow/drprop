@@ -6,7 +6,8 @@
     "brand",
     "web",
     "app",
-    "reels"
+    "reels",
+    "twin"
   ],
   "engines": {
     "node": ">=22"
@@ -17,11 +18,13 @@
     "build": "npm run brand:build && npm run build -w @drprop/web",
     "preview": "npm run preview -w @drprop/web",
     "test": "vitest run",
-    "typecheck": "tsc -p brand && tsc -p web && tsc -p app --noEmit && tsc -p reels --noEmit",
+    "typecheck": "tsc -p brand && tsc -p web && tsc -p app --noEmit && tsc -p reels --noEmit && tsc -p twin --noEmit",
     "app": "npm run start -w @drprop/app",
     "brand:3d": "npm run 3d -w @drprop/brand",
     "reels": "npm run studio -w @drprop/reels",
-    "render:all": "npm run render:all -w @drprop/reels"
+    "render:all": "npm run render:all -w @drprop/reels",
+    "twin": "npm run dev -w @drprop/twin",
+    "twin:build": "npm run build -w @drprop/twin"
   },
   "devDependencies": {
     "@types/node": "^26.6.3",

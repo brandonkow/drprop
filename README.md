@@ -10,6 +10,7 @@ web/       官网（Vite + TypeScript，无框架）：三语静态页、诊金�
 app/       会员 App（Expo SDK 57 + Expo Router）：首页、问诊流程、病历、会员卡、我
 reels/     营销视频（Remotion 4）：R1–R8，三语 × 三比例批量渲染
 blender/   门店数字孪生（店屋 / 商场两种形态）、药柜与动线动画的 Blender 脚本（bpy）
+twin/      门店运营孪生（three.js）：交互式 3D 门店 + 看板，六种顾客走完一个模拟营业日
 docs/      执行文档
 ```
 
@@ -38,8 +39,9 @@ npm install
 | `npm run app` | App 开发服务器（Expo）。Skia 与陀螺仪需要 development build：`cd app && npx expo run:ios` 或 `run:android` |
 | `npm run reels` | Remotion Studio，逐帧预览所有 Reels |
 | `npm run render:all` | 渲染全部 Reels（见下文） |
+| `npm run twin` | 门店运营孪生 → http://localhost:5191；`npm run twin:build` 构建到 `twin/dist/`（相对路径，任何静态主机都能放） |
 | `npm test` | 单元测试（品牌、官网、Reels 数据） |
-| `npm run typecheck` | 四个包的类型检查 |
+| `npm run typecheck` | 五个包的类型检查 |
 | `npm run lint -w @drprop/app` | App 的 ESLint |
 | `npm run brand:build` | 由 `brand/tokens/tokens.ts` 重新生成 `tokens.css`、logo SVG、字形数据 |
 | `npm run brand:3d` | 重新导出 `brand/3d/*.glb`；`npm run 3d:preview -w @drprop/brand` 查看 |
@@ -82,6 +84,7 @@ App 也可在浏览器里预览（适合快速看界面）：`cd app && npm run 
 | Reels 文案 | `reels/src/copy.ts` | |
 | 门店平面尺寸 | `blender/store.config.json`（店屋）、`blender/store.mall.json`（商场） | 改完运行 `python blender/build_layout_plan.py --stills brand/renders` |
 | 声音 Logo | `brand/audio/sound-logo.wav` | 放入后每支 Reel 片尾自动使用 |
+| 门店孪生的示例日程 | `twin/src/sim/day.ts` | `sampleDay()` 换成当天真实预约（`Visit[]`）；平面改动后运行 `python blender/export_twin.py` |
 
 英文与马来文文案由开发时撰写，发布前请母语者审校；隐私页与免责声明请律师确认（见 brief §2）。
 
@@ -174,6 +177,10 @@ python blender/build_layout_plan.py --config blender/store.mall.json --stills br
 ```
 
 渲染图在 `brand/renders/`：`shophouse-*.jpg`、`mall-*.jpg`、`layout-flow*.mp4`。详见 [`blender/README.md`](blender/README.md)。
+
+- `brand/renders/ai/`：用 Higgsfield 把五张店屋渲染图做成写实照片（Nano Banana Pro）与 5 秒镜头（Kling 3.0）。人物是生成的，属于概念图，使用时须标明；来源与模型见该目录的 README。
+- `blender/export_twin.py`：为 `twin/` 导出轻量 glb（每个物体带区域标签、墙体带剖切标记）和平面数据（区域、行走网络、座位）。
+- `blender/build_promo.py`：宣传片的棚拍镜头（门店模型、铜字、材质、药柜抽屉、手机、会员卡），分段可续渲。
 
 ---
 

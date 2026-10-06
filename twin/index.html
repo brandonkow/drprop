@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Store Twin · Dr Prop</title>
+    <meta name="description" content="The Dr Prop store as an interactive 3D twin: every kind of customer through one store, on a simulated day." />
+    <meta name="theme-color" content="#F4F1EA" />
+  </head>
+  <body>
+    <div class="twin" data-state="loading">
+      <div class="stage">
+        <canvas class="scene" aria-label="3D model of the store. Drag to turn, scroll to zoom, click a person or a zone."></canvas>
+        <div class="pins"></div>
+        <div class="tip" role="status" hidden></div>
+        <div class="tools" role="toolbar" aria-label="View">
+          <button type="button" data-view="left" aria-label="Turn left" title="Turn left">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5 3 9l4 4M3 9h9a5 5 0 0 1 0 10" /></svg>
+          </button>
+          <button type="button" data-view="right" aria-label="Turn right" title="Turn right">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m13 5 4 4-4 4m4-4H8a5 5 0 0 0 0 10" /></svg>
+          </button>
+          <button type="button" data-view="in" aria-label="Zoom in" title="Zoom in">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" /></svg>
+          </button>
+          <button type="button" data-view="out" aria-label="Zoom out" title="Zoom out">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12" /></svg>
+          </button>
+          <button type="button" data-view="plan" aria-label="Plan view" title="Plan view">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 3.5h13v13h-13zM3.5 10h7M10.5 3.5v13" /></svg>
+          </button>
+          <button type="button" data-view="home" aria-label="Reset view" title="Reset view">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10 10 3.5 17 10M5.5 8v8.5h9V8" /></svg>
+          </button>
+          <span class="tools__rule"></span>
+          <button type="button" data-walls aria-label="Walls" title="Walls: cutaway, up, down">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 16.5h14M5 16.5V9h3v7.5M12 16.5V5h3v11.5" /></svg>
+          </button>
+        </div>
+        <div class="loading" aria-live="polite">
+          <span class="label">Loading the store</span>
+        </div>
+      </div>
+
+      <header class="bar panel">
+        <a class="bar__brand" href="#" aria-label="Dr Prop store twin">
+          <span class="bar__logo" aria-hidden="true"></span>
+          <span class="label">Store twin</span>
+        </a>
+        <label class="bar__search">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5" /><path d="m12.5 12.5 4 4" /></svg>
+          <input type="search" placeholder="Search bookings, members, rooms" aria-label="Search bookings, members, rooms" />
+        </label>
+        <label class="bar__site">
+          <span class="label">Store</span>
+          <select aria-label="Store"></select>
+        </label>
+        <div class="bar__time">
+          <button type="button" class="play" data-play aria-label="Pause">
+            <svg class="i-pause" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4.5v11M13 4.5v11" /></svg>
+            <svg class="i-play" viewBox="0 0 20 20" aria-hidden="true"><path d="M6.5 4.5v11l9-5.5z" /></svg>
+          </button>
+          <span class="clock" aria-live="off">10:00</span>
+          <div class="speed" role="radiogroup" aria-label="Speed"></div>
+        </div>
+        <span class="bar__mode"><span class="dot" aria-hidden="true"></span>Sample day · simulated</span>
+        <div class="bar__user">
+          <span class="avatar" aria-hidden="true">FD</span>
+          <span class="bar__who">Front desk<small>Petaling Jaya</small></span>
+        </div>
+      </header>
+
+      <aside class="left">
+        <section class="panel kpis" aria-label="Now"></section>
+        <section class="panel types" aria-labelledby="types-title">
+          <header class="panel__head">
+            <h2 id="types-title" class="label">Customers</h2>
+            <span class="label muted">now · today</span>
+          </header>
+          <ul class="types__list"></ul>
+        </section>
+      </aside>
+
+      <aside class="panel right" aria-live="polite"></aside>
+
+      <section class="panel track" aria-labelledby="track-title">
+        <header class="panel__head">
+          <h2 id="track-title" class="label">Visit tracking</h2>
+          <span class="track__id label muted"></span>
+        </header>
+        <ol class="steps"></ol>
+      </section>
+
+      <section class="panel book" aria-labelledby="book-title">
+        <header class="panel__head">
+          <h2 id="book-title" class="label">Today</h2>
+          <span class="label muted">sample data</span>
+        </header>
+        <div class="book__scroll">
+          <table>
+            <colgroup><col class="c-t" /><col class="c-id" /><col class="c-type" /><col class="c-case" /><col class="c-fee" /><col class="c-where" /><col class="c-status" /></colgroup>
+            <thead>
+              <tr><th>Time</th><th>Booking</th><th>Type</th><th>Case</th><th class="num">Fee</th><th>Where</th><th>Status</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="timeline panel">
+        <span class="label">10:00</span>
+        <input type="range" min="0" max="600" step="0.5" value="0" aria-label="Time of day" />
+        <span class="label">20:00</span>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
