@@ -217,7 +217,24 @@ function Caption({ ratio, top, sub, at = 14, out }: { ratio: Ratio; top: string;
 }
 
 /** Words over a dark plate, set like a product line: big statement, quiet line under it. */
-function PlateWords({ ratio, top, sub, at = 18, out, align = 'left' }: { ratio: Ratio; top: string; sub?: string; at?: number; out: number; align?: 'left' | 'center' }) {
+function PlateWords({
+  ratio,
+  top,
+  sub,
+  at = 18,
+  out,
+  align = 'left',
+  ink = false,
+}: {
+  ratio: Ratio;
+  top: string;
+  sub?: string;
+  at?: number;
+  out: number;
+  align?: 'left' | 'center';
+  /** Dark type, for the bright macros (travertine, towels). */
+  ink?: boolean;
+}) {
   const frame = useCurrentFrame();
   const f = frameFor(ratio);
   const wide = ratio === '16x9';
@@ -228,11 +245,11 @@ function PlateWords({ ratio, top, sub, at = 18, out, align = 'left' }: { ratio: 
     : { position: 'absolute', left: f.safe.x, top: f.pic.top + f.pic.height + 56, width: f.safe.width, textAlign: 'left' };
   return (
     <div style={box}>
-      <Text size={wide ? 60 : 62} style={reveal(frame, at, out)}>
+      <Text size={wide ? 60 : 62} style={{ ...reveal(frame, at, out), color: ink && wide ? color.ink : LIGHT }}>
         {top}
       </Text>
       {sub ? (
-        <Text size={wide ? 30 : 34} font="body" style={{ ...reveal(frame, at + 14, out), marginTop: 16, color: '#BDB8AE' }}>
+        <Text size={wide ? 30 : 34} font="body" style={{ ...reveal(frame, at + 14, out), marginTop: 16, color: ink && wide ? color.stoneText : '#BDB8AE' }}>
           {sub}
         </Text>
       ) : null}
@@ -409,7 +426,7 @@ function body(scene: Scene, ratio: Ratio): ReactNode {
     case 'bronze':
       return (
         <Plate scene={scene} ratio={ratio}>
-          <PlateWords ratio={ratio} top={FILM.bronze} out={out} />
+          <PlateWords ratio={ratio} top={FILM.bronze} out={out} ink />
         </Plate>
       );
     case 'materials':
