@@ -88,6 +88,34 @@ Frames already on disk are kept. Add `--video-max-frames 80` to split a long ren
 
 A GPU is far quicker. Inside Blender, the same flags go after `--`: `blender -b -P blender/build_layout_plan.py -- --stills …`.
 
+## The product film's studio shots (`build_promo.py`)
+
+Each shot of the product film (`reels/src/compositions/ProductFilm.tsx`) is shot like a product launch: a dark void, large soft lights, cool rims, a strip light sweeping for the glints, long lenses and shallow focus.
+
+| Shot | What |
+|---|---|
+| `model` | The store as a scale model: the halo-lit sign, a pull-back until the store floats in the dark, then the walls lift away and each zone rises apart. Callout anchors are projected for every frame to `brand/renders/promo/model-callouts.json`. |
+| `bronze`, `materials`, `drawer` | Macros: the bronze letters on travertine; walnut, travertine and rolled cold towels on bronze; an apothecary drawer sliding out. |
+| `phone`, `card` | The booking flow on a phone (the app's English screens, `blender/promo/screens`), the member card under a light sweep. |
+| `consult`, `lounge`, `dusk` | Set pieces and the shopfront at dusk. Built, but the film now uses the photoreal clips in `brand/renders/ai` for these. |
+
+    python blender/build_promo.py --preview model --at 0,0.5,1      # low-res stills to check
+    python blender/build_promo.py --render model bronze materials drawer phone card --budget 25
+    python blender/build_promo.py --status
+
+The render works in sessions: `--budget` minutes at a time, every third frame at 67% size, resuming where it stopped. A finished shot is motion-interpolated back to 30 fps and scaled to 1080p in `brand/renders/promo/<shot>.mp4`. On a 4-core CPU the six shots take about 3½ hours.
+
+## The data for the store twin (`export_twin.py`)
+
+    python blender/export_twin.py        # both settings → twin/src/data/
+
+It writes a light glb per setting. Every object is tagged with its zone, and the walls are tagged for the cutaway. It also writes the plan:
+- zone outlines;
+- the walking network, built from `plan()`;
+- seats and standing spots.
+
+`twin/` routes every kind of customer over that network. See [`twin/README.md`](../twin/README.md).
+
 ## The store alone (`build_store.py`)
 
     python blender/build_store.py                       # store.blend + brand/3d/store.glb
@@ -113,6 +141,8 @@ The cameras are level, with lens shift, so verticals stay vertical. Renders use 
 | `brand/renders/mall-*.jpg` | concourse, entrance, Lounge, axonometric, plan |
 | `brand/renders/layout-flow.mp4`, `layout-flow-mall.mp4` | the service flow as a film |
 | `brand/3d/store.glb` | Reel R7 (StoreReveal): a light version with flat colours, no scanned props, shophouse setting |
+| `brand/renders/promo/*.mp4`, `model-callouts.json` | the product film's studio plates |
+| `twin/src/data/*` | the store twin (`export_twin.py`) |
 | `blender/out/*.blend` | the 3D artist (git-ignored) |
 
 Modules:
