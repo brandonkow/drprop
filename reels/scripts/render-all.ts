@@ -2,7 +2,8 @@
  * Renders every reel in every language and format (brief §9.5, §10 step 13):
  *   out/{name}-{lang}-{ratio}.mp4      H.264 + AAC, 30 fps
  *
- * The hero promo (HeroPromo, ~48 s) is English only, 16:9 and 9:16.
+ * The hero promo (HeroPromo, ~48 s) and the product film (ProductFilm, ~70 s) are
+ * English only, 16:9 and 9:16.
  *
  * R2 renders once per data/cases/*.json, R5 once per data/market/*.json, R1 at
  * 7 s and 15 s. Adding an episode = adding a JSON file.
@@ -68,6 +69,7 @@ const jobs: Job[] = [
   { id: 'StoreReveal', name: 'store-reveal', props: {} },
   { id: 'MemberCardReveal', name: 'member-card', props: { memberNo: 'PJ-0001' } },
   { id: 'HeroPromo', name: 'hero-promo', props: {}, langs: ['en'], ratios: ['16x9', '9x16'] },
+  { id: 'ProductFilm', name: 'product-film', props: {}, langs: ['en'], ratios: ['16x9', '9x16'] },
 ].filter((j) => !ONLY || ONLY.includes(j.id) || ONLY.includes(j.name));
 
 console.log(`bundling… (${jobs.length} reels × ${LANGS.length} languages × ${RATIOS.length} formats)`);

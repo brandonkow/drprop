@@ -11,6 +11,7 @@ import { BrandPulse, type BrandPulseProps } from './compositions/BrandPulse';
 import { CaseOfWeek, caseBodyFrames, type CaseOfWeekProps } from './compositions/CaseOfWeek';
 import { FeeReveal, feeRevealFrames } from './compositions/FeeReveal';
 import { HeroPromo, heroPromoFrames } from './compositions/HeroPromo';
+import { ProductFilm, productFilmFrames } from './compositions/ProductFilm';
 import { LoungeMoment, loungeMomentFrames } from './compositions/LoungeMoment';
 import { MarketPulse, marketPulseFrames, type MarketPulseProps } from './compositions/MarketPulse';
 import { MemberCardReveal, memberCardFrames, type MemberCardRevealProps } from './compositions/MemberCardReveal';
@@ -94,6 +95,13 @@ export function Root() {
         {...common}
         defaultProps={{ ...base, lang: 'en', ratio: '16x9' } as ReelProps}
         calculateMetadata={meta<ReelProps>(() => heroPromoFrames + END_CARD_FRAMES)}
+      />
+      <Composition
+        id="ProductFilm"
+        component={ProductFilm}
+        {...common}
+        defaultProps={{ ...base, lang: 'en', ratio: '16x9' } as ReelProps}
+        calculateMetadata={meta<ReelProps>(() => productFilmFrames)}
       />
     </>
   );
