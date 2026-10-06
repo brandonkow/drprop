@@ -73,6 +73,7 @@ interface Scene {
 const SCENES: Scene[] = [
   { key: 'open', kind: 'slate', dur: 112 },
   { key: 'open2', kind: 'slate', dur: 64 },
+  { key: 'name', kind: 'slate', dur: 84 },
   { key: 'model', kind: 'plate', dur: 390, src: 'renders/promo/model.mp4', trim: 6 },
   { key: 'bronze', kind: 'plate', dur: 90, src: 'renders/promo/bronze.mp4', trim: 4 },
   { key: 'materials', kind: 'plate', dur: 90, src: 'renders/promo/materials.mp4', trim: 4 },
@@ -279,15 +280,6 @@ function Model({ scene, ratio }: { scene: Scene; ratio: Ratio }) {
   ] as const;
   return (
     <Plate scene={scene} ratio={ratio}>
-      {/* The name, while the store floats in the dark. */}
-      <div style={{ position: 'absolute', left: 0, right: 0, top: wide ? f.safe.y + 40 : f.pic.top - 220, textAlign: 'center' }}>
-        <div style={{ display: 'inline-block', ...reveal(frame, 112, 214, 30) }}>
-          <Wordmark width={wide ? 380 : 420} color={LIGHT} />
-        </div>
-        <Text size={wide ? 34 : 38} font="body" style={{ ...reveal(frame, 130, 214), marginTop: 22, color: '#BDB8AE' }}>
-          {FILM.name}
-        </Text>
-      </div>
       {/* Callouts ride on the zones as the model comes apart. */}
       {CALLOUTS.map((c, i) => {
         const [a, b] = waves[c.wave];
@@ -298,17 +290,42 @@ function Model({ scene, ratio }: { scene: Scene; ratio: Ratio }) {
         const x = f.pic.left + p[0]! * f.pic.width;
         const y = f.pic.top + p[1]! * f.pic.height;
         const rise = (wide ? 92 : 70) + (i % 2) * 26;
+        const size = wide ? 20 : 18;
+        const tagW = c.label.length * size * 0.62 + 24;
+        // The tag stays inside the safe area even when its zone is near the edge.
+        const shift = Math.max(f.safe.x - (x - tagW / 2), Math.min(0, f.width - f.safe.x - (x + tagW / 2)));
         return (
           <div key={c.key} style={{ position: 'absolute', left: x, top: y - rise, opacity: vis.opacity, filter: vis.filter }}>
-            <div style={{ position: 'absolute', left: -4, top: rise - 4, width: 8, height: 8, borderRadius: 4, background: '#B08B60' }} />
-            <div style={{ position: 'absolute', left: 0, top: 26, width: 1, height: rise - 28, background: 'rgba(237,233,225,0.55)' }} />
-            <Text size={wide ? 21 : 19} font="mono" style={{ whiteSpace: 'nowrap', transform: 'translateX(-50%)' }}>
-              {c.label}
-            </Text>
+            <div style={{ position: 'absolute', left: -5, top: rise - 5, width: 10, height: 10, borderRadius: 5, background: '#B08B60', boxShadow: '0 0 0 2px rgba(20,20,18,0.8)' }} />
+            <div style={{ position: 'absolute', left: 0, top: 30, width: 1.5, height: rise - 32, background: 'rgba(20,20,18,0.85)' }} />
+            <div style={{ position: 'absolute', left: shift, top: 0, transform: 'translateX(-50%)', padding: '7px 12px 6px', borderRadius: 2, background: 'rgba(20,20,18,0.88)' }}>
+              <Text size={size} font="mono" style={{ whiteSpace: 'nowrap' }}>
+                {c.label}
+              </Text>
+            </div>
           </div>
         );
       })}
     </Plate>
+  );
+}
+
+/** The name on night, before the product appears. */
+function Name({ ratio, dur }: { ratio: Ratio; dur: number }) {
+  const frame = useCurrentFrame();
+  const f = frameFor(ratio);
+  const wide = ratio === '16x9';
+  return (
+    <AbsoluteFill style={{ backgroundColor: NIGHT, opacity: 1 - progress(frame, dur - 14, dur) }}>
+      <div style={{ position: 'absolute', left: 0, right: 0, top: f.safe.y + f.safe.height * (wide ? 0.36 : 0.38), textAlign: 'center' }}>
+        <div style={{ display: 'inline-block', ...reveal(frame, 4, null, 30) }}>
+          <Wordmark width={wide ? 520 : 600} color={LIGHT} />
+        </div>
+        <Text size={wide ? 40 : 42} font="body" style={{ ...reveal(frame, 22, null), marginTop: 30, color: '#BDB8AE' }}>
+          {FILM.name}
+        </Text>
+      </div>
+    </AbsoluteFill>
   );
 }
 
@@ -385,6 +402,8 @@ function body(scene: Scene, ratio: Ratio): ReactNode {
       return <Open ratio={ratio} />;
     case 'open2':
       return <Open ratio={ratio} second />;
+    case 'name':
+      return <Name ratio={ratio} dur={scene.dur} />;
     case 'model':
       return <Model scene={scene} ratio={ratio} />;
     case 'bronze':

@@ -16,13 +16,13 @@ import { fileURLToPath } from 'node:url';
 
 const SR = 48000;
 const FPS = 30;
-const LENGTH = 2030 / FPS + 0.6; // the film plus a breath
+const LENGTH = 2114 / FPS + 0.6; // the film plus a breath
 const N = Math.ceil(LENGTH * SR);
 const L = new Float32Array(N);
 const R = new Float32Array(N);
 
 /** Scene starts in seconds, matching reels/src/compositions/ProductFilm.tsx. */
-const DURS = { open: 112, open2: 64, model: 390, bronze: 90, materials: 90, drawer: 92, zero: 104, fee: 106, welcome: 112, lounge: 112, consult: 118, phone: 140, card: 150, golden: 112, street: 148 };
+const DURS = { open: 112, open2: 64, name: 84, model: 390, bronze: 90, materials: 90, drawer: 92, zero: 104, fee: 106, welcome: 112, lounge: 112, consult: 118, phone: 140, card: 150, golden: 112, street: 148 };
 const at: Record<string, number> = {};
 let f = 0;
 for (const [k, d] of Object.entries(DURS)) {
@@ -92,6 +92,8 @@ const chord = (notes: number[], t0: number, t1: number, amp: number) => notes.fo
 chord([D2, A2, D3], 0.2, at.model! + 1, 0.22);
 beat(1.75, 0.55);
 beat(2.85, 0.5);
+// The name: one note.
+pluck(D5, at.name! + 0.2, 0.12, 0);
 // The model: the pad opens.
 chord([D3, A3, Fs4, Cs5, E5], at.model! - 0.4, at.zero! - 0.5, 0.2);
 pluck(A4, at.model! + 3.6, 0.16, -0.3);

@@ -790,11 +790,11 @@ def build_dusk() -> None:
 SHOTS: dict[str, Shot] = {
     "model": Shot(398, 3, 28, build_model),
     "bronze": Shot(98, 3, 40, build_bronze),
-    "materials": Shot(98, 3, 40, build_materials),
-    "drawer": Shot(98, 3, 40, build_drawer),
+    "materials": Shot(98, 3, 28, build_materials),
+    "drawer": Shot(98, 3, 28, build_drawer),
     "consult": Shot(128, 3, 32, build_consult, exposure=-0.4),
-    "phone": Shot(143, 2, 48, build_phone),
-    "card": Shot(158, 2, 48, build_card),
+    "phone": Shot(143, 3, 28, build_phone),
+    "card": Shot(158, 3, 28, build_card),
     "lounge": Shot(128, 3, 32, build_lounge, exposure=-0.85),
     "dusk": Shot(158, 3, 28, build_dusk, exposure=0.45),
 }
@@ -883,6 +883,7 @@ def render(names: list[str], budget_min: float, percent: int = 100) -> None:
         bpy.ops.wm.open_mainfile(filepath=str(blend))
         scene = bpy.context.scene
         scene.render.resolution_percentage = percent
+        scene.cycles.samples = shot.samples  # the table wins over what the .blend was built with
         frames_dir(name).mkdir(parents=True, exist_ok=True)
         for i, f in todo:
             elapsed = time.time() - start
