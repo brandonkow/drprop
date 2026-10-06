@@ -860,7 +860,7 @@ def encode(name: str) -> Path | None:
     vf = "null" if shot.step == 1 else f"minterpolate=fps={FPS}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1"
     vf += f",scale={SIZE[0]}:{SIZE[1]}:flags=lanczos"  # frames may be rendered below full size (--percent)
     subprocess.run([ffmpeg, "-v", "error", "-y", "-framerate", str(FPS / shot.step), "-i", str(frames_dir(name) / "%05d.png"),
-                    "-vf", vf, "-c:v", "libx264", "-preset", "slow", "-crf", "15", "-pix_fmt", "yuv420p",
+                    "-vf", vf, "-c:v", "libx264", "-preset", "slow", "-crf", "19", "-pix_fmt", "yuv420p",
                     "-movflags", "+faststart", str(out)], check=True)
     print(f"plate {name} → {out}")
     return out
