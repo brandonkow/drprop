@@ -3,7 +3,8 @@
  * screens are written against the shape of the real (Supabase) calls.
  * Nothing here is real customer data.
  */
-import { consultFee, type ConsultType, type PriceBand } from '@drprop/brand/pricing';
+import { consultFee } from '@drprop/brand/pricing';
+import type { BookingDraft, DataSource } from './source';
 import type { Consultation, Lang, Membership, Store, User } from './types';
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -95,14 +96,6 @@ export function sampleHistory(user: User): Consultation[] {
   ];
 }
 
-export interface BookingDraft {
-  type: ConsultType;
-  band: PriceBand;
-  propertyLabel?: string;
-  attachments: string[];
-  scheduledAt?: string;
-}
-
 export async function book(user: User, draft: BookingDraft): Promise<Consultation> {
   await wait(900);
   return {
@@ -115,6 +108,7 @@ export async function book(user: User, draft: BookingDraft): Promise<Consultatio
     status: 'booked',
     attachments: draft.attachments,
     propertyLabel: draft.propertyLabel,
+    followUpOf: draft.followUpOf,
     createdAt: new Date().toISOString(),
   };
 }
@@ -137,3 +131,33 @@ export function slotsFor(day: Date): Date[] {
   }
   return out;
 }
+
+/** The preview: everything above, nothing leaves the phone. */
+export const mockSource: DataSource = {
+  kind: 'preview',
+  requestOtp,
+  verifyOtp,
+  restore: async () => null,
+  saveProfile: async () => {},
+  load: async (user) => ({ membership: membershipFor(user), consultations: sampleHistory(user), staff: false }),
+  lounge: async () => ({ mood: STORE.loungeMood, seatsFree: STORE.loungeSeatsFree, coffee: STORE.todaysCoffee }),
+  slots: async () => {
+    const out = [];
+    const day = new Date();
+    day.setHours(0, 0, 0, 0);
+    for (let i = 0; i < 8; i++, day.setDate(day.getDate() + 1)) {
+      for (const d of slotsFor(day)) out.push({ id: d.toISOString(), at: d.toISOString() });
+    }
+    return out;
+  },
+  quote: async (type, band) => consultFee(type, band),
+  urgentOpen: async () => true,
+  book: (user, draft) => book(user, draft),
+  cancel: async (c) => {
+    await wait(500);
+    return { ...c, status: 'cancelled' };
+  },
+  canRenew: true,
+  renew,
+  signOut: async () => {},
+};

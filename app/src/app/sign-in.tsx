@@ -1,12 +1,13 @@
 /**
  * S1 sign-in: phone number + OTP, then one question — what should we call you?
- * No password, no social login, no long form.
+ * No password, no social login, no long form. In supabase mode the code arrives by
+ * SMS and a returning client skips the name question.
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { Body, Display, Small } from '../components/type';
 import { Screen, SolidButton, TextLink } from '../components/ui';
-import { requestOtp, verifyOtp } from '../data/mock';
+import { source } from '../data/source';
 import type { User } from '../data/types';
 import { LANGUAGES } from '../i18n/strings';
 import { useApp } from '../state/app-state';
@@ -15,7 +16,7 @@ import { FONT, HAIRLINE, INPUT_RESET, SIZE, SPACE, usePalette } from '../theme';
 type Step = 'phone' | 'code' | 'name';
 
 export default function SignIn() {
-  const { t, fmt, language, setLanguage, signIn } = useApp();
+  const { t, fmt, language, setLanguage, signIn, mode } = useApp();
   const p = usePalette();
   const [step, setStep] = useState<Step>('phone');
   const [phone, setPhone] = useState('');
@@ -24,6 +25,14 @@ export default function SignIn() {
   const [pending, setPending] = useState<User | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Real SMS: a minute before another code can be sent.
+  const [wait, setWait] = useState(0);
+
+  useEffect(() => {
+    if (!wait) return;
+    const timer = setTimeout(() => setWait((w) => Math.max(0, w - 1)), 1000);
+    return () => clearTimeout(timer);
+  }, [wait]);
 
   const input = [s.input, { color: p.text, borderColor: p.text }];
 
@@ -31,8 +40,10 @@ export default function SignIn() {
     setBusy(true);
     setError(null);
     try {
-      await requestOtp(phone);
+      await source.requestOtp(phone);
+      setCode('');
       setStep('code');
+      if (mode === 'connected') setWait(60);
     } catch {
       setError(t.signIn.invalidPhone);
     } finally {
@@ -44,10 +55,15 @@ export default function SignIn() {
     setBusy(true);
     setError(null);
     try {
-      setPending(await verifyOtp(phone, code, language));
+      const user = await source.verifyOtp(phone, code, language);
+      if (user.displayName) {
+        await signIn(user);
+        return;
+      }
+      setPending(user);
       setStep('name');
     } catch {
-      setError(t.signIn.invalidCode);
+      setError(mode === 'connected' ? t.signIn.wrongCode : t.signIn.invalidCode);
     } finally {
       setBusy(false);
     }
@@ -129,11 +145,40 @@ export default function SignIn() {
 
       {step === 'phone' ? <SolidButton label={t.signIn.sendCode} onPress={sendCode} busy={busy} disabled={!phone} /> : null}
       {step === 'code' ? <SolidButton label={t.signIn.verify} onPress={verify} busy={busy} disabled={code.length !== 6} /> : null}
+      {step === 'code' && mode === 'connected' ? (
+        <View style={s.again}>
+          <TextLink
+            label={wait ? fmt(t.signIn.resendIn, { s: wait }) : t.signIn.resend}
+            onPress={sendCode}
+            muted
+            disabled={busy || wait > 0}
+          />
+          <TextLink
+            label={t.signIn.otherNumber}
+            onPress={() => {
+              setStep('phone');
+              setError(null);
+            }}
+            muted
+          />
+        </View>
+      ) : null}
       {step === 'name' ? (
         <SolidButton
           label={t.signIn.start}
           disabled={!name.trim()}
-          onPress={() => pending && signIn({ ...pending, displayName: name.trim() })}
+          busy={busy}
+          onPress={async () => {
+            if (!pending) return;
+            setBusy(true);
+            setError(null);
+            try {
+              await signIn({ ...pending, displayName: name.trim(), language });
+            } catch {
+              setError(t.errors.generic);
+              setBusy(false);
+            }
+          }}
         />
       ) : null}
     </Screen>
@@ -152,4 +197,5 @@ const s = StyleSheet.create({
     paddingVertical: SPACE[2],
   },
   code: { letterSpacing: 8 },
+  again: { flexDirection: 'row', justifyContent: 'space-between', marginTop: SPACE[2] },
 });

@@ -12,10 +12,19 @@ const TYPES: ConsultType[] = ['clinic', 'urgent', 'review'];
 
 export default function ChooseType() {
   const { t, consultations, setDraft, draft } = useApp();
-  const hasDiagnosis = consultations.some((c) => c.status === 'done');
+  // The latest finished consult (not itself a review): a review follows it.
+  const diagnosis = consultations
+    .filter((c) => c.status === 'done' && c.type !== 'review')
+    .sort((a, b) => (b.scheduledAt ?? b.createdAt).localeCompare(a.scheduledAt ?? a.createdAt))[0];
+  const hasDiagnosis = !!diagnosis;
 
   const choose = (type: ConsultType) => {
-    setDraft({ band: draft?.band ?? 'lt300k', attachments: [], ...draft, type });
+    const base = { band: draft?.band ?? 'lt300k', attachments: [], ...draft, type, followUpOf: undefined };
+    if (type === 'review' && diagnosis && !draft?.followUpOf) {
+      setDraft({ ...base, band: diagnosis.priceBand, propertyLabel: diagnosis.propertyLabel, followUpOf: diagnosis.id });
+    } else {
+      setDraft(type === 'review' ? { ...base, followUpOf: draft?.followUpOf } : base);
+    }
     router.push('/consult/property');
   };
 

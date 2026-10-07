@@ -18,7 +18,7 @@
     "build": "npm run brand:build && npm run build -w @drprop/web",
     "preview": "npm run preview -w @drprop/web",
     "test": "vitest run",
-    "typecheck": "tsc -p brand && tsc -p web && tsc -p app --noEmit && tsc -p reels --noEmit && tsc -p twin --noEmit",
+    "typecheck": "tsc -p brand && tsc -p web && tsc -p app --noEmit && tsc -p reels --noEmit && tsc -p twin --noEmit && tsc -p supabase && tsc -p app/test",
     "app": "npm run start -w @drprop/app",
     "brand:3d": "npm run 3d -w @drprop/brand",
     "reels": "npm run studio -w @drprop/reels",
@@ -27,6 +27,7 @@
     "twin:build": "npm run build -w @drprop/twin"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@types/node": "^26.6.3",
     "typescript": "~6.0.3",
     "vitest": "^5.0.2"

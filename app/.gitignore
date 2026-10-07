@@ -40,3 +40,6 @@ yarn-error.*
 /ios
 /android
 /public/canvaskit.wasm
+
+# The backend setting (see .env.example). Only public values belong there, but keep it local.
+.env

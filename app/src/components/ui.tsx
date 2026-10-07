@@ -54,15 +54,26 @@ export function OutlineButton({ label, onPress, disabled, busy, style }: ButtonP
   );
 }
 
-export function TextLink({ label, onPress, style, muted, tint }: ButtonProps & { muted?: boolean; tint?: string }) {
+export function TextLink({ label, onPress, style, muted, tint, disabled }: ButtonProps & { muted?: boolean; tint?: string }) {
   const p = usePalette();
   return (
-    <Pressable accessibilityRole="button" onPress={onPress} hitSlop={8} style={[s.link, style]}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ disabled: !!disabled }}
+      disabled={disabled}
+      onPress={onPress}
+      hitSlop={8}
+      style={[s.link, style]}
+    >
       {({ pressed }) => (
         <Text
           style={[
             s.linkText,
-            { color: tint ?? (muted ? p.muted : p.text), textDecorationColor: tint ?? p.muted, opacity: pressed ? 0.6 : 1 },
+            {
+              color: tint ?? (muted ? p.muted : p.text),
+              textDecorationColor: tint ?? p.muted,
+              opacity: disabled ? 0.4 : pressed ? 0.6 : 1,
+            },
           ]}
         >
           {label}

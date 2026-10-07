@@ -7,7 +7,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { runtime } from '../backend/config';
 import { PulseSplash } from '../components/pulse';
+import { Body, Display } from '../components/type';
+import { Screen } from '../components/ui';
 import { AppStateProvider, useApp } from '../state/app-state';
 import { usePalette } from '../theme';
 
@@ -15,6 +18,19 @@ SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({ InstrumentSerif_400Regular, Geist_400Regular, GeistMono_400Regular });
+  // A supabase build with a bad setting stops here: it never falls back to the preview.
+  if (runtime.mode === 'invalid') {
+    return (
+      <SafeAreaProvider>
+        <AppStateProvider>
+          <Screen>
+            <Display>Setup required.</Display>
+            <Body muted>{runtime.error}</Body>
+          </Screen>
+        </AppStateProvider>
+      </SafeAreaProvider>
+    );
+  }
   return (
     <SafeAreaProvider>
       <AppStateProvider>
@@ -45,6 +61,7 @@ function Root({ fontsLoaded }: { fontsLoaded: boolean }) {
           <Stack.Screen name="consult" options={{ animation: 'slide_from_bottom' }} />
           <Stack.Screen name="record/[id]" options={{ animation: 'slide_from_right' }} />
           <Stack.Screen name="card" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
+          <Stack.Screen name="staff" options={{ animation: 'slide_from_right' }} />
         </Stack.Protected>
         <Stack.Protected guard={!user}>
           <Stack.Screen name="sign-in" />

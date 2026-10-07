@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { Body, Display, Label, Mono, Small } from '../../components/type';
 import { OutlineButton, Rule, Screen, TextLink } from '../../components/ui';
-import { renew } from '../../data/mock';
+import { source } from '../../data/source';
 import { formatDate } from '../../i18n/format';
 import { LANGUAGES } from '../../i18n/strings';
 import { useApp } from '../../state/app-state';
@@ -16,7 +16,7 @@ import { FONT, HAIRLINE, INPUT_RESET, SIZE, SPACE, TOUCH_MIN, usePalette } from 
 const DRINKS = ['Kopi-O kosong', 'Kopi tarik', 'Teh tarik', 'Milo ais', 'Barley ais'];
 
 export default function Me() {
-  const { t, fmt, user, updateUser, membership, setMembership, language, setLanguage, signOut } = useApp();
+  const { t, fmt, user, updateUser, membership, setMembership, language, setLanguage, signOut, mode, staff } = useApp();
   const p = usePalette();
   const [renewing, setRenewing] = useState(false);
   if (!user) return null;
@@ -72,21 +72,34 @@ export default function Me() {
           </View>
           <Small>{fmt(t.me.renews, { date: formatDate(membership.renewsAt, language) })}</Small>
           <View style={s.actions}>
-            <OutlineButton
-              label={renewing ? t.me.renewing : t.me.renew}
-              busy={renewing}
-              onPress={async () => {
-                setRenewing(true);
-                try {
-                  setMembership(await renew(membership));
-                } finally {
-                  setRenewing(false);
-                }
-              }}
-              style={s.flex}
-            />
+            {source.canRenew ? (
+              <OutlineButton
+                label={renewing ? t.me.renewing : t.me.renew}
+                busy={renewing}
+                onPress={async () => {
+                  setRenewing(true);
+                  try {
+                    setMembership(await source.renew(membership));
+                  } finally {
+                    setRenewing(false);
+                  }
+                }}
+                style={s.flex}
+              />
+            ) : null}
             <OutlineButton label={t.home.card} onPress={() => router.push('/card')} style={s.flex} />
           </View>
+          {source.canRenew ? null : <Small>{t.me.renewAtDesk}</Small>}
+        </Field>
+      ) : mode === 'connected' ? (
+        <Field label={t.me.membership}>
+          <Body muted>{t.me.notMember}</Body>
+        </Field>
+      ) : null}
+
+      {staff ? (
+        <Field label={t.me.staff}>
+          <OutlineButton label={t.staff.title} onPress={() => router.push('/staff')} />
         </Field>
       ) : null}
 
@@ -99,7 +112,7 @@ export default function Me() {
       </Field>
 
       <Rule />
-      <TextLink label={t.me.signOut} onPress={signOut} muted />
+      <TextLink label={t.me.signOut} onPress={() => void signOut()} muted />
     </Screen>
   );
 }

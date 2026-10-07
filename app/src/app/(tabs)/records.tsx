@@ -28,7 +28,7 @@ export default function Records() {
                 <Mono muted style={s.date}>
                   {formatDate(c.scheduledAt ?? c.createdAt, language)}
                 </Mono>
-                <Small>{t.records.status[c.status]}</Small>
+                <Small>{c.pending ? t.records.pending : t.records.status[c.status]}</Small>
               </View>
               <Body>{c.propertyLabel || t.records.untitled}</Body>
               <Small>{t.types[c.type].name}</Small>

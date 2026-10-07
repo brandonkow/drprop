@@ -13,6 +13,9 @@ import { rm } from '../../i18n/format';
 import { useApp } from '../../state/app-state';
 import { FONT, HAIRLINE, INPUT_RESET, SIZE, SPACE, usePalette } from '../../theme';
 
+const MAX_FILES = 3;
+const MAX_BYTES = 10 * 1024 * 1024;
+
 const RANGES: Record<PriceBand, string> = {
   lt300k: '≤ RM 300k',
   '300k-600k': 'RM 300k – 600k',
@@ -22,13 +25,18 @@ const RANGES: Record<PriceBand, string> = {
 };
 
 export default function Property() {
-  const { t, fmt, draft, setDraft } = useApp();
+  const { t, fmt, draft, setDraft, mode } = useApp();
   const p = usePalette();
   if (!draft) return null;
+  // A review keeps the band of the consult it follows.
+  const bandLocked = draft.type === 'review' && !!draft.followUpOf;
 
   const attach = async () => {
     const res = await DocumentPicker.getDocumentAsync({ type: ['application/pdf', 'image/*'], multiple: true });
-    if (!res.canceled) setDraft({ ...draft, attachments: [...draft.attachments, ...res.assets.map((a) => a.name)] });
+    if (res.canceled) return;
+    // Names only: the preview keeps no file contents. Up to three files of 10 MB.
+    const names = res.assets.filter((a) => (a.size ?? 0) <= MAX_BYTES).map((a) => a.name);
+    setDraft({ ...draft, attachments: [...draft.attachments, ...names].slice(0, MAX_FILES) });
   };
 
   return (
@@ -44,6 +52,7 @@ export default function Property() {
           <Row
             key={b.id}
             selected={draft.band === b.id}
+            disabled={bandLocked && draft.band !== b.id}
             onPress={() => setDraft({ ...draft, band: b.id })}
             accessibilityLabel={`${RANGES[b.id]}, ${rm(consultFee(draft.type, b.id))}`}
           >
@@ -65,8 +74,15 @@ export default function Property() {
           style={[s.input, { color: p.text, borderColor: p.rule }]}
           accessibilityLabel={t.flow.labelTitle}
         />
-        <OutlineButton label={t.flow.attach} onPress={attach} />
-        {draft.attachments.length ? <Small>{fmt(t.flow.attached, { n: draft.attachments.length })}</Small> : null}
+        {mode === 'connected' ? (
+          // Documents are not uploaded yet (no private storage): they come to the consult.
+          <Small>{t.flow.attachLater}</Small>
+        ) : (
+          <>
+            <OutlineButton label={t.flow.attach} onPress={attach} disabled={draft.attachments.length >= MAX_FILES} />
+            {draft.attachments.length ? <Small>{fmt(t.flow.attached, { n: draft.attachments.length })}</Small> : null}
+          </>
+        )}
       </View>
 
       <SolidButton label={t.common.next} onPress={() => router.push('/consult/schedule')} />

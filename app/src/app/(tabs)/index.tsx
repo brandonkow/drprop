@@ -6,13 +6,12 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Body, Display } from '../../components/type';
 import { Rule, Screen, SolidButton } from '../../components/ui';
-import { STORE } from '../../data/mock';
 import { partOfDay } from '../../i18n/strings';
 import { useApp } from '../../state/app-state';
 import { SPACE, TOUCH_MIN } from '../../theme';
 
 export default function Home() {
-  const { t, fmt, user, setDraft } = useApp();
+  const { t, fmt, user, setDraft, lounge } = useApp();
   const greeting = fmt(t.greeting[partOfDay()], { name: user?.displayName ?? '' });
 
   return (
@@ -29,14 +28,14 @@ export default function Home() {
         }}
       />
 
-      <View style={s.lounge}>
-        <Rule />
-        <Body>
-          {fmt(t.home.loungeNow, { mood: t.home.moods[STORE.loungeMood], seats: STORE.loungeSeatsFree })}
-        </Body>
-        <Body muted>{fmt(t.home.coffee, { coffee: STORE.todaysCoffee })}</Body>
-        <Rule />
-      </View>
+      {lounge ? (
+        <View style={s.lounge}>
+          <Rule />
+          <Body>{fmt(t.home.loungeNow, { mood: t.home.moods[lounge.mood], seats: lounge.seatsFree })}</Body>
+          {lounge.coffee ? <Body muted>{fmt(t.home.coffee, { coffee: lounge.coffee })}</Body> : null}
+          <Rule />
+        </View>
+      ) : null}
 
       <Pressable accessibilityRole="button" onPress={() => router.push('/card')} style={s.cardLink}>
         {({ pressed }) => (

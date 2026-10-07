@@ -1,4 +1,4 @@
-/** Phase 1 data model (brief §8.4). Mock only; Supabase arrives in phase 2. */
+/** Data model (brief §8.4), shared by the preview mock and the Supabase backend. */
 import type { ConsultType, PriceBand } from '@drprop/brand/pricing';
 
 export type Lang = 'en' | 'zh' | 'ms';
@@ -29,6 +29,10 @@ export interface Consultation {
   /** ISO date-time. Urgent consults have none: the advisor calls within two hours. */
   scheduledAt?: string;
   status: 'booked' | 'done' | 'cancelled';
+  /** Booked but not yet confirmed by an adviser (supabase mode only). */
+  pending?: boolean;
+  /** For a pre-signing review: the consult it follows. */
+  followUpOf?: string;
   reportUrl?: string;
   advisorNote?: string;
   attachments: string[];
@@ -50,4 +54,19 @@ export interface Store {
   todaysCoffee: string;
   /** Lounge mood right now. */
   loungeMood: 'quiet' | 'lively';
+}
+
+/** The Lounge right now, for the home screen. */
+export interface Lounge {
+  mood: 'quiet' | 'lively';
+  seatsFree: number;
+  coffee: string;
+}
+
+/** A bookable time. Preview: generated; supabase: an adviser's published slot. */
+export interface Slot {
+  id: string;
+  /** ISO start. */
+  at: string;
+  adviser?: string;
 }
