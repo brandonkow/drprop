@@ -50,7 +50,9 @@
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "setup-skia-web": "setup-skia-web public",
-    "lint": "eslint src index.ts index.web.ts"
+    "lint": "eslint src index.ts index.web.ts",
+    "export:web": "EXPO_PUBLIC_APP_MODE=preview expo export -p web --clear",
+    "export:connected-fixture": "EXPO_PUBLIC_APP_MODE=supabase EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321 EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_local_fixture_only expo export -p web --clear --output-dir dist-connected"
   },
   "private": true
 }

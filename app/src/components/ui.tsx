@@ -165,7 +165,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   outlineText: { fontFamily: FONT.body, fontSize: SIZE.body - 2, letterSpacing: 0.3 },
-  link: { minHeight: TOUCH_MIN, justifyContent: 'center', alignSelf: 'flex-start' },
+  link: { minHeight: TOUCH_MIN, minWidth: TOUCH_MIN, justifyContent: 'center', alignSelf: 'flex-start' },
   linkText: { fontFamily: FONT.body, fontSize: SIZE.body - 2, textDecorationLine: 'underline' },
   row: {
     minHeight: TOUCH_MIN + 20,

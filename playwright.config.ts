@@ -3,15 +3,14 @@
  * journey from its web export. Uses the Chromium Playwright finds
  * (PLAYWRIGHT_BROWSERS_PATH, or `npx playwright install chromium`).
  *
- *   npm run build                                  # website → web/dist
- *   cd app && npx expo export -p web && cd ..      # app → app/dist (for the app tests)
+ *   npm run build                                      # website → web/dist
+ *   npm run export:web -w @drprop/app                  # preview app → app/dist
+ *   npm run export:connected-fixture -w @drprop/app    # supabase-mode app → app/dist-connected
  *   npm run test:e2e
  *
- * The connected app (supabase mode) runs against e2e/fake-supabase.mjs. Build it once with:
- *   cd app && EXPO_PUBLIC_APP_MODE=supabase EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321 \
- *     EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_local_fixture_only \
- *     npx expo export -p web --clear --output-dir dist-connected
- * Never deploy that build.
+ * Both exports use --clear: Expo inlines EXPO_PUBLIC_* while transforming, so a cached
+ * transform from the other mode would otherwise leak in (a "preview" build that talks to
+ * the backend). The connected build points at e2e/fake-supabase.mjs: never deploy it.
  */
 import { defineConfig } from '@playwright/test';
 

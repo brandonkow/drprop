@@ -34,6 +34,7 @@ export default function Staff() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [board, setBoard] = useState<Lounge>(lounge ?? { seatsFree: 0, mood: 'quiet', coffee: '' });
+  const now = useNow();
 
   const fetchAll = useCallback(
     () => (user ? Promise.all([staffApi.bookings(), staffApi.slots(user.id)]) : Promise.resolve(null)),
@@ -117,13 +118,23 @@ export default function Staff() {
         <Small>{t.staff.openHint}</Small>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.row}>
           {days.map((d) => (
-            <Chip key={d} on={d === day} onPress={() => setDay(d)} label={formatDay(`${d}T12:00:00+08:00`, language)} />
+            <Chip
+              key={d}
+              on={d === day}
+              onPress={() => {
+                setDay(d);
+                setTime(null);
+              }}
+              label={formatDay(`${d}T12:00:00+08:00`, language)}
+            />
           ))}
         </ScrollView>
         <View style={s.wrap}>
           {TIMES.map((tm) => {
             const taken = slots.some((sl) => sl.enabled && malaysiaDay(sl.starts_at) === day && malaysiaClock(sl.starts_at) === tm);
-            return <Chip key={tm} on={tm === time} disabled={taken} onPress={() => setTime(tm)} label={tm} mono />;
+            // The server only accepts future times.
+            const past = Date.parse(malaysiaInstant(day, tm)) <= now;
+            return <Chip key={tm} on={tm === time} disabled={taken || past} onPress={() => setTime(tm)} label={tm} mono />;
           })}
         </View>
         <SolidButton
@@ -312,6 +323,7 @@ const s = StyleSheet.create({
   note: { gap: SPACE[1], marginTop: SPACE[1] },
   input: {
     ...INPUT_RESET,
+    minHeight: TOUCH_MIN,
     fontFamily: FONT.body,
     fontSize: SIZE.body,
     borderBottomWidth: HAIRLINE,
