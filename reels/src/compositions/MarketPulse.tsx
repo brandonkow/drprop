@@ -73,14 +73,17 @@ function Body({ lang, ratio, monthId }: MarketPulseProps) {
             style={{
               position: 'absolute',
               right: 0,
-              top: ys[n - 1]! - TYPE[ratio].body * 2.2,
+              // Above the highest point, so the figure never sits on the line.
+              top: Math.min(...ys) - TYPE[ratio].body * 2.2,
               fontFamily: FONTS.mono,
               fontSize: TYPE[ratio].body * 1.2,
               color: color.ink,
               opacity: progress(frame, DRAW_END, DRAW_END + 20),
             }}
           >
-            {vals[n - 1]!.toFixed(1)}
+            {m.valueFormat
+              ? m.valueFormat[lang].replace('{v}', vals[n - 1]!.toLocaleString('en-MY', { maximumFractionDigits: 2 }))
+              : vals[n - 1]!.toFixed(1)}
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

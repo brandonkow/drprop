@@ -22,6 +22,16 @@ export type ReelProps = {
   showSafeZone?: boolean;
 };
 
+/**
+ * The sound logo (brief §9.6), when brand/audio/sound-logo.wav exists. Its note
+ * lands at frame 46, when the end card's line has folded into the roof.
+ */
+export const SOUND_LOGO_NOTE_FRAME = 46;
+export function SoundLogo() {
+  const present = getStaticFiles().some((f) => f.name === 'audio/sound-logo.wav');
+  return present ? <Audio src={staticFile('audio/sound-logo.wav')} /> : null;
+}
+
 /** The brand sign-off: one beat folds into the roof, DR. PROP fades in. */
 export function EndCard({ ratio, dark = false }: { ratio: Ratio; dark?: boolean }) {
   const frame = useCurrentFrame();
@@ -34,7 +44,6 @@ export function EndCard({ ratio, dark = false }: { ratio: Ratio; dark?: boolean 
   const groupH = lineW * 0.44; // line + gap + wordmark
   const fold = progress(frame, 18, 48);
   const mark = progress(frame, 36, 62);
-  const soundLogo = getStaticFiles().some((f) => f.name === 'audio/sound-logo.wav');
   return (
     <AbsoluteFill style={{ backgroundColor: dark ? color.night : color.bone }}>
       <div style={{ position: 'absolute', left: (width - lineW) / 2, top: safe.y + (safe.height - groupH) / 2, width: lineW }}>
@@ -52,7 +61,7 @@ export function EndCard({ ratio, dark = false }: { ratio: Ratio; dark?: boolean 
           <Wordmark width={lineW * 0.52} color={ink} />
         </div>
       </div>
-      {soundLogo ? <Audio src={staticFile('audio/sound-logo.wav')} /> : null}
+      <SoundLogo />
     </AbsoluteFill>
   );
 }

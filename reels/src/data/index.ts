@@ -3,7 +3,9 @@
  * adding an R5 month = one JSON file in market/. Nothing else changes.
  */
 import type { HousePart, HouseType } from '@drprop/brand/3d';
-import type { Lang } from '../copy';
+import { validateMarket, type MarketMonth } from './validate';
+
+export type { MarketMonth };
 
 export interface CaseEpisode {
   houseType: HouseType;
@@ -11,15 +13,6 @@ export interface CaseEpisode {
   en: { hook: string; lines: string[] };
   zh: { hook: string; lines: string[] };
   ms: { hook: string; lines: string[] };
-}
-
-export interface MarketMonth {
-  sample: boolean;
-  source: string;
-  date: string;
-  unit: string;
-  label: Record<Lang, string>;
-  series: { label: string; value: number }[];
 }
 
 declare const require: {
@@ -35,5 +28,5 @@ export const CASES: Record<string, CaseEpisode> = Object.fromEntries(
 
 const marketCtx = require.context('./market', false, /\.json$/);
 export const MARKET: Record<string, MarketMonth> = Object.fromEntries(
-  marketCtx.keys().map((k) => [slug(k), marketCtx<MarketMonth>(k)]),
+  marketCtx.keys().map((k) => [slug(k), validateMarket(slug(k), marketCtx<MarketMonth>(k))]),
 );

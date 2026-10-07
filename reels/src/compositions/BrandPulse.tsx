@@ -4,12 +4,12 @@
  * sign-off (the 2D EndCard mirrors it).
  */
 import { color } from '@drprop/brand/tokens';
-import { interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
+import { interpolate, Sequence, useCurrentFrame, useVideoConfig } from 'remotion';
 import { COPY } from '../copy';
 import { Caption } from '../components/Caption';
 import { PulseRoof3D } from '../components/Models';
 import { progress } from '../components/motion';
-import { ReelFrame, type ReelProps } from '../components/ReelFrame';
+import { ReelFrame, SOUND_LOGO_NOTE_FRAME, SoundLogo, type ReelProps } from '../components/ReelFrame';
 import { SafeBox, fitDistance } from '../components/SafeBox';
 import { Stage3D } from '../components/Stage3D';
 import { Wordmark } from '../components/Wordmark';
@@ -53,6 +53,10 @@ function Body({ lang, ratio, length }: BrandPulseProps) {
           </Caption>
         ) : null}
       </SafeBox>
+      {/* R1 is the sign-off itself: its note lands as the roof completes. */}
+      <Sequence from={Math.round(L * 0.72) - SOUND_LOGO_NOTE_FRAME} layout="none">
+        <SoundLogo />
+      </Sequence>
     </>
   );
 }

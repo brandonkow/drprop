@@ -1,0 +1,27 @@
+{
+  "sample": false,
+  "_comment": "Observed. NAPIC Property Market Report 2025, Central Region, Chart 8 (printed page 5, PDF page 98). Checked against the report on 2026-10-07. Aggregate transaction value: counts times prices, not a price index, a median price or a forecast.",
+  "source": "NAPIC Property Market Report 2025, Chart 8",
+  "date": "2021–2025",
+  "unit": "RM million",
+  "label": {
+    "en": "Residential transaction value, Selangor",
+    "zh": "雪兰莪住宅交易总值",
+    "ms": "Nilai transaksi kediaman, Selangor"
+  },
+  "valueFormat": { "en": "RM {v} mil", "zh": "RM {v} 百万", "ms": "RM {v} juta" },
+  "series": [
+    { "label": "2021", "value": 26490.71 },
+    { "label": "2022", "value": 30578.01 },
+    { "label": "2023", "value": 30255.16 },
+    { "label": "2024", "value": 31684.46 },
+    { "label": "2025", "value": 30528.85 }
+  ],
+  "provenance": {
+    "document": "Laporan Pasaran Harta 2025 (Property Market Report 2025), NAPIC / JPPH",
+    "url": "https://napic.jpph.gov.my/storage/app/media/3-penerbitan/Shahrul/Bahagian%20Pasaran%20Harta%20Tanah/Laporan%20Pasaran%20Harta%20Separuh%20Tahun%20dan%20Jadual/Q4%202025/Laporan%20Pasaran%20Harta%202025.pdf",
+    "page": "Central Region, Chart 8 (printed page 5, PDF page 98)",
+    "retrieved": "2026-10-07",
+    "sha256": "133075df5ac58adcd6f331bcc40f543c08e1a317b7669c78f2ec84751fb883d3"
+  }
+}
