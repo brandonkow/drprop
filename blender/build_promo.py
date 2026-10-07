@@ -789,7 +789,7 @@ def build_dusk() -> None:
 
 SHOTS: dict[str, Shot] = {
     "model": Shot(398, 3, 28, build_model),
-    "bronze": Shot(98, 3, 40, build_bronze),
+    "bronze": Shot(98, 1, 40, build_bronze),  # every frame: the letters defeat motion interpolation
     "materials": Shot(98, 3, 28, build_materials),
     "drawer": Shot(98, 3, 28, build_drawer),
     "consult": Shot(128, 3, 32, build_consult, exposure=-0.4),
