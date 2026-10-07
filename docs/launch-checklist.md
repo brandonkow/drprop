@@ -8,6 +8,10 @@ What the code can't settle on its own. Each item names who decides and where it 
 - [ ] Opening hours and urgent call-back hours (`web/src/config/site.ts`; `dp_settings`).
 - [ ] Lounge membership price and the cap per store (brief §3.3). The terms page avoids a price until then.
 - [ ] Refund rule: the terms page proposes free moves up to 24 hours before and full refunds for cancellations more than 24 hours before. Confirm or change it.
+- [ ] Final brand name, Latin and Chinese: search MyIPO (trademark), SSM and the domain before printing anything (brief §1.3).
+- [ ] Whether to bring in a registered estate agent (REA) or registered valuer as partner or adviser (brief §2.6).
+- [ ] The first store's measured floor plan, to replace the concept in `blender/store.config.json` (the twin, the renders and the reels follow from it).
+- [ ] Social platform priority (IG, TikTok, Xiaohongshu, FB): it decides which reel ratio to post first.
 
 ## Legal review (brief §2)
 
