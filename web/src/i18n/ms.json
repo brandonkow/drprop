@@ -2,7 +2,8 @@
   "meta": {
     "title": "Dr Prop — Klinik hartanah bebas, Petaling Jaya",
     "description": "Diagnosis hartanah berbayar tetap sebelum anda menandatangani. Kami tidak menjual hartanah dan tidak mengambil komisen, jadi kami boleh berterus terang.",
-    "privacyTitle": "Privasi — Dr Prop"
+    "privacyTitle": "Privasi — Dr Prop",
+    "termsTitle": "Terma — Dr Prop"
   },
   "a11y": {
     "skip": "Langkau ke kandungan",
@@ -59,7 +60,8 @@
     "cap": "{cap} tempat ahli di klinik ini.",
     "left": "Baki {left}.",
     "figure": "Dinding almari ubat. Gambar sebenar selepas kami dibuka.",
-    "renderCaption": "Gambaran kedai. Gambar sebenar selepas kami dibuka.",
+    "renderCaption": "Gambaran konsep Lounge. Gambar sebenar selepas kami dibuka.",
+    "renderAlt": "Lounge: dua kerusi berlengan dan sofa melengkung mengelilingi meja travertin, dinding almari ubat di belakang, jalan di luar tingkap kedai.",
     "photoCaption": "Lounge di Petaling Jaya."
   },
   "visit": {
@@ -70,7 +72,8 @@
   },
   "footer": {
     "disclaimer": "Dr Prop menyediakan maklumat dan analisis hartanah. Kami tidak menjalankan jual beli, perkhidmatan ejen atau penilaian hartanah, dan tidak menerima sebarang komisen transaksi. Diagnosis kami bukan nasihat undang-undang, cukai atau kewangan.",
-    "privacy": "Privasi"
+    "privacy": "Privasi",
+    "terms": "Terma"
   },
   "privacy": {
     "title": "Privasi",
@@ -80,6 +83,75 @@
       "“Tempah konsultasi” membuka WhatsApp dengan mesej yang telah diisi. Tiada apa dihantar sehingga anda tekan hantar, dan selepas itu dasar privasi WhatsApp turut terpakai.",
       "Data peribadi yang anda kongsi semasa menempah dikendalikan di bawah Akta Perlindungan Data Peribadi 2010. Untuk melihat atau membetulkan data anda, hubungi kami melalui nombor WhatsApp yang sama."
     ],
+    "back": "Kembali ke Dr Prop"
+  },
+  "terms": {
+    "title": "Terma",
+    "intro": "Terma untuk konsultasi dan keahlian Lounge di Dr Prop. Ringkasnya: kami bekerja untuk anda sahaja, dengan yuran yang diumumkan, dan kami tidak mengambil komisen daripada sesiapa.",
+    "sections": [
+      {
+        "title": "Apa yang kami lakukan",
+        "body": [
+          "Kami memberi pembeli maklumat dan analisis hartanah: usaha wajar ke atas hartanah yang anda pertimbangkan, maklumat pasaran daripada sumber awam, dan semakan kebolehlaksanaan berdasarkan rancangan anda. Anda menerima diagnosis bertulis: risiko yang kami nampak, soalan untuk ditanya, dan langkah seterusnya untuk dipertimbangkan."
+        ]
+      },
+      {
+        "title": "Apa yang kami tidak lakukan",
+        "body": [
+          "Kami tidak membeli, menjual, menyewakan, memasarkan atau merundingkan hartanah, tidak bertindak sebagai ejen bagi sesiapa, dan tidak menilai hartanah. Kami tidak mengesyorkan unit untuk dijual. Diagnosis kami bukan nasihat undang-undang, cukai atau kewangan. Keputusan sentiasa di tangan anda."
+        ]
+      },
+      {
+        "title": "Tiada komisen",
+        "body": [
+          "Kami tidak mengambil komisen daripada sebarang transaksi, daripada sesiapa: penjual, pemaju, ejen, peguam atau bank. Yuran anda ialah satu-satunya bayaran kami untuk konsultasi anda.",
+          "Kami tidak mengambil yuran rujukan. Jika perkara ini berubah, kami akan memaklumkan anda secara bertulis, sebelum sebarang rujukan, apa yang akan kami terima."
+        ]
+      },
+      {
+        "title": "Yuran",
+        "body": [
+          "Yuran mengikut julat nilai hartanah, diumumkan di laman web ini dan di pintu, dan mempunyai had maksimum. Konsultasi segera (video dalam masa dua jam) ialah yuran tambah 50%. Semakan sebelum tandatangan bagi hartanah yang telah kami diagnosis untuk anda ialah separuh yuran. Yuran dibayar sebelum konsultasi."
+        ]
+      },
+      {
+        "title": "Menukar atau membatalkan",
+        "body": [
+          "Anda boleh menukar tempahan tanpa caj sehingga 24 jam sebelum ia bermula. Batalkan lebih daripada 24 jam sebelumnya dan kami pulangkan yuran sepenuhnya. Jika kami yang perlu menukar konsultasi, anda pilih: masa baharu, atau bayaran balik penuh."
+        ]
+      },
+      {
+        "title": "Diagnosis anda",
+        "body": [
+          "Setiap konsultasi disertakan diagnosis bertulis, dihantar dalam masa 24 jam. Ia mencerminkan dokumen dan maklumat yang ada pada masa itu, dan menyatakan bahagian yang bergantung pada maklumat daripada anda, penjual atau rekod awam. Sahkan apa-apa yang menjadi asas keputusan anda dengan profesional yang betul: peguam anda untuk hak milik dan perjanjian jual beli, bank anda untuk pembiayaan."
+        ]
+      },
+      {
+        "title": "Kerahsiaan",
+        "body": [
+          "Apa yang anda beritahu kami dan dokumen yang anda kongsi hanya digunakan untuk diagnosis anda. Kami tidak berkongsi dengan sesiapa melainkan dikehendaki oleh undang-undang. Halaman Privasi menerangkan cara kami mengendalikan data peribadi."
+        ]
+      },
+      {
+        "title": "Keahlian Lounge",
+        "body": [
+          "Keahlian adalah mengikut kedai dan terhad; apabila tempat penuh, ada senarai menunggu. Setiap ahli membayar jumlah yang sama dan dilayan dengan cara yang sama. Ahli tidak pernah diminta membeli apa-apa: datanglah sekadar untuk minum kopi."
+        ]
+      },
+      {
+        "title": "Tanggungjawab",
+        "body": [
+          "Kami menyediakan setiap diagnosis dengan teliti, tetapi tiada siapa boleh menjamin hasil sesuatu keputusan hartanah. Setakat yang dibenarkan undang-undang, liabiliti kami bagi sesuatu konsultasi terhad kepada yuran yang anda bayar untuknya. Tiada apa-apa dalam terma ini mengehadkan hak anda di bawah undang-undang pengguna Malaysia."
+        ]
+      },
+      {
+        "title": "Undang-undang",
+        "body": [
+          "Terma ini ditadbir oleh undang-undang Malaysia."
+        ]
+      }
+    ],
+    "updated": "Kemas kini terakhir {date}.",
     "back": "Kembali ke Dr Prop"
   }
 }

@@ -10,10 +10,11 @@ export type Lang = (typeof langs)[number];
 
 export const dicts: Record<Lang, Dict> = { en, zh, ms };
 
-export const langMeta: Record<Lang, { html: string; short: string; name: string; base: string }> = {
-  en: { html: 'en', short: 'EN', name: 'English', base: '/' },
-  zh: { html: 'zh-Hans', short: '中', name: '中文', base: '/zh/' },
-  ms: { html: 'ms', short: 'BM', name: 'Bahasa Melayu', base: '/ms/' },
+/** `locale` is for dates and og:locale. */
+export const langMeta: Record<Lang, { html: string; short: string; name: string; base: string; locale: string }> = {
+  en: { html: 'en', short: 'EN', name: 'English', base: '/', locale: 'en_MY' },
+  zh: { html: 'zh-Hans', short: '中', name: '中文', base: '/zh/', locale: 'zh_MY' },
+  ms: { html: 'ms', short: 'BM', name: 'Bahasa Melayu', base: '/ms/', locale: 'ms_MY' },
 };
 
 /** Replace {key} placeholders. */

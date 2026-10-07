@@ -2,7 +2,8 @@
   "meta": {
     "title": "Dr Prop — Independent property clinic, Petaling Jaya",
     "description": "Fixed-fee property diagnosis before you sign. We don't sell property and we take no commission, so we can tell you what we actually see.",
-    "privacyTitle": "Privacy — Dr Prop"
+    "privacyTitle": "Privacy — Dr Prop",
+    "termsTitle": "Terms — Dr Prop"
   },
   "a11y": {
     "skip": "Skip to content",
@@ -59,7 +60,8 @@
     "cap": "{cap} member places at this clinic.",
     "left": "{left} remaining.",
     "figure": "The apothecary wall. Photographs when we open.",
-    "renderCaption": "A rendering of the store. Photographs when we open.",
+    "renderCaption": "A concept rendering of the Lounge. Photographs when we open.",
+    "renderAlt": "The Lounge: two armchairs and a curved sofa round a travertine table, the apothecary wall behind, the street through the shop window.",
     "photoCaption": "The Lounge, Petaling Jaya."
   },
   "visit": {
@@ -70,7 +72,8 @@
   },
   "footer": {
     "disclaimer": "Dr Prop provides property information and analysis. We do not buy, sell, act as agent for, or value property, and we take no transaction commission of any kind. Our diagnosis is not legal, tax or financial advice.",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "terms": "Terms"
   },
   "privacy": {
     "title": "Privacy",
@@ -80,6 +83,75 @@
       "“Book a consult” opens WhatsApp with a pre-filled message. Nothing is sent until you press send, and from then on WhatsApp's own privacy policy also applies.",
       "Personal data you share with us when booking is handled under Malaysia's Personal Data Protection Act 2010. To see or correct what we hold about you, message us on the same WhatsApp number."
     ],
+    "back": "Back to Dr Prop"
+  },
+  "terms": {
+    "title": "Terms",
+    "intro": "The terms for consults and Lounge membership at Dr Prop. In short: we work only for you, for a published fee, and we take no commission from anyone.",
+    "sections": [
+      {
+        "title": "What we do",
+        "body": [
+          "We give buyers property information and analysis: due diligence on a property you are considering, market information from public sources, and a feasibility check against your plans. You get a written diagnosis: the risks we see, the questions to ask, and the next steps to consider."
+        ]
+      },
+      {
+        "title": "What we don't do",
+        "body": [
+          "We do not buy, sell, rent out, market or negotiate property, we do not act as an agent for anyone, and we do not value property. We do not recommend units for sale. Our diagnosis is not legal, tax or financial advice. The decision is always yours."
+        ]
+      },
+      {
+        "title": "No commission",
+        "body": [
+          "We take no commission on any transaction, from anyone: sellers, developers, agents, lawyers or banks. Your fee is all we are paid for your consult.",
+          "We take no referral fees. If that ever changes, we will tell you in writing, before any introduction, what we would receive."
+        ]
+      },
+      {
+        "title": "Fees",
+        "body": [
+          "Fees follow the property's value band. They are published on this website and at the door, and capped. An urgent consult (video within two hours) is the fee plus 50%. A pre-signing review of a property we have already diagnosed for you is half the fee. Fees are paid before the consult."
+        ]
+      },
+      {
+        "title": "Moving or cancelling",
+        "body": [
+          "You can move a booking at no charge up to 24 hours before it starts. Cancel more than 24 hours before and we refund the fee in full. If we have to move a consult, you choose: a new time, or a full refund."
+        ]
+      },
+      {
+        "title": "Your diagnosis",
+        "body": [
+          "Every consult comes with a written diagnosis, sent within 24 hours. It reflects the documents and information available at the time, and says where it relies on what you, a seller or public records told us. Confirm anything your decision depends on with the right professional: your lawyer for the title and the sale and purchase agreement, your bank for financing."
+        ]
+      },
+      {
+        "title": "Confidentiality",
+        "body": [
+          "What you tell us and the documents you share are used only for your diagnosis. We share them with no one unless the law requires it. Privacy explains how we handle personal data."
+        ]
+      },
+      {
+        "title": "Lounge membership",
+        "body": [
+          "Membership is per store and capped; when the places are full, there is a waitlist. Every member pays the same and is treated the same. Members are never asked to buy anything: come in just for the coffee."
+        ]
+      },
+      {
+        "title": "Responsibility",
+        "body": [
+          "We prepare every diagnosis with care, but no one can guarantee how a property decision turns out. As far as the law allows, our liability for a consult is limited to the fee you paid for it. Nothing in these terms limits your rights under Malaysian consumer law."
+        ]
+      },
+      {
+        "title": "Law",
+        "body": [
+          "These terms are governed by the laws of Malaysia."
+        ]
+      }
+    ],
+    "updated": "Last updated {date}.",
     "back": "Back to Dr Prop"
   }
 }

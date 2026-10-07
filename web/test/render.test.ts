@@ -4,15 +4,47 @@ import { pages, renderDocument } from '../src/render/page.ts';
 const html = (entry: (typeof pages)[number]) => renderDocument(entry, '<svg></svg>');
 
 describe('rendered pages', () => {
-  it('renders six pages: home and privacy in three languages', () => {
+  it('renders nine pages: home, privacy and terms in three languages', () => {
     expect(pages.map((p) => p.file).sort()).toEqual([
       'index.html',
       'ms/index.html',
       'ms/privacy/index.html',
+      'ms/terms/index.html',
       'privacy/index.html',
+      'terms/index.html',
       'zh/index.html',
       'zh/privacy/index.html',
+      'zh/terms/index.html',
     ]);
+  });
+
+  it.each(pages)('$file links to privacy and terms in its own language', (entry) => {
+    const base = entry.lang === 'en' ? '/' : `/${entry.lang}/`;
+    const out = html(entry);
+    expect(out).toContain(`href="${base}privacy/"`);
+    expect(out).toContain(`href="${base}terms/"`);
+  });
+
+  it.each(pages.filter((p) => p.page === 'terms'))('$file states the commission and referral-fee promises', (entry) => {
+    const out = html(entry);
+    const promise = { en: /no commission[\s\S]*no referral fees/i, zh: /不从任何交易中收取佣金[\s\S]*不收转介费/, ms: /tidak mengambil komisen[\s\S]*tidak mengambil yuran rujukan/ }[entry.lang];
+    expect(out).toMatch(promise);
+    expect(out).toMatch(/2026/);
+  });
+
+  it('shows the Lounge image as WebP with a JPEG fallback, and labels it as a concept', () => {
+    const out = html(pages.find((p) => p.file === 'index.html')!);
+    expect(out).toMatch(/<source type="image\/webp" srcset="\/store\/lounge-800\.webp 800w, \/store\/lounge-1600\.webp 1600w"/);
+    expect(out).toMatch(/<img class="lounge__photo" src="\/store\/lounge-1600\.jpg"[^>]+width="1600" height="1067"/);
+    expect(out).toContain('A concept rendering of the Lounge.');
+  });
+
+  it('publishes no share image or business details until the real origin is set', () => {
+    for (const entry of pages) {
+      const out = html(entry);
+      expect(out).not.toContain('og:image');
+      expect(out).not.toContain('application/ld+json');
+    }
   });
 
   it.each(pages)('$file has exactly one CTA and it goes to WhatsApp', (entry) => {

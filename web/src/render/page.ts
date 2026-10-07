@@ -9,7 +9,7 @@ import { site, whatsappUrl } from '../config/site.ts';
 import { groupDigits, formatRM } from '../features/money.ts';
 import { dicts, fmt, langMeta, langs, type Dict, type Lang } from '../i18n/index.ts';
 
-export type PageId = 'home' | 'privacy';
+export type PageId = 'home' | 'privacy' | 'terms';
 
 export interface PageEntry {
   /** HTML shell path relative to the web root. */
@@ -18,11 +18,10 @@ export interface PageEntry {
   page: PageId;
 }
 
-const pagePath = (lang: Lang, page: PageId) =>
-  langMeta[lang].base + (page === 'privacy' ? 'privacy/' : '');
+const pagePath = (lang: Lang, page: PageId) => langMeta[lang].base + (page === 'home' ? '' : `${page}/`);
 
 export const pages: PageEntry[] = langs.flatMap((lang) =>
-  (['home', 'privacy'] as const).map((page) => ({
+  (['home', 'privacy', 'terms'] as const).map((page) => ({
     lang,
     page,
     file: `${pagePath(lang, page).slice(1)}index.html`,
@@ -36,8 +35,46 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
 
 /* ---------------------------------------------------------------- pieces */
 
+const titles = { home: 'title', privacy: 'privacyTitle', terms: 'termsTitle' } as const;
+
+/** The share card for WhatsApp, Facebook and the like: 1200×630, one per language. */
+export const ogImagePath = (lang: Lang) => `/og/og-${lang}.png`;
+
+/**
+ * Business details for search engines (schema.org). Only with a real origin: every
+ * value here must be true when it is published.
+ */
+function businessJsonLd(lang: Lang): string {
+  const fees = bands.map((b) => b.fee);
+  const [opens, closes] = [site.store.opens, site.store.closes];
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: 'Dr Prop',
+    description: dicts[lang].meta.description,
+    url: `${site.origin}${langMeta[lang].base}`,
+    image: `${site.origin}${ogImagePath(lang)}`,
+    priceRange: `RM ${groupDigits(Math.min(...fees))} – ${groupDigits(Math.max(...fees))}`,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: site.store.address,
+      addressLocality: site.store.city,
+      addressCountry: 'MY',
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        opens,
+        closes,
+      },
+    ],
+  };
+  return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
+}
+
 function head(t: Dict, lang: Lang, page: PageId): string {
-  const title = page === 'home' ? t.meta.title : t.meta.privacyTitle;
+  const title = t.meta[titles[page]];
   const alternates = site.origin
     ? [
         `<link rel="canonical" href="${site.origin}${pagePath(lang, page)}">`,
@@ -45,6 +82,13 @@ function head(t: Dict, lang: Lang, page: PageId): string {
           (l) => `<link rel="alternate" hreflang="${langMeta[l].html}" href="${site.origin}${pagePath(l, page)}">`,
         ),
         `<link rel="alternate" hreflang="x-default" href="${site.origin}${pagePath('en', page)}">`,
+        `<meta property="og:url" content="${site.origin}${pagePath(lang, page)}">`,
+        `<meta property="og:image" content="${site.origin}${ogImagePath(lang)}">`,
+        '<meta property="og:image:width" content="1200">',
+        '<meta property="og:image:height" content="630">',
+        `<meta property="og:image:alt" content="${esc(t.hero.title)}">`,
+        '<meta name="twitter:card" content="summary_large_image">',
+        ...(page === 'home' ? [businessJsonLd(lang)] : []),
       ].join('\n    ')
     : '';
   return `<head>
@@ -54,6 +98,8 @@ function head(t: Dict, lang: Lang, page: PageId): string {
     <meta name="description" content="${esc(t.meta.description)}">
     <meta name="theme-color" content="#F4F1EA">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Dr Prop">
+    <meta property="og:locale" content="${langMeta[lang].locale}">
     <meta property="og:title" content="${esc(title)}">
     <meta property="og:description" content="${esc(t.meta.description)}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -204,12 +250,19 @@ function apothecary(): string {
       </svg>`;
 }
 
-/** The store photo or refined render when configured, otherwise the line drawing. */
+/** The store photo or concept render when configured, otherwise the line drawing. */
 function loungeImage(t: Dict): string {
   const img = site.store.image;
   if (!img) return `${apothecary()}\n        <figcaption class="small">${esc(t.lounge.figure)}</figcaption>`;
   const caption = img.kind === 'render' ? t.lounge.renderCaption : t.lounge.photoCaption;
-  return `<img class="lounge__photo" src="${esc(img.src)}" alt="${esc(caption)}" width="1600" height="1200" loading="lazy" decoding="async">
+  const srcset = (ext: string) => img.widths.map((w) => `${img.base}-${w}.${ext} ${w}w`).join(', ');
+  // Full width below 900px; five of twelve columns above (see .lounge__figure).
+  const sizes = '(min-width: 1440px) 560px, (min-width: 900px) 40vw, 100vw';
+  return `<picture>
+          <source type="image/webp" srcset="${srcset('webp')}" sizes="${sizes}">
+          <img class="lounge__photo" src="${img.base}-${img.width}.jpg" srcset="${srcset('jpg')}" sizes="${sizes}"
+               alt="${esc(t.lounge.renderAlt)}" width="${img.width}" height="${img.height}" loading="lazy" decoding="async">
+        </picture>
         <figcaption class="small">${esc(caption)}</figcaption>`;
 }
 
@@ -221,7 +274,7 @@ function lounge(t: Dict): string {
   return `<section class="section" aria-labelledby="lounge-title">
     <div class="wrap grid">
       <p class="label" aria-hidden="true">${esc(t.lounge.label)}</p>
-      <figure class="lounge__figure">
+      <figure class="lounge__figure${site.store.image ? ' lounge__figure--photo' : ''}">
         ${loungeImage(t)}
       </figure>
       <div class="lounge__text">
@@ -258,6 +311,7 @@ function footer(t: Dict, lang: Lang): string {
       <p class="site-footer__meta small">
         <span class="num">${esc(site.ssm)}</span>
         <a class="link" href="${pagePath(lang, 'privacy')}">${esc(t.footer.privacy)}</a>
+        <a class="link" href="${pagePath(lang, 'terms')}">${esc(t.footer.terms)}</a>
         <span>© <span class="num">${new Date().getFullYear()}</span> Dr Prop</span>
       </p>
     </div>
@@ -276,6 +330,30 @@ function privacy(t: Dict, lang: Lang): string {
   </section>`;
 }
 
+/** Terms of service (brief §2.4: the zero-commission promise belongs in the terms). */
+function terms(t: Dict, lang: Lang): string {
+  const date = new Intl.DateTimeFormat(langMeta[lang].locale.replace('_', '-'), { dateStyle: 'long', timeZone: 'UTC' }).format(
+    new Date(site.termsUpdated),
+  );
+  const sections = t.terms.sections
+    .map(
+      (sec) => `<h2 class="prose__head">${esc(sec.title)}</h2>
+        ${sec.body.map((p) => `<p>${esc(p)}</p>`).join('\n        ')}`,
+    )
+    .join('\n        ');
+  return `<section class="section section--first" aria-labelledby="terms-title">
+    <div class="wrap grid">
+      <div class="section__body prose">
+        <h1 class="display" id="terms-title">${esc(t.terms.title)}</h1>
+        <p>${esc(t.terms.intro)}</p>
+        ${sections}
+        <p class="small">${esc(fmt(t.terms.updated, { date }))}</p>
+        <p><a class="link" href="${langMeta[lang].base}">${esc(t.terms.back)}</a></p>
+      </div>
+    </div>
+  </section>`;
+}
+
 /* ---------------------------------------------------------------- document */
 
 export function renderDocument(entry: Pick<PageEntry, 'lang' | 'page'>, logoSvg: string): string {
@@ -284,7 +362,9 @@ export function renderDocument(entry: Pick<PageEntry, 'lang' | 'page'>, logoSvg:
   const body =
     page === 'home'
       ? [hero(t), consults(t), feeCalculator(t), lounge(t), visit(t)].join('\n  ')
-      : privacy(t, lang);
+      : page === 'privacy'
+        ? privacy(t, lang)
+        : terms(t, lang);
   return `<!doctype html>
 <html lang="${langMeta[lang].html}">
   ${head(t, lang, page)}

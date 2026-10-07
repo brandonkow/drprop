@@ -7,8 +7,9 @@ export const site = {
   whatsapp: '60XXXXXXXXX',
 
   /**
-   * Public origin, e.g. 'https://drprop.my'. Enables canonical and hreflang tags.
-   * Left null until the domain is confirmed.
+   * Public origin, e.g. 'https://drprop.my'. Enables canonical and hreflang tags, the
+   * share image (og:image needs an absolute URL) and the business details for search
+   * engines. Set it last, at launch, once every PLACEHOLDER here is real.
    */
   origin: null as string | null,
 
@@ -31,13 +32,34 @@ export const site = {
      */
     memberPlacesLeft: null as number | null,
     /**
-     * §4 image. Null shows the apothecary line drawing. Once the Blender model is
-     * refined (blender/build_store.py --render) or the store is photographed, put
-     * the file in web/public/ and set e.g. { src: '/store.jpg', kind: 'render' }.
+     * §4 image, or null for the apothecary line drawing. Files live in web/public as
+     * `${base}-${width}.webp` and `.jpg` for each width; `kind` picks the caption.
+     * Now: the concept render of the Lounge (brand/renders/ai/shophouse-lounge-photoreal.jpg,
+     * cropped to 3:2). When the store is photographed, swap the files and set kind: 'photo'.
      */
-    image: null as { src: string; kind: 'render' | 'photo' } | null,
+    image: {
+      base: '/store/lounge',
+      widths: [800, 1600],
+      width: 1600,
+      height: 1067,
+      kind: 'render',
+    } as StoreImage | null,
   },
+
+  /** Date the terms page was last changed (ISO). Update with any change to the terms. */
+  termsUpdated: '2026-10-07',
 } as const;
+
+export interface StoreImage {
+  /** Public path without the width and extension. */
+  base: string;
+  /** Widths available, smallest first. */
+  widths: readonly number[];
+  /** Intrinsic size of the largest file. */
+  width: number;
+  height: number;
+  kind: 'render' | 'photo';
+}
 
 export const whatsappUrl = (message: string) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;

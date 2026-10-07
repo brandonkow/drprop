@@ -356,6 +356,30 @@
   display: block;
   width: 100%;
   height: auto;
+  background: var(--c-wash);
+}
+
+/* A photo or render gets more room than the line drawing. */
+.lounge__figure--photo {
+  max-width: none;
+}
+
+@media (min-width: 900px) {
+  .lounge__figure--photo {
+    grid-column: 4 / span 5;
+  }
+}
+
+/* Terms: one heading per clause, set like the labels. */
+.prose__head {
+  margin-top: var(--space-3);
+  font-size: var(--text-body);
+  font-weight: 500;
+}
+
+/* Keep each clause with its heading. */
+.prose__head + p {
+  margin-top: calc(-1 * var(--space-2));
 }
 
 .ap-line {

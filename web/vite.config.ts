@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { gzipSync } from 'node:zlib';
 import { buildCjkFonts } from '@drprop/brand/fonts/cjk-subset';
 import { defineConfig, type Plugin } from 'vite';
 import { pages, renderDocument } from './src/render/page.ts';
@@ -97,10 +98,40 @@ function preloadDisplayFont(): Plugin {
   };
 }
 
+/**
+ * Brief §7.4: all JavaScript together under 250 KB gzipped. Prints each chunk and
+ * fails the build when the total goes over.
+ */
+function jsBudget(limitKb = 250): Plugin {
+  return {
+    name: 'drprop-js-budget',
+    apply: 'build',
+    generateBundle(_options, bundle) {
+      const chunks = Object.values(bundle)
+        .filter((f) => f.type === 'chunk')
+        .map((c) => ({ file: c.fileName, gz: gzipSync(c.code, { level: 9 }).length }))
+        .sort((a, b) => b.gz - a.gz);
+      const total = chunks.reduce((sum, c) => sum + c.gz, 0);
+      const kb = (n: number) => `${(n / 1024).toFixed(1)} KB`;
+      // The HTML entries leave near-empty chunks that Vite drops later: count them, don't list them.
+      const lines = chunks
+        .filter((c) => c.gz >= 512)
+        .map((c) => `  ${c.file.padEnd(40)} ${kb(c.gz).padStart(9)}`)
+        .join('\n');
+      const summary = `JavaScript, gzipped: ${kb(total)} of ${limitKb} KB (brief §7.4)\n${lines}`;
+      if (total > limitKb * 1024) this.error(`Over budget. ${summary}`);
+      this.info(summary);
+    },
+  };
+}
+
 export default defineConfig({
   root,
-  plugins: [drpropPages(), preloadDisplayFont()],
+  plugins: [drpropPages(), preloadDisplayFont(), jsBudget()],
   build: {
+    // three.js is one lazy chunk of ~550 KB raw (~135 KB gzipped). The budget that
+    // matters is the gzipped total, checked by jsBudget().
+    chunkSizeWarningLimit: 600,
     outDir: 'dist',
     emptyOutDir: true,
     // Never inline fonts as base64: most Noto SC slices are never downloaded.
