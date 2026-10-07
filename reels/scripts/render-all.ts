@@ -18,10 +18,11 @@
  *   npm run render:all -- --still --at 0.2     # …or at other points (0–1, comma-separated)
  *   npm run render:all -- --safe-zone          # burn in the safe-zone overlay (review only)
  *   npm run render:all -- --frames 0-89        # a range, for quick checks
+ *   npm run render:all -- --skip-existing      # resume a stopped batch: keep finished MP4s
  *
  * GPU-less machines: REMOTION_GL=swangle. Custom Chrome: REMOTION_BROWSER=/path.
  */
-import { readdirSync } from 'node:fs';
+import { existsSync, readdirSync, renameSync } from 'node:fs';
 import { cpus } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { bundle } from '@remotion/bundler';
@@ -87,6 +88,12 @@ const total = jobs.reduce((n, j) => n + langsOf(j).length * ratiosOf(j).length, 
 for (const job of jobs) {
   for (const lang of langsOf(job)) {
     for (const ratio of ratiosOf(job)) {
+      // Renders go to .part.mp4 and are renamed only when finished, so an existing MP4 is complete.
+      if (!still && flag('skip-existing') && existsSync(here(`../out/${job.name}-${lang}-${ratio}.mp4`))) {
+        done++;
+        console.log(`[${done}/${total}] ${job.name}-${lang}-${ratio}.mp4  kept`);
+        continue;
+      }
       const inputProps = { ...job.props, lang, ratio, showSafeZone: flag('safe-zone') };
       const composition = await selectComposition({
         serveUrl,
@@ -123,12 +130,13 @@ for (const job of jobs) {
           // Remotion's default writes full-range BT.601; deliver() checks and fixes the rest.
           colorSpace: 'bt709',
           frameRange: frames ?? null,
-          outputLocation: `${base}.mp4`,
+          outputLocation: `${base}.part.mp4`,
           concurrency,
           browserExecutable,
           chromiumOptions: { gl },
         });
-        if (!frames) console.log(`  ${deliver(`${base}.mp4`) || 'delivered as rendered'}`);
+        if (!frames) console.log(`  ${deliver(`${base}.part.mp4`) || 'delivered as rendered'}`);
+        renameSync(`${base}.part.mp4`, `${base}.mp4`);
       }
       done++;
       console.log(

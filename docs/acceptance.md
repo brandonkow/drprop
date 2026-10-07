@@ -8,7 +8,7 @@ they cover.
 
 | Criterion | Result | How it was checked |
 |---|---|---|
-| `npm run render:all` outputs every reel in three languages and three formats | RENDER_RESULT | Eight series → 108 MP4s in `reels/out/`. Each goes through `reels/scripts/deliver.ts`, and `deliver.ts --check` checks H.264, BT.709 limited range and −14 LUFS ±1 at ≤ −1 dBTP. |
+| `npm run render:all` outputs every reel in three languages and three formats | 90 of 108 done, all pass. StoreReveal and MemberCardReveal (18 files) are still to render: the batch hit this machine's 2-hour limit. Finish with `--skip-existing` | Eight series → 108 MP4s in `reels/out/`. Each goes through `reels/scripts/deliver.ts`, and `deliver.ts --check` checks H.264, BT.709 limited range and −14 LUFS ±1 at ≤ −1 dBTP. |
 | A new case episode is one new JSON file | Pass | `reels/src/data/index.ts` loads every file in `data/cases/`. `reels/test/data.test.ts` checks each case in three languages and its `basis` (general, or anonymised with a consent reference). |
 | All text inside the safe zone (`showSafeZone`) | Pass | `--safe-zone` stills of every series at two moments in Malay (the longest language), 9:16. Then R3's closing frame in all three languages and all three formats. Two fixes came out of it: 9:16 captions now stop at the like/share column (`TEXT_MAX_9x16`), and R3's closing call-to-action now fits the 9:16 safe area. |
 | A missing 3D model falls back to a placeholder; the render doesn't stop | Pass | StoreReveal rendered with `brand/3d/store.glb` removed: the procedural store appeared. Fix: the stand-in cabinet had sat inside the wall. |

@@ -58,12 +58,11 @@ Without a GPU, Remotion needs `REMOTION_GL=swangle`. ffmpeg comes bundled with R
 
 Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and acceptance §9–§11) are done; see `docs/acceptance.md`.
 
-### 1. Finish the reel render check
-- [ ] A full render of the eight series (108 MP4s) was started. If `reels/out/` doesn't have all 108, re-run:
-  `cd reels && REMOTION_GL=swangle npx tsx scripts/render-all.ts --only BrandPulse,CaseOfWeek,BeforeYouSign,FeeReveal,MarketPulse,LoungeMoment,StoreReveal,MemberCardReveal`
-  (1.5–2.5 h on 4 CPU cores).
-- [ ] Then run `npx tsx scripts/deliver.ts --check out/*.mp4` and write the result into the first row of `docs/acceptance.md` (it says RENDER_RESULT until then).
-- [ ] Decide where delivered reels live. `reels/out/` is gitignored; the 9:16 set is about 30 MB if committed. The alternative is a shared drive.
+### 1. Finish the reel render (18 files left)
+- [ ] 90 of 108 rendered and passed the delivery check: H.264, BT.709 limited range, −14 LUFS, true peak ≤ −1 dBTP. The batch stopped at the 2-hour limit before StoreReveal and MemberCardReveal (9 files each). Resume; finished files are kept:
+  `cd reels && REMOTION_GL=swangle npx tsx scripts/render-all.ts --skip-existing --only StoreReveal,MemberCardReveal`
+  (about 30 minutes). Then run `npx tsx scripts/deliver.ts --check out/*.mp4` and update the first row of `docs/acceptance.md` to 108 of 108.
+- [ ] Decide where delivered reels live. `reels/out/` is gitignored; the whole set is about 115 MB (the 9:16 set alone about 40 MB). The alternative is a shared drive.
 
 ### 2. Only the owner can do these (GitHub)
 - [ ] Delete the old Codex branch `feat/brand-static-landing` (its useful parts are already ported). It's at https://github.com/brandonkow/drprop/branches; the last commit is `b9f3913`, if it's ever needed.
@@ -81,6 +80,8 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 - Payments (FPX, Touch 'n Go, GrabPay, cards) and private report storage in supabase mode.
 
 ## What changed in the last session (newest first)
+
+- **Reels:** `render-all --skip-existing` resumes a stopped batch. Renders go to `.part.mp4` and are renamed only when finished and delivered, so a stopped render never leaves a half file that looks done.
 
 - **Reels:**
   - 9:16 captions stop at the like/share column;
