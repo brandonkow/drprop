@@ -195,7 +195,7 @@ function feeCalculator(t: Dict): string {
           <label class="calc__label small" for="property-value">${esc(t.fee.inputLabel)}</label>
           <div class="calc__field num">
             <span class="calc__prefix" aria-hidden="true">RM</span>
-            <input class="calc__input" id="property-value" type="text" inputmode="numeric"
+            <input class="calc__input" id="property-value" type="text" inputmode="decimal"
                    autocomplete="off" spellcheck="false" enterkeyhint="done"
                    placeholder="${esc(t.fee.placeholder)}" aria-describedby="fee-note">
           </div>

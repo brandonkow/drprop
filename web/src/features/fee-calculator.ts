@@ -22,12 +22,11 @@ export function initFeeCalculator(root: HTMLElement, onChange: (change: FeeChang
   let shownBand: Band['id'] | null = null;
 
   const update = () => {
-    const { value, caret, digits } = reformat(input.value, input.selectionStart ?? input.value.length);
+    const { value, caret, amount } = reformat(input.value, input.selectionStart ?? input.value.length);
     if (input.value !== value) {
       input.value = value;
       if (document.activeElement === input) input.setSelectionRange(caret, caret);
     }
-    const amount = digits ? Number(digits) : null;
     const band = amount === null ? null : bandFor(amount);
 
     if ((band?.id ?? null) !== shownBand) {

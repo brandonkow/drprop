@@ -53,7 +53,7 @@ export function PulseSplash({ onDone }: { onDone(): void }) {
   const scale = Math.min(1.6, (width * 0.5) / WORD_W);
 
   return (
-    <Animated.View style={[StyleSheet.absoluteFill, s.splash, container]} accessible accessibilityLabel="DR. PROP">
+    <Animated.View style={[StyleSheet.absoluteFill, s.splash, container]} accessible accessibilityRole="image" accessibilityLabel="DR. PROP">
       <Pressable style={StyleSheet.absoluteFill} onPress={onDone} accessibilityHint={t.splash.skip}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <Canvas style={{ width, height: 200 }}>

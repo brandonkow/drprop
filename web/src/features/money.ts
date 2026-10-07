@@ -16,16 +16,34 @@ export function cleanDigits(raw: string): string {
 /**
  * Reformat a typed value and work out where the caret should land, so editing
  * in the middle of "1,250,000" does not throw the caret to the end.
+ * A full stop starts the sen: "500,000.00" is RM 500,000, not RM 50,000,000.
+ * `digits` is the ringgit part; `amount` the value with sen, or null when empty.
  */
-export function reformat(raw: string, caret: number): { value: string; caret: number; digits: string } {
-  const digitsBeforeCaret = cleanDigits(raw.slice(0, caret)).length;
-  const digits = cleanDigits(raw);
-  const value = groupDigits(digits);
-  let seen = 0;
-  let pos = 0;
-  while (pos < value.length && seen < digitsBeforeCaret) {
-    if (/\d/.test(value[pos]!)) seen++;
-    pos++;
+export function reformat(
+  raw: string,
+  caret: number,
+): { value: string; caret: number; digits: string; amount: number | null } {
+  const dot = raw.indexOf('.');
+  const intRaw = dot >= 0 ? raw.slice(0, dot) : raw;
+  const fracRaw = dot >= 0 ? raw.slice(dot + 1) : '';
+  const digits = cleanDigits(intRaw);
+  const sen = fracRaw.replace(/\D/g, '').slice(0, 2);
+  const whole = digits || (dot >= 0 ? '0' : '');
+  const grouped = groupDigits(whole);
+  const value = grouped + (dot >= 0 ? `.${sen}` : '');
+
+  let pos: number;
+  if (dot >= 0 && caret > dot) {
+    pos = grouped.length + 1 + Math.min(sen.length, fracRaw.slice(0, caret - dot - 1).replace(/\D/g, '').length);
+  } else {
+    const digitsBeforeCaret = cleanDigits(intRaw.slice(0, caret)).length;
+    let seen = 0;
+    pos = 0;
+    while (pos < grouped.length && seen < digitsBeforeCaret) {
+      if (/\d/.test(grouped[pos]!)) seen++;
+      pos++;
+    }
   }
-  return { value, caret: pos, digits };
+  const amount = whole ? Number(`${whole}.${sen || '0'}`) : null;
+  return { value, caret: pos, digits, amount: amount === 0 ? null : amount };
 }

@@ -5,3 +5,7 @@ dist/
 /web/.screens/
 /web/src/styles/cjk.generated.css
 /web/src/styles/cjk-fonts/
+
+# Playwright output (npm run test:e2e)
+/test-results/
+/playwright-report/
