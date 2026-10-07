@@ -26,13 +26,11 @@ Read first:
 ```bash
 npm install
 npm run typecheck            # every package
-npm test                     # 138 unit tests (vitest), incl. 22 database tests on PGlite
+npm test                     # 153 unit tests (vitest), incl. 22 database tests on PGlite
 npm run lint -w @drprop/app
 npm run build                # website; fails if JS > 250 KB gzip or a launch build has placeholders
-cd app && npx expo export -p web && cd ..                    # app/dist, for the app e2e tests
-cd app && EXPO_PUBLIC_APP_MODE=supabase EXPO_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321 \
-  EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_local_fixture_only \
-  npx expo export -p web --clear --output-dir dist-connected && cd ..   # never deploy this build
+npm run export:web -w @drprop/app                  # app/dist (preview), always --clear
+npm run export:connected-fixture -w @drprop/app    # app/dist-connected (fixture backend); never deploy
 npm run test:e2e             # 19 browser tests: web 14, app 2, connected 3
 ```
 
@@ -58,46 +56,44 @@ Without a GPU, Remotion needs `REMOTION_GL=swangle`. ffmpeg comes bundled with R
 
 ## Left to do (in order)
 
-### 1. App screens against brief §8 (mostly done)
-Already done:
-- member card: hidden for non-members, check-in only when the membership is active;
-- honest PDF line in supabase mode;
-- accessibility labels.
+Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and acceptance §9–§11) are done; see `docs/acceptance.md`.
 
-Still to do: one pass over S0–S6 in both modes, especially:
-- [ ] Dark mode on every screen, including the adviser screen `app/src/app/staff.tsx` (new).
-- [ ] 44 pt touch targets on the adviser screen's chips and links.
-- [ ] Every new string in all three languages (`app/src/i18n/strings.ts`; tsc enforces the shape).
-- [ ] Optional: in preview mode, the sample record's "Diagnosis (PDF)" could open the sample report (`web/public/samples/diagnosis-{lang}.pdf`).
+### 1. Finish the reel render check
+- [ ] A full render of the eight series (108 MP4s) was started. If `reels/out/` doesn't have all 108, re-run:
+  `cd reels && REMOTION_GL=swangle npx tsx scripts/render-all.ts --only BrandPulse,CaseOfWeek,BeforeYouSign,FeeReveal,MarketPulse,LoungeMoment,StoreReveal,MemberCardReveal`
+  (1.5–2.5 h on 4 CPU cores).
+- [ ] Then run `npx tsx scripts/deliver.ts --check out/*.mp4` and write the result into the first row of `docs/acceptance.md` (it says RENDER_RESULT until then).
+- [ ] Decide where delivered reels live. `reels/out/` is gitignored; the 9:16 set is about 30 MB if committed. The alternative is a shared drive.
 
-### 2. Visual rules (§5) on what was added last
-Check these new pieces:
-- `web/src/render/page.ts` (terms page, sample link) and `web/src/styles/sections.css`;
-- `brand/print/render.ts` (report, card, plate);
-- `web/scripts/og-image.ts` (share cards);
-- `app/src/app/staff.tsx`.
-
-What to check:
-- [ ] Radius 0–2 px, tokens only (`brand/tokens/tokens.ts`), no gradients or shadows on UI.
-- [ ] Bronze at most 3 times per page. The report uses it only for "Resolve before signing".
-- [ ] One solid button per app screen.
-
-### 3. Reels and acceptance (§9–§11)
-- [ ] Render the full set with `REMOTION_GL=swangle npm run render:all` (about 108 files and 1.5–2.5 h; output goes to `reels/out/`, which git ignores). Then run `npx tsx reels/scripts/deliver.ts --check reels/out/*.mp4` and look at the stills (`npm run still -w @drprop/reels`). Check:
-  - the sound logo at the end of every reel;
-  - the NAPIC market reel (`2025-selangor-residential-value`) in all three languages;
-  - safe zones (`--safe-zone`).
-- [ ] Walk through the acceptance list in brief §10 and the open items in §11; update `docs/launch-checklist.md`.
-- [ ] Decide whether delivered reel MP4s should live in the repo (about 30 MB for the 9:16 set) or elsewhere.
-
-### 4. Only the owner can do these (GitHub)
+### 2. Only the owner can do these (GitHub)
 - [ ] Delete the old Codex branch `feat/brand-static-landing` (its useful parts are already ported). It's at https://github.com/brandonkow/drprop/branches; the last commit is `b9f3913`, if it's ever needed.
 - [ ] Optional: make `main` the default branch (Settings → General).
 
-### 5. Before launch: `docs/launch-checklist.md`
-Founder decisions, lawyer review, real details in `web/src/config/site.ts` (set `origin` last), native-speaker review, real-phone tests, the hosted backend, payments (next phase), media rights and print.
+### 3. Before launch: `docs/launch-checklist.md`
+- Founder decisions (now including name and trademark, an REA or valuer partner, the floor plan, social platforms).
+- Lawyer review, real details in `web/src/config/site.ts` (set `origin` last), native-speaker review.
+- Real-phone tests (Android 4 GB smooth scrolling is the one §10 criterion still open).
+- The hosted backend, payments (next phase), media rights and print.
+
+### Nice to have (not required by the brief)
+- In preview mode, the sample record's "Diagnosis (PDF)" could open `web/public/samples/diagnosis-{lang}.pdf`.
+- The member card QR (`drprop:checkin:<memberNo>`) needs a signed, expiring token before real check-in.
+- Payments (FPX, Touch 'n Go, GrabPay, cards) and private report storage in supabase mode.
 
 ## What changed in the last session (newest first)
+
+- **Reels:**
+  - 9:16 captions stop at the like/share column;
+  - R3's closing call-to-action fits the safe area (it had spilled out in English and Malay);
+  - the stand-in store cabinet no longer sits inside the wall.
+- **Docs:**
+  - `docs/acceptance.md` records the brief's acceptance lists;
+  - the launch checklist gains the §11 founder items.
+- **Web:** terms headings in the label style.
+- **App:**
+  - 44-point touch targets on links and the coffee field;
+  - no past times offered on the adviser screen;
+  - `npm run export:web` / `export:connected-fixture` (`-w @drprop/app`) always build with `--clear`, because a cached build from the other mode leaks backend settings.
 
 - **Connected-app browser test:** `e2e/connected.spec.ts` with `e2e/fake-supabase.mjs`, which runs the real migration on PGlite. Client books, cancels and requests an urgent call-back; the adviser takes it and writes a note; the client sees the note.
 - **App fixes:**
