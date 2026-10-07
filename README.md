@@ -47,6 +47,7 @@ npm install
 | `npm run lint -w @drprop/app` | App 的 ESLint |
 | `npm run brand:build` | 由 `brand/tokens/tokens.ts` 重新生成 `tokens.css`、logo SVG、字形数据 |
 | `npm run brand:3d` | 重新导出 `brand/3d/*.glb`；`npm run 3d:preview -w @drprop/brand` 查看 |
+| `npm run print -w @drprop/brand` | 印刷品 → `brand/print/out/`：诊断书 PDF（A4，三语示例）、凸版诊断卡（A6）、门口诊金铜牌（300 × 400 mm）；示例诊断书同时放到官网 `/samples/` |
 
 App 也可在浏览器里预览（适合快速看界面）：`cd app && npm run setup-skia-web && npm run web`。
 

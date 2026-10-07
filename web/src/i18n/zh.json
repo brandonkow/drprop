@@ -47,6 +47,7 @@
     "placeholder": "500,000",
     "resultLabel": "诊金",
     "note": "每次诊断附书面诊断书。",
+    "sample": "看看诊断书示例（PDF）",
     "rules": "急诊：诊金 + 50%。签约前复诊：半价。",
     "tableCaption": "全部诊金",
     "upTo": "不超过",

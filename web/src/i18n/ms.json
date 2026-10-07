@@ -47,6 +47,7 @@
     "placeholder": "500,000",
     "resultLabel": "Yuran anda",
     "note": "Setiap konsultasi disertakan laporan diagnosis bertulis.",
+    "sample": "Lihat contoh diagnosis (PDF)",
     "rules": "Konsultasi segera: yuran + 50%. Semakan sebelum tandatangan: separuh yuran.",
     "tableCaption": "Semua yuran",
     "upTo": "Sehingga",

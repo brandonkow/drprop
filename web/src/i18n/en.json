@@ -47,6 +47,7 @@
     "placeholder": "500,000",
     "resultLabel": "Your fee",
     "note": "Every consult comes with a written diagnosis.",
+    "sample": "See a sample diagnosis (PDF)",
     "rules": "Urgent consult: fee + 50%. Pre-signing review: half fee.",
     "tableCaption": "All fees",
     "upTo": "Up to",

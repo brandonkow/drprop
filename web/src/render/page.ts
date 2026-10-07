@@ -173,7 +173,7 @@ function consults(t: Dict): string {
   </section>`;
 }
 
-function feeCalculator(t: Dict): string {
+function feeCalculator(t: Dict, lang: Lang): string {
   const rows = bands
     .map((b, i) => {
       const prev = bands[i - 1];
@@ -202,7 +202,7 @@ function feeCalculator(t: Dict): string {
           <p class="calc__label small" id="fee-result-label">${esc(t.fee.resultLabel)}</p>
           <output class="calc__result num" for="property-value" aria-labelledby="fee-result-label" aria-live="polite"><span class="calc__prefix">RM</span> <span class="calc__fee" data-fee>—</span></output>
         </div>
-        <p class="fee__note" id="fee-note">${esc(t.fee.note)}</p>
+        <p class="fee__note" id="fee-note">${esc(t.fee.note)} <a class="link" href="/samples/diagnosis-${lang}.pdf" type="application/pdf">${esc(t.fee.sample)}</a></p>
         <table class="bands">
           <caption class="small">${esc(t.fee.tableCaption)}</caption>
           <tbody>
@@ -361,7 +361,7 @@ export function renderDocument(entry: Pick<PageEntry, 'lang' | 'page'>, logoSvg:
   const t = dicts[lang];
   const body =
     page === 'home'
-      ? [hero(t), consults(t), feeCalculator(t), lounge(t), visit(t)].join('\n  ')
+      ? [hero(t), consults(t), feeCalculator(t, lang), lounge(t), visit(t)].join('\n  ')
       : page === 'privacy'
         ? privacy(t, lang)
         : terms(t, lang);

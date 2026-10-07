@@ -42,6 +42,12 @@ On a mid-range Android phone (4 GB) and a recent iPhone:
 - [ ] Add advisers and members; confirm prices; open bookings.
 - [ ] Next phase: payments (FPX, Touch 'n Go, GrabPay, cards), private report PDFs, check-in.
 
+## Print (`npm run print -w @drprop/brand`)
+
+- [ ] The diagnosis report template (`brand/print/`): an adviser and the lawyer read the sample, in all three languages, before it becomes the house format.
+- [ ] Letterpress card: choose the printer and the stock (thick cotton, one ink); they add bleed to `diagnosis-card-*.pdf`.
+- [ ] Door fee plate: etch `fee-plate.pdf` into brushed bronze at 300 × 400 mm, after the fees and hours are final.
+
 ## Media
 
 - [ ] Commission the sound logo with full rights; replace `brand/audio/sound-logo.wav` (same name, 2.5 s).

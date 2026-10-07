@@ -20,7 +20,8 @@
   "scripts": {
     "build": "tsx scripts/build-css.ts && tsx scripts/build-logo.ts",
     "3d": "tsx scripts/export-glb.ts",
-    "3d:preview": "vite 3d/preview --port 5190"
+    "3d:preview": "vite 3d/preview --port 5190",
+    "print": "tsx scripts/build-print.ts"
   },
   "dependencies": {
     "@fontsource/geist": "^5.3.0",

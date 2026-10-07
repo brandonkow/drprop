@@ -102,4 +102,10 @@ describe('rendered pages', () => {
   it.each(langs)('has a share card for %s (og:image once the origin is set)', (lang) => {
     expect(existsSync(new URL(`../public${ogImagePath(lang)}`, import.meta.url))).toBe(true);
   });
+
+  it.each(pages.filter((p) => p.page === 'home'))('$file links the sample diagnosis in its language, and the file exists', (entry) => {
+    const href = html(entry).match(/href="(\/samples\/diagnosis-\w+\.pdf)"/)?.[1];
+    expect(href).toBe(`/samples/diagnosis-${entry.lang}.pdf`);
+    expect(existsSync(new URL(`../public${href}`, import.meta.url))).toBe(true);
+  });
 });
