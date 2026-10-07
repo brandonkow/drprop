@@ -1,6 +1,8 @@
+import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { launchProblems, site } from '../src/config/site.ts';
-import { pages, renderDocument } from '../src/render/page.ts';
+import { langs } from '../src/i18n/index.ts';
+import { ogImagePath, pages, renderDocument } from '../src/render/page.ts';
 
 const html = (entry: (typeof pages)[number]) => renderDocument(entry, '<svg></svg>');
 
@@ -95,5 +97,9 @@ describe('rendered pages', () => {
         store: { address: '12 Jalan SS 2/24, 47300 Petaling Jaya, Selangor', mapsUrl: 'https://maps.app.goo.gl/AbCdEf' },
       }),
     ).toEqual([]);
+  });
+
+  it.each(langs)('has a share card for %s (og:image once the origin is set)', (lang) => {
+    expect(existsSync(new URL(`../public${ogImagePath(lang)}`, import.meta.url))).toBe(true);
   });
 });
