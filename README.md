@@ -42,6 +42,7 @@ npm install
 | `npm run render:all` | 渲染全部 Reels（见下文） |
 | `npm run twin` | 门店运营孪生 → http://localhost:5191；`npm run twin:build` 构建到 `twin/dist/`（相对路径，任何静态主机都能放） |
 | `npm test` | 单元测试（品牌、官网、App、Reels 数据、门店孪生、数据库） |
+| `npm run test:e2e` | 浏览器测试（Playwright）：官网成品与 App 预览流程，含无障碍检查。先 `npm run build`，App 部分再 `cd app && npx expo export -p web` |
 | `npm run typecheck` | 全部包的类型检查 |
 | `npm run lint -w @drprop/app` | App 的 ESLint |
 | `npm run brand:build` | 由 `brand/tokens/tokens.ts` 重新生成 `tokens.css`、logo SVG、字形数据 |
