@@ -17,6 +17,13 @@ const load = (p: string) =>
 const LANGS = ['en', 'zh', 'ms'] as const;
 
 describe('case episodes (R2)', () => {
+  it.each(load('cases'))('%s says whether it is general or a real, anonymised case (§9.7)', (_, ep) => {
+    // general: no client behind it. anonymised: a real client, PDPA-anonymised, with their
+    // written consent kept outside this repository and referenced here.
+    expect(['general', 'anonymised']).toContain(ep.basis);
+    if (ep.basis === 'anonymised') expect(String(ep.consentRef ?? '').trim()).not.toBe('');
+  });
+
   it.each(load('cases'))('%s is complete in three languages', (_, ep) => {
     expect(['terrace', 'condo', 'bungalow']).toContain(ep.houseType);
     expect(['roof', 'facade', 'structure', 'land']).toContain(ep.highlight);

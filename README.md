@@ -1,6 +1,6 @@
 # Dr Prop
 
-独立房产诊所的品牌、官网、App 与营销视频。设计与业务依据见 [`docs/brief.md`](docs/brief.md)。
+独立房产诊所的品牌、官网、App 与营销视频。设计与业务依据见 [`docs/brief.md`](docs/brief.md)；上线前待办见 [`docs/launch-checklist.md`](docs/launch-checklist.md)。
 
 一个 npm workspaces 仓库，所有端共用同一套品牌资产：
 
@@ -11,6 +11,7 @@ app/       会员 App（Expo SDK 57 + Expo Router）：首页、问诊流程、�
 reels/     营销视频（Remotion 4）：R1–R8，三语 × 三比例批量渲染
 blender/   门店数字孪生（店屋 / 商场两种形态）、药柜与动线动画的 Blender 脚本（bpy）
 twin/      门店运营孪生（three.js）：交互式 3D 门店 + 看板，六种顾客走完一个模拟营业日
+supabase/  App 第二阶段后端：短信登录、顾问排班、预约、会员、Lounge 看板（行级安全 + 测试）
 docs/      执行文档
 ```
 
@@ -40,13 +41,15 @@ npm install
 | `npm run reels` | Remotion Studio，逐帧预览所有 Reels |
 | `npm run render:all` | 渲染全部 Reels（见下文） |
 | `npm run twin` | 门店运营孪生 → http://localhost:5191；`npm run twin:build` 构建到 `twin/dist/`（相对路径，任何静态主机都能放） |
-| `npm test` | 单元测试（品牌、官网、Reels 数据） |
-| `npm run typecheck` | 五个包的类型检查 |
+| `npm test` | 单元测试（品牌、官网、App、Reels 数据、门店孪生、数据库） |
+| `npm run typecheck` | 全部包的类型检查 |
 | `npm run lint -w @drprop/app` | App 的 ESLint |
 | `npm run brand:build` | 由 `brand/tokens/tokens.ts` 重新生成 `tokens.css`、logo SVG、字形数据 |
 | `npm run brand:3d` | 重新导出 `brand/3d/*.glb`；`npm run 3d:preview -w @drprop/brand` 查看 |
 
 App 也可在浏览器里预览（适合快速看界面）：`cd app && npm run setup-skia-web && npm run web`。
+
+App 默认是**预览模式**（本机示例数据，不连网）。接上后端：把 `app/.env.example` 复制为 `app/.env`，设 `EXPO_PUBLIC_APP_MODE=supabase` 与项目网址、publishable key，见 [`supabase/README.md`](supabase/README.md)。后端模式不收款：预约是「申请」，由顾问确认。
 
 ---
 
@@ -59,8 +62,10 @@ App 也可在浏览器里预览（适合快速看界面）：`cd app && npm run 
 | Vercel / Netlify / Cloudflare Pages | `npm run build` | `web/dist` |
 
 - Node 版本设为 22。
-- 页面路径：`/`、`/zh/`、`/ms/`，隐私页 `/privacy/`、`/zh/privacy/`、`/ms/privacy/`。
-- 域名确定后，在 `web/src/config/site.ts` 填 `origin`，页面会自动加上 canonical 与 hreflang。
+- 页面路径：`/`、`/zh/`、`/ms/`；隐私页 `/privacy/`，服务条款 `/terms/`（三语同理）。条款写明零佣金与转介费披露（brief §2.4）。
+- 域名确定后，在 `web/src/config/site.ts` 填 `origin`，页面会自动加上 canonical、hreflang、分享图与商家资料（schema.org）。**填了 `origin` 就是上线构建：若 WhatsApp 号码、SSM、地址或地图链接仍是占位，构建会直接失败。**
+- 构建时检查 JavaScript 总量（gzip 后须小于 250 KB，brief §7.4），并生成 `/third-party-notices.txt`（字体与开源库的许可证）。
+- 手机开了省流量模式时，不加载 WebGL 背景，只显示静态脉搏线。
 - 中文字体在构建时按页面实际用字裁剪（约 50 KB），改了中文文案后重新构建即可，无需手动处理。
 
 ---
@@ -76,17 +81,19 @@ App 也可在浏览器里预览（适合快速看界面）：`cd app && npm run 
 | SSM 注册号 | 同上 | `ssm` |
 | 门店地址、Google Maps 链接、营业时间 | 同上 | `store.address`、`store.mapsUrl`、`store.opens` / `closes` |
 | 会员名额与剩余名额 | 同上 | `store.memberCap`、`store.memberPlacesLeft`（留空就不显示，绝不填假数字） |
-| 官网 §4 门店照片 / 渲染图 | 同上 | `store.image`，图片放 `web/public/` |
+| 官网 §4 门店照片 / 渲染图 | 同上 | `store.image`（现为 Lounge 概念渲染图，开业后换成实拍并设 `kind: 'photo'`），图片放 `web/public/store/` |
+| 服务条款更新日期 | 同上 | `termsUpdated`（改条款时一并更新） |
 | 官网三语文案 | `web/src/i18n/{en,zh,ms}.json` | 三份键名必须一致（有测试把关） |
 | 诊金分档、急诊加价、复诊折扣 | `brand/pricing.ts` | 官网、App、Reels 共用，改一处全部生效 |
-| App 门店信息（Lounge 座位、今日咖啡） | `app/src/data/mock.ts` | `STORE`（第二阶段接 Supabase 后改为读后端） |
+| App 门店信息（Lounge 座位、今日咖啡） | 预览：`app/src/data/mock.ts` 的 `STORE`；后端模式：前台在 App「顾问排班」里更新 | |
+| App 后端（第二阶段） | `app/.env`、`supabase/` | 见 `supabase/README.md`：开放预约前须确认诊金与营业时间 |
 | App 文案 | `app/src/i18n/strings.ts` | |
 | Reels 文案 | `reels/src/copy.ts` | |
 | 门店平面尺寸 | `blender/store.config.json`（店屋）、`blender/store.mall.json`（商场） | 改完运行 `python blender/build_layout_plan.py --stills brand/renders` |
-| 声音 Logo | `brand/audio/sound-logo.wav` | 放入后每支 Reel 片尾自动使用 |
+| 声音 Logo | `brand/audio/sound-logo.wav` | 现为合成的暂代版（`reels/scripts/sound-logo.ts`）；委托音效师制作并买断后，同名同长度（2.5 秒）替换即可 |
 | 门店孪生的示例日程 | `twin/src/sim/day.ts` | `sampleDay()` 换成当天真实预约（`Visit[]`）；平面改动后运行 `python blender/export_twin.py` |
 
-英文与马来文文案由开发时撰写，发布前请母语者审校；隐私页与免责声明请律师确认（见 brief §2）。
+英文与马来文文案由开发时撰写，发布前请母语者审校；隐私页、服务条款（尤其改期退款与责任条款）与免责声明请律师确认（见 brief §2）。
 
 ---
 
@@ -147,8 +154,15 @@ npm run render:all -- --only case-004-renovation-approval
 
 ### 本月房市心跳（R5）
 
-`reels/src/data/market/` 里现在是一份**示例数据**（`"sample": true`，画面带「示例数据 · 不可发布」水印）。
-用 NAPIC 公布的数字新建一个文件（如 `2026-q3.json`），填好 `source` 与 `date`，并设 `"sample": false`。
+`reels/src/data/market/` 有两份：
+- `2025-selangor-residential-value.json`：**真实数据**，雪兰莪住宅交易总值 2021–2025（百万令吉），出自 NAPIC《Property Market Report 2025》中部区域图 8（PDF 第 98 页），已对照原报告核实。这是交易总值，不是房价指数或中位价。
+- `2026-q2-sample.json`：**示例数据**（`"sample": true`，画面带「示例数据 · 不可发布」水印）。
+
+新增真实数据时设 `"sample": false`，并填 `provenance`（报告名、直接链接、页码、下载日期、文件 SHA-256）；缺任何一项测试与渲染都会拒绝。
+
+### 交付规格
+
+每支 MP4 渲染后自动经过 `reels/scripts/deliver.ts`：BT.709 有限范围并写明色彩标签，响度 −14 LUFS、真峰值不高于 −1 dBTP（brief §9.5）。检查已交付的影片：`npm run verify:media -w @drprop/reels`。病例 JSON 须注明 `basis`：`general`（一般知识）或 `anonymised`（真实个案，已匿名，并以 `consentRef` 记录书面同意）。
 
 ### 授权
 
@@ -195,4 +209,5 @@ python blender/build_layout_plan.py --config blender/store.mall.json --stills br
 
 - 字体：Instrument Serif、Geist、Geist Mono、Noto Serif SC、Noto Sans SC，均为 SIL OFL。
 - 官网流体移植自 [PavelDoGreat/WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation)（MIT，许可证见 `web/src/scene/fluid/LICENSE`）。
-- three.js、GSAP、Lenis、Remotion、Expo 等依赖各自的许可证见 `node_modules`。
+- three.js、GSAP、Lenis、Remotion、Expo 等依赖各自的许可证见 `node_modules`；官网实际发布的部分在构建时汇总为 `/third-party-notices.txt`。
+- 后端的数据库设计参考了 Codex 分支（`feat/brand-static-landing`）的方案，并按 brief 调整（急诊回电、整数令吉诊金、三语、饮品、会员、笔记、Lounge 看板）。

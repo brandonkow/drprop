@@ -8,6 +8,13 @@ import { validateMarket, type MarketMonth } from './validate';
 export type { MarketMonth };
 
 export interface CaseEpisode {
+  /**
+   * general: an educational topic with no client behind it. anonymised: a real case,
+   * anonymised under PDPA 2010, with the client's written consent kept outside this
+   * repository and referenced by consentRef (brief §9.7).
+   */
+  basis: 'general' | 'anonymised';
+  consentRef?: string;
   houseType: HouseType;
   highlight: HousePart;
   en: { hook: string; lines: string[] };
