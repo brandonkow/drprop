@@ -1,9 +1,11 @@
 import { readFileSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
 import { buildCjkFonts } from '@drprop/brand/fonts/cjk-subset';
 import { defineConfig, type Plugin } from 'vite';
+import { launchProblems, site } from './src/config/site.ts';
 import { pages, renderDocument } from './src/render/page.ts';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
@@ -98,6 +100,82 @@ function preloadDisplayFont(): Plugin {
   };
 }
 
+/** Setting site.origin means launch: refuse to build while placeholders remain. */
+function launchGuard(): Plugin {
+  return {
+    name: 'drprop-launch-guard',
+    apply: 'build',
+    buildStart() {
+      const problems = launchProblems();
+      if (site.origin && problems.length) {
+        this.error(`site.origin is set, so this is a launch build, but placeholders remain:\n  ${problems.join('\n  ')}`);
+      }
+      if (!site.origin && problems.length) this.info(`Preview build: ${problems.length} placeholders in src/config/site.ts.`);
+    },
+  };
+}
+
+/**
+ * /third-party-notices.txt: the licences of everything the site ships (fonts, three.js,
+ * Lenis, the fluid simulation, GSAP), read from the installed packages so versions
+ * stay current. The OFL and MIT licences require the notice to travel with the files.
+ */
+function thirdPartyNotices(): Plugin {
+  const require = createRequire(import.meta.url);
+  // Some packages (three) don't export package.json: find it above the entry point.
+  const pkg = (name: string) => {
+    let dir = dirname(require.resolve(name));
+    for (;;) {
+      try {
+        const json = JSON.parse(readFileSync(`${dir}/package.json`, 'utf8')) as { name?: string; version: string; license: string };
+        if (json.name === name) return { dir, ...json };
+      } catch {
+        // no package.json at this level
+      }
+      const up = dirname(dir);
+      if (up === dir) throw new Error(`package.json for ${name} not found`);
+      dir = up;
+    }
+  };
+  const fromPackage = (name: string, what: string) => {
+    const p = pkg(name);
+    return { title: `${name} ${p.version} (${p.license})`, what, text: readFileSync(`${p.dir}/LICENSE`, 'utf8') };
+  };
+  return {
+    name: 'drprop-notices',
+    apply: 'build',
+    generateBundle() {
+      const sections = [
+        fromPackage('@fontsource/instrument-serif', 'Instrument Serif, the display face'),
+        fromPackage('@fontsource/geist', 'Geist, the text face'),
+        fromPackage('@fontsource/geist-mono', 'Geist Mono, for numbers'),
+        fromPackage('@fontsource/noto-sans-sc', 'Noto Sans SC, subset for the Chinese pages'),
+        fromPackage('@fontsource/noto-serif-sc', 'Noto Serif SC, subset for the Chinese pages'),
+        fromPackage('three', 'three.js, the Pulse Roof line'),
+        fromPackage('lenis', 'Lenis, smooth scrolling'),
+        {
+          title: 'WebGL-Fluid-Simulation by Pavel Dobryakov (MIT)',
+          what: 'the ink fluid, ported and modified (web/src/scene/fluid)',
+          text: readFileSync(fileURLToPath(new URL('./src/scene/fluid/LICENSE', import.meta.url)), 'utf8'),
+        },
+        {
+          title: `gsap ${pkg('gsap').version} with ScrollTrigger`,
+          what: 'scroll-linked animation',
+          text: 'Copyright GreenSock. Used under the GSAP Standard "No Charge" License: https://gsap.com/standard-license\n',
+        },
+      ];
+      const body = sections
+        .map((x) => `${x.title}\n${x.what}\n${'-'.repeat(72)}\n${x.text.trim()}\n`)
+        .join('\n\n');
+      this.emitFile({
+        type: 'asset',
+        fileName: 'third-party-notices.txt',
+        source: `Dr Prop website: third-party software and fonts\n\n${body}`,
+      });
+    },
+  };
+}
+
 /**
  * Brief §7.4: all JavaScript together under 250 KB gzipped. Prints each chunk and
  * fails the build when the total goes over.
@@ -127,7 +205,7 @@ function jsBudget(limitKb = 250): Plugin {
 
 export default defineConfig({
   root,
-  plugins: [drpropPages(), preloadDisplayFont(), jsBudget()],
+  plugins: [launchGuard(), drpropPages(), preloadDisplayFont(), jsBudget(), thirdPartyNotices()],
   build: {
     // three.js is one lazy chunk of ~550 KB raw (~135 KB gzipped). The budget that
     // matters is the gzipped total, checked by jsBudget().

@@ -61,5 +61,21 @@ export interface StoreImage {
   kind: 'render' | 'photo';
 }
 
+/**
+ * What still stands between the site and launch. The build refuses to ship with
+ * any of these once `origin` is set (vite.config.ts), so a placeholder number can
+ * never become the live booking link.
+ */
+export function launchProblems(s: { whatsapp: string; ssm: string; store: { address: string; mapsUrl: string } } = site): string[] {
+  const out: string[] = [];
+  if (!/^60\d{8,11}$/.test(s.whatsapp)) out.push('site.whatsapp: the real WhatsApp Business number, digits only, starting 60');
+  if (/0{6,}|X\)/.test(s.ssm)) out.push('site.ssm: the real SSM registration number');
+  if (s.store.address.includes('—')) out.push('site.store.address: the street address');
+  if (!/^https:\/\/(www\.)?google\.[a-z.]+\/maps|^https:\/\/maps\.app\.goo\.gl\//.test(s.store.mapsUrl) || s.store.mapsUrl.includes('query=Petaling+Jaya')) {
+    out.push('site.store.mapsUrl: the Google Maps link to the store');
+  }
+  return out;
+}
+
 export const whatsappUrl = (message: string) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;

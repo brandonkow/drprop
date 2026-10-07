@@ -18,8 +18,10 @@ if (calc) {
 
 // The inline head script sets .motion unless the visitor prefers reduced motion.
 // The WebGL scene loads after first paint; if it cannot start, the static SVG
-// Pulse Roof comes back (brief §7.4).
-if (root.classList.contains('motion') && calc) {
+// Pulse Roof comes back (brief §7.4). With the data saver on (common on prepaid
+// Android plans) the scene's ~195 KB of script is skipped and the SVG line stays.
+const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+if (root.classList.contains('motion') && calc && !saveData) {
   // Wait for an idle moment after load so the scene never competes with the text (LCP).
   const whenIdle = (fn: () => void) =>
     'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 300);

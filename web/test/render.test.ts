@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { launchProblems, site } from '../src/config/site.ts';
 import { pages, renderDocument } from '../src/render/page.ts';
 
 const html = (entry: (typeof pages)[number]) => renderDocument(entry, '<svg></svg>');
@@ -75,5 +76,24 @@ describe('rendered pages', () => {
     const out = html(pages.find((p) => p.file === 'index.html')!);
     expect(out).toContain('300 member places');
     expect(out).not.toContain('remaining');
+  });
+
+  it('lists every placeholder that blocks a launch build, and none for real details', () => {
+    // The invariant: a launch config (origin set) has no placeholders.
+    if (site.origin) expect(launchProblems()).toEqual([]);
+    expect(
+      launchProblems({
+        whatsapp: '60XXXXXXXXX',
+        ssm: 'SSM 000000000000 (0000000-X)',
+        store: { address: 'Jalan —, 46000 Petaling Jaya', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Petaling+Jaya' },
+      }),
+    ).toHaveLength(4);
+    expect(
+      launchProblems({
+        whatsapp: '60123456789',
+        ssm: 'SSM 202601012345 (1234567-A)',
+        store: { address: '12 Jalan SS 2/24, 47300 Petaling Jaya, Selangor', mapsUrl: 'https://maps.app.goo.gl/AbCdEf' },
+      }),
+    ).toEqual([]);
   });
 });

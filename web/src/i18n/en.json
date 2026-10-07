@@ -152,6 +152,7 @@
       }
     ],
     "updated": "Last updated {date}.",
+    "notices": "Open-source notices.",
     "back": "Back to Dr Prop"
   }
 }

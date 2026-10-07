@@ -347,7 +347,7 @@ function terms(t: Dict, lang: Lang): string {
         <h1 class="display" id="terms-title">${esc(t.terms.title)}</h1>
         <p>${esc(t.terms.intro)}</p>
         ${sections}
-        <p class="small">${esc(fmt(t.terms.updated, { date }))}</p>
+        <p class="small">${esc(fmt(t.terms.updated, { date }))} <a class="link" href="/third-party-notices.txt">${esc(t.terms.notices)}</a></p>
         <p><a class="link" href="${langMeta[lang].base}">${esc(t.terms.back)}</a></p>
       </div>
     </div>

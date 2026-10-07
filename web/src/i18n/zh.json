@@ -152,6 +152,7 @@
       }
     ],
     "updated": "最后更新：{date}。",
+    "notices": "开源软件声明。",
     "back": "回到 Dr Prop"
   }
 }
