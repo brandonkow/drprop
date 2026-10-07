@@ -37,7 +37,7 @@ export default function ChooseType() {
           const copy = t.types[type];
           const blocked = type === 'review' && !hasDiagnosis;
           return (
-            <Row key={type} onPress={() => choose(type)} disabled={blocked} accessibilityLabel={`${copy.name}. ${copy.text}`}>
+            <Row key={type} onPress={() => choose(type)} disabled={blocked}>
               <View style={s.head}>
                 <Mono muted>{String(i + 1).padStart(2, '0')}</Mono>
                 <Body style={s.name}>{copy.name}</Body>

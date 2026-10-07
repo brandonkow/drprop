@@ -54,7 +54,6 @@ export default function Property() {
             selected={draft.band === b.id}
             disabled={bandLocked && draft.band !== b.id}
             onPress={() => setDraft({ ...draft, band: b.id })}
-            accessibilityLabel={`${RANGES[b.id]}, ${rm(consultFee(draft.type, b.id))}`}
           >
             <View style={s.band}>
               <Body style={draft.band === b.id ? undefined : { color: p.muted }}>{RANGES[b.id]}</Body>
