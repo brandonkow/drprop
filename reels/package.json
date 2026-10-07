@@ -7,6 +7,8 @@
     "studio": "remotion studio src/index.ts",
     "render:all": "tsx scripts/render-all.ts",
     "still": "tsx scripts/render-all.ts --still",
+    "deliver": "tsx scripts/deliver.ts",
+    "verify:media": "tsx scripts/deliver.ts --check ../brand/renders/hero-promo-en-16x9.mp4 ../brand/renders/hero-promo-en-9x16.mp4 ../brand/renders/product-film-en-16x9.mp4 ../brand/renders/product-film-en-9x16.mp4 ../brand/renders/layout-flow.mp4 ../brand/renders/layout-flow-mall.mp4",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -1,6 +1,10 @@
 /**
  * Renders every reel in every language and format (brief §9.5, §10 step 13):
- *   out/{name}-{lang}-{ratio}.mp4      H.264 + AAC, 30 fps
+ *   out/{name}-{lang}-{ratio}.mp4      H.264 + AAC, 30 fps, BT.709, −14 LUFS
+ *
+ * Every MP4 then goes through scripts/deliver.ts: BT.709 limited range, tagged,
+ * and the sound at −14 LUFS with true peak at or below −1 dBTP. Check finished files with
+ * `npm run verify:media -w @drprop/reels`.
  *
  * The hero promo (HeroPromo, ~48 s) and the product film (ProductFilm, ~70 s) are
  * English only, 16:9 and 9:16.
@@ -22,6 +26,7 @@ import { cpus } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { bundle } from '@remotion/bundler';
 import { renderMedia, renderStill, selectComposition } from '@remotion/renderer';
+import { deliver } from './deliver.ts';
 
 const here = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 const args = process.argv.slice(2);
@@ -115,12 +120,15 @@ for (const job of jobs) {
           enforceAudioTrack: true,
           crf: 18,
           pixelFormat: 'yuv420p',
+          // Remotion's default writes full-range BT.601; deliver() checks and fixes the rest.
+          colorSpace: 'bt709',
           frameRange: frames ?? null,
           outputLocation: `${base}.mp4`,
           concurrency,
           browserExecutable,
           chromiumOptions: { gl },
         });
+        if (!frames) console.log(`  ${deliver(`${base}.mp4`) || 'delivered as rendered'}`);
       }
       done++;
       console.log(
