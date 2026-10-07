@@ -11,7 +11,7 @@ import { useApp } from '../../state/app-state';
 import { SPACE, TOUCH_MIN } from '../../theme';
 
 export default function Home() {
-  const { t, fmt, user, setDraft, lounge } = useApp();
+  const { t, fmt, user, setDraft, lounge, membership } = useApp();
   const greeting = fmt(t.greeting[partOfDay()], { name: user?.displayName ?? '' });
 
   return (
@@ -37,14 +37,16 @@ export default function Home() {
         </View>
       ) : null}
 
-      <Pressable accessibilityRole="button" onPress={() => router.push('/card')} style={s.cardLink}>
-        {({ pressed }) => (
-          <View style={[s.cardRow, { opacity: pressed ? 0.6 : 1 }]}>
-            <Body>{t.home.card}</Body>
-            <Body>→</Body>
-          </View>
-        )}
-      </Pressable>
+      {membership ? (
+        <Pressable accessibilityRole="button" onPress={() => router.push('/card')} style={s.cardLink}>
+          {({ pressed }) => (
+            <View style={[s.cardRow, { opacity: pressed ? 0.6 : 1 }]}>
+              <Body>{t.home.card}</Body>
+              <Body>→</Body>
+            </View>
+          )}
+        </Pressable>
+      ) : null}
     </Screen>
   );
 }

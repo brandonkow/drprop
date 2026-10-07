@@ -84,6 +84,7 @@ const en = {
     report: 'Diagnosis (PDF)',
     reportPending: 'Uploaded within 24 hours after the consult.',
     reportMock: 'Available when the backend is connected.',
+    reportSent: 'Your adviser sends it to you within 24 hours after the consult.',
     note: 'Advisor note',
     questions: 'Questions to ask',
     attachments: 'Attachments',
@@ -103,6 +104,7 @@ const en = {
     since: 'Petaling Jaya · Member',
     checkIn: 'Show at the front desk to check in.',
     tilt: 'Tilt your phone.',
+    inactive: 'Check-in opens when your membership is active.',
   },
   me: {
     title: 'Me',
@@ -244,6 +246,7 @@ const zh: Strings = {
     report: '诊断书（PDF）',
     reportPending: '问诊后 24 小时内上传。',
     reportMock: '接入后端后提供。',
+    reportSent: '问诊后 24 小时内，顾问会发给你。',
     note: '顾问笔记',
     questions: '问题清单',
     attachments: '附件',
@@ -263,6 +266,7 @@ const zh: Strings = {
     since: 'Petaling Jaya · 会员',
     checkIn: '到店时出示给前台签到。',
     tilt: '倾斜手机看看。',
+    inactive: '会员有效后才能签到。',
   },
   me: {
     title: '我',
@@ -406,6 +410,7 @@ const ms: Strings = {
     report: 'Laporan diagnosis (PDF)',
     reportPending: 'Dimuat naik dalam 24 jam selepas konsultasi.',
     reportMock: 'Tersedia apabila backend disambungkan.',
+    reportSent: 'Penasihat anda menghantarnya kepada anda dalam 24 jam selepas konsultasi.',
     note: 'Nota penasihat',
     questions: 'Soalan untuk ditanya',
     attachments: 'Lampiran',
@@ -425,6 +430,7 @@ const ms: Strings = {
     since: 'Petaling Jaya · Ahli',
     checkIn: 'Tunjukkan di kaunter untuk daftar masuk.',
     tilt: 'Condongkan telefon anda.',
+    inactive: 'Daftar masuk dibuka apabila keahlian anda aktif.',
   },
   me: {
     title: 'Saya',

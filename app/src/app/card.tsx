@@ -15,7 +15,22 @@ import { FONT, SIZE, SPACE } from '../theme';
 export default function Card() {
   const { t, user, membership } = useApp();
   const { width, height } = useWindowDimensions();
-  if (!user || !membership) return null;
+  if (!user) return null;
+  if (!membership) {
+    return (
+      <SafeAreaView style={s.screen}>
+        <View style={s.top}>
+          <Text style={s.title}>{t.card.title}</Text>
+          <TextLink label={t.common.close} onPress={() => router.back()} style={s.close} tint={color.nightText} />
+        </View>
+        <View style={s.center}>
+          <Text style={s.hint}>{t.me.notMember}</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+  // Only an active member checks in to the Lounge.
+  const active = membership.status === 'active';
 
   const cardW = width - SPACE[3] * 2;
   // Portrait card, ID-1 proportions (85.6 × 54 mm), capped to leave room for the QR.
@@ -40,8 +55,16 @@ export default function Card() {
       </View>
 
       <View style={s.checkin}>
-        <QrCode value={`drprop:checkin:${membership.memberNo}`} size={qr} label={t.card.checkIn} />
-        <Text style={s.hint}>{t.card.checkIn}</Text>
+        {active ? (
+          <>
+            <QrCode value={`drprop:checkin:${membership.memberNo}`} size={qr} label={t.card.checkIn} />
+            <Text style={s.hint}>{t.card.checkIn}</Text>
+          </>
+        ) : (
+          <Text style={s.hint}>
+            {t.me.status[membership.status]} · {t.card.inactive}
+          </Text>
+        )}
       </View>
     </SafeAreaView>
   );

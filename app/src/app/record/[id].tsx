@@ -16,7 +16,7 @@ import { SPACE } from '../../theme';
 
 export default function Record() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { t, consultations, language, setDraft, replaceConsultation } = useApp();
+  const { t, consultations, language, setDraft, replaceConsultation, mode } = useApp();
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,7 +55,10 @@ export default function Record() {
         {c.reportUrl ? (
           <TextLink label={t.records.report} onPress={() => Linking.openURL(c.reportUrl!)} />
         ) : (
-          <Body muted>{c.status === 'done' ? t.records.reportMock : t.records.reportPending}</Body>
+          // Supabase mode has no private file storage yet: the adviser sends the PDF.
+          <Body muted>
+            {mode === 'connected' ? t.records.reportSent : c.status === 'done' ? t.records.reportMock : t.records.reportPending}
+          </Body>
         )}
         {/* Brief §2.5: every diagnosis carries this line. */}
         <Small>{t.records.disclaimer}</Small>
