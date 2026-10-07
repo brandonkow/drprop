@@ -7,7 +7,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import { useCurrentFrame } from 'remotion';
 import type { Lang } from '../copy';
 import { FONTS } from '../fonts';
-import { TYPE, type Ratio } from '../layout';
+import { TEXT_MAX_9x16, TYPE, type Ratio } from '../layout';
 import { fadeWindow } from './motion';
 
 export interface CaptionProps {
@@ -42,6 +42,7 @@ export function Caption({ children, lang, ratio, role = 'body', from, to, color,
         letterSpacing: role === 'display' ? (zh ? '0.02em' : '-0.01em') : role === 'small' ? '0.04em' : 0,
         textAlign: align,
         textWrap: 'balance',
+        maxWidth: ratio === '9x16' && align === 'left' ? TEXT_MAX_9x16 : undefined,
         ...style,
       }}
     >

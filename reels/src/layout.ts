@@ -31,6 +31,12 @@ export const SAFE: Record<Ratio, Safe> = {
 /** The like/share column on 9:16, drawn by the safe-zone overlay for reference. */
 export const ACTION_COLUMN = { width: 230, top: 1920 - 670 - 380, bottom: 1920 - 140 };
 
+/**
+ * Widest left-aligned text on 9:16: it stops where the like/share column starts, so a
+ * caption low in the safe area is never under the buttons (785 px).
+ */
+export const TEXT_MAX_9x16 = 1080 - ACTION_COLUMN.width - SAFE['9x16'].left;
+
 export const FPS = 30;
 
 /** Type sizes per format: one display size, one body, one small (brief §5.3, §9.6). */

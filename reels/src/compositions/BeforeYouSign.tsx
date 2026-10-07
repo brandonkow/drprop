@@ -11,7 +11,7 @@ import { progress } from '../components/motion';
 import { PulseLine } from '../components/PulseLine';
 import { ReelFrame, type ReelProps } from '../components/ReelFrame';
 import { SafeBox } from '../components/SafeBox';
-import { FPS, safeRect, TYPE } from '../layout';
+import { FPS, safeRect, TEXT_MAX_9x16, TYPE } from '../layout';
 
 const TITLE = 3 * FPS;
 const ITEM = 3 * FPS;
@@ -29,9 +29,15 @@ function Body({ lang, ratio }: ReelProps) {
   const time = current >= 0 && current < items.length ? Math.min(sinceItem, BEAT_PERIOD * 0.95) : BEAT_PERIOD * 0.95;
   const lineProgress = progress(frame, 20, TITLE) * 0.25;
   const end = beforeYouSignFrames;
+  // 9:16 is the tightest frame: five items, the line, the CTA and the disclaimer must all
+  // fit the 980 px safe height, clear of the like/share column. The list and the CTA
+  // share one smaller text size there (still one display + two text sizes, §5.3).
+  const tall = ratio === '9x16';
+  const listSize = tall ? { fontSize: Math.round(TYPE[ratio].body * 0.82) } : undefined;
+  const itemWidth = tall ? { maxWidth: TEXT_MAX_9x16 - Math.round(TYPE[ratio].body * 1.8) } : undefined;
 
   return (
-    <SafeBox ratio={ratio} style={{ gap: s.height * 0.035 }}>
+    <SafeBox ratio={ratio} style={{ gap: s.height * (tall ? 0.024 : 0.035) }}>
       <Caption lang={lang} ratio={ratio} role="display" from={0} to={end} color={color.ink}>
         {COPY.beforeYouSign.title[lang]}
       </Caption>
@@ -45,20 +51,20 @@ function Body({ lang, ratio }: ReelProps) {
         strokeWidth={3}
         apex={0.18 + Math.max(0, Math.min(current, 4)) * 0.16}
       />
-      <div style={{ display: 'flex', flexDirection: 'column', gap: s.height * 0.022 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: s.height * (tall ? 0.014 : 0.022) }}>
         {items.map((item, i) => (
           <div key={item} style={{ display: 'flex', gap: TYPE[ratio].body * 0.6, alignItems: 'baseline' }}>
-            <Caption lang={lang} ratio={ratio} role="mono" from={TITLE + i * ITEM} to={end} color={color.stoneText}>
+            <Caption lang={lang} ratio={ratio} role="mono" from={TITLE + i * ITEM} to={end} color={color.stoneText} style={listSize}>
               {String(i + 1).padStart(2, '0')}
             </Caption>
-            <Caption lang={lang} ratio={ratio} from={TITLE + i * ITEM} to={end} color={color.ink}>
+            <Caption lang={lang} ratio={ratio} from={TITLE + i * ITEM} to={end} color={color.ink} style={{ ...listSize, ...itemWidth }}>
               {item}
             </Caption>
           </div>
         ))}
       </div>
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Caption lang={lang} ratio={ratio} from={TITLE + 5 * ITEM} to={end} color={color.ink}>
+        <Caption lang={lang} ratio={ratio} from={TITLE + 5 * ITEM} to={end} color={color.ink} style={listSize}>
           {COPY.beforeYouSign.cta[lang]}
         </Caption>
         <Caption lang={lang} ratio={ratio} role="small" from={TITLE + 5 * ITEM} to={end} color={color.stoneText}>

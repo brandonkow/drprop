@@ -6,7 +6,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { validateMarket } from '../src/data/validate';
-import { FRAME, safeRect } from '../src/layout';
+import { ACTION_COLUMN, FRAME, safeRect, TEXT_MAX_9x16 } from '../src/layout';
 
 const dir = (p: string) => fileURLToPath(new URL(`../src/data/${p}/`, import.meta.url));
 const load = (p: string) =>
@@ -72,6 +72,11 @@ describe('market provenance (§9.7)', () => {
 });
 
 describe('safe zones (§9.5)', () => {
+  it('keeps 9:16 text clear of the like/share column', () => {
+    const s = safeRect('9x16');
+    expect(s.x + TEXT_MAX_9x16).toBe(FRAME['9x16'].width - ACTION_COLUMN.width);
+  });
+
   it('9:16 leaves the ~950 × 980 centre from the brief', () => {
     const s = safeRect('9x16');
     expect(FRAME['9x16']).toEqual({ width: 1080, height: 1920 });
