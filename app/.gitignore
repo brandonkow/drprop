@@ -43,3 +43,4 @@ yarn-error.*
 
 # The backend setting (see .env.example). Only public values belong there, but keep it local.
 .env
+/dist-connected/
