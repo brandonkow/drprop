@@ -337,7 +337,7 @@ function terms(t: Dict, lang: Lang): string {
   );
   const sections = t.terms.sections
     .map(
-      (sec) => `<h2 class="prose__head">${esc(sec.title)}</h2>
+      (sec) => `<h2 class="label prose__head">${esc(sec.title)}</h2>
         ${sec.body.map((p) => `<p>${esc(p)}</p>`).join('\n        ')}`,
     )
     .join('\n        ');

@@ -370,11 +370,9 @@
   }
 }
 
-/* Terms: one heading per clause, set like the labels. */
+/* Terms: one heading per clause, set as a label (only weight 400 is loaded). */
 .prose__head {
   margin-top: var(--space-3);
-  font-size: var(--text-body);
-  font-weight: 500;
 }
 
 /* Keep each clause with its heading. */
