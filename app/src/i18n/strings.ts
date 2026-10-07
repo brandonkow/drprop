@@ -74,6 +74,7 @@ const en = {
     attachments: 'Attachments',
     bookReview: 'Book a pre-signing review',
     untitled: 'Property',
+    disclaimer: 'This diagnosis is information and analysis, not legal, tax or financial advice. The final decision is yours.',
   },
   card: {
     title: 'Member card',
@@ -171,6 +172,7 @@ const zh: Strings = {
     attachments: '附件',
     bookReview: '预约复诊',
     untitled: '房产',
+    disclaimer: '本诊断为资讯与分析，不构成法律、税务或财务意见，最终决定由客户自行作出。',
   },
   card: {
     title: '会员卡',
@@ -270,6 +272,7 @@ const ms: Strings = {
     attachments: 'Lampiran',
     bookReview: 'Tempah semakan sebelum tandatangan',
     untitled: 'Hartanah',
+    disclaimer: 'Diagnosis ini ialah maklumat dan analisis, bukan nasihat undang-undang, cukai atau kewangan. Keputusan muktamad di tangan anda.',
   },
   card: {
     title: 'Kad ahli',

@@ -1,4 +1,4 @@
-/** S4 record detail: diagnosis PDF, advisor note, questions, attachments, book a review. */
+/** S4 record detail: diagnosis PDF and its disclaimer, advisor note, questions, attachments, book a review. */
 import { router, useLocalSearchParams } from 'expo-router';
 import { Linking, StyleSheet, View } from 'react-native';
 import { Body, Display, Label, Mono, Small } from '../../components/type';
@@ -31,6 +31,8 @@ export default function Record() {
         ) : (
           <Body muted>{c.status === 'done' ? t.records.reportMock : t.records.reportPending}</Body>
         )}
+        {/* Brief §2.5: every diagnosis carries this line. */}
+        <Small>{t.records.disclaimer}</Small>
       </Section>
 
       {c.advisorNote ? (
