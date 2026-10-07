@@ -245,7 +245,7 @@ function PlateWords({
     : { position: 'absolute', left: f.safe.x, top: f.pic.top + f.pic.height + 56, width: f.safe.width, textAlign: 'left' };
   return (
     <div style={box}>
-      <Text size={wide ? 60 : 62} style={{ ...reveal(frame, at, out), color: ink && wide ? color.ink : LIGHT }}>
+      <Text size={wide ? 60 : 62} style={{ ...reveal(frame, at, out), color: ink && wide ? color.ink : LIGHT, textShadow: wide && !ink ? '0 2px 26px rgba(20,20,18,0.6)' : 'none' }}>
         {top}
       </Text>
       {sub ? (
