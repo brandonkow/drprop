@@ -58,10 +58,10 @@ Without a GPU, Remotion needs `REMOTION_GL=swangle`. ffmpeg comes bundled with R
 
 Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and acceptance §9–§11) are done; see `docs/acceptance.md`.
 
-### 1. Finish the reel render (18 files left)
-- [ ] 90 of 108 rendered and passed the delivery check: H.264, BT.709 limited range, −14 LUFS, true peak ≤ −1 dBTP. The batch stopped at the 2-hour limit before StoreReveal and MemberCardReveal (9 files each). Resume; finished files are kept:
-  `cd reels && REMOTION_GL=swangle npx tsx scripts/render-all.ts --skip-existing --only StoreReveal,MemberCardReveal`
-  (about 30 minutes). Then run `npx tsx scripts/deliver.ts --check out/*.mp4` and update the first row of `docs/acceptance.md` to 108 of 108.
+### 1. Finish the reel render (9 files left)
+- [ ] 99 of 108 rendered and passed the delivery check: H.264, BT.709 limited range, −14 LUFS, true peak ≤ −1 dBTP. Left: the nine store reveal reels. Without a GPU their 3D takes about 5 s a frame (the glass makes three.js draw the scene twice), so render-all renders it once per format into `reels/plates/` (PNG frames) and the three languages share it: about 2¾ hours here instead of 8½. A stopped run resumes at the first missing frame; finished MP4s are kept:
+  `cd reels && REMOTION_GL=swangle npx tsx scripts/render-all.ts --skip-existing --only StoreReveal`
+  Then run `npx tsx scripts/deliver.ts --check out/*.mp4` and update the first row of `docs/acceptance.md` to 108 of 108.
 - [ ] Decide where delivered reels live. `reels/out/` is gitignored; the whole set is about 115 MB (the 9:16 set alone about 40 MB). The alternative is a shared drive.
 
 ### 2. Only the owner can do these (GitHub)
@@ -80,6 +80,8 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 - Payments (FPX, Touch 'n Go, GrabPay, cards) and private report storage in supabase mode.
 
 ## What changed in the last session (newest first)
+
+- **Reels:** the store reveal's 3D renders once per format and the three languages share it (`reels/plates/`, see the top of `reels/scripts/render-all.ts`). Checked against a live render: the 3D pixels match exactly, and caption edges differ by at most 1 level in 255. A `--frames` test render now writes `…-fA-B.mp4`, so `--skip-existing` can't mistake it for a finished file. The member card reels are rendered and pass.
 
 - **Reels:** `render-all --skip-existing` resumes a stopped batch. Renders go to `.part.mp4` and are renamed only when finished and delivered, so a stopped render never leaves a half file that looks done.
 
