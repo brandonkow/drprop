@@ -1,0 +1,68 @@
+# Every push to main and every pull request runs what a contributor runs locally
+# (README, docs/handoff.md "Checks"): types, unit and database tests, lint, the
+# website build (with its JS budget and launch guard), both app exports, and the
+# browser tests. Reels are not rendered here: they need hours without a GPU.
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit and database tests
+        run: npm test
+
+      - name: Lint (app)
+        run: npm run lint -w @drprop/app
+
+      - name: Website build
+        run: npm run build
+
+      # Both exports use --clear: a cached build from the other mode would leak backend settings.
+      - name: App export (preview)
+        run: npm run export:web -w @drprop/app
+
+      - name: App export (connected, test backend only)
+        run: npm run export:connected-fixture -w @drprop/app
+
+      - name: Chromium for the browser tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser tests
+        run: npm run test:e2e
+
+      - name: Keep the browser test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
