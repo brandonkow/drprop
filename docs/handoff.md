@@ -80,6 +80,8 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 
 ## What changed in the last session (newest first)
 
+- **Brand imagery, second batch** (`brand/renders/ai/`, see its README): photoreal stills of the mall store (shopfront, reception, Lounge) and the shophouse pantry, a 9:16 shophouse street, four 5-second clips (mall walk-in, kopi poured, a member in the mall Lounge, a 9:16 blue-hour walk-in), and 4:5 images for the Instagram feed in `social/`. All concepts with generated people, labelled as such. This used the last of the free Higgsfield credits; the balance is 0.
+
 - **Lounge check-in codes** (`supabase/migrations/202610080001_checkin.sql`). The member card's QR now holds six digits from the server, new every minute, good for two minutes and one check-in, instead of the member number. The adviser screen has a "Check in a member" field: a desk scanner types the QR and presses Enter, or someone types the digits; it shows the member's name, number and drink. Covered by 3 database tests and a browser test (scan, then the same code refused).
 
 - **Reels: all 36 English reels rendered and passing.**
