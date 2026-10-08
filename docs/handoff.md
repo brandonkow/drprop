@@ -58,11 +58,10 @@ Without a GPU, Remotion needs `REMOTION_GL=swangle`. ffmpeg comes bundled with R
 
 Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and acceptance §9–§11) are done; see `docs/acceptance.md`.
 
-### 1. Finish the reel render (3 files left)
-- [ ] Reels are English only now (the owner's call, 2026-10-08). 33 of 36 rendered and passed the delivery check: H.264, BT.709 limited range, −14 LUFS, true peak ≤ −1 dBTP. Left: the three store reveal reels. Without a GPU their 3D takes about 5 s a frame (the glass makes three.js draw the scene twice), so render-all renders it into `reels/plates/` (PNG frames) first; a stopped run resumes at the first missing frame, and finished MP4s are kept:
-  `cd reels && REMOTION_GL=swangle npx tsx scripts/render-all.ts --skip-existing --only StoreReveal`
-  Then run `npx tsx scripts/deliver.ts --check out/*.mp4` and update the first row of `docs/acceptance.md` to 36 of 36.
-- [ ] Decide where delivered reels live. `reels/out/` is gitignored; the English set is about 45 MB. The alternative is a shared drive.
+### 1. Reels
+- [x] All 36 English reels rendered and passed the delivery check (H.264, BT.709 limited range, −14 LUFS, true peak ≤ −1 dBTP). Reels are English only (the owner's call, 2026-10-08). Re-render any with `cd reels && REMOTION_GL=swangle npx tsx scripts/render-all.ts --only <Id>`; without a GPU the store reveal takes about 2½ hours (its 3D is about 5 s a frame), the rest a minute or two each.
+- [ ] Decide where delivered reels live. `reels/out/` is gitignored; the English set is 64 MB. The alternative is a shared drive.
+- [ ] Optional polish: in the store reveal, the small line "Join the member waitlist." crosses a door handle and a chair back in 9:16 and 4:5. It's legible; a fix (move it, or give it a backing) means re-rendering the store's 3D.
 
 ### 2. Only the owner can do these (GitHub)
 - [ ] Delete the old Codex branch `feat/brand-static-landing` (its useful parts are already ported). It's at https://github.com/brandonkow/drprop/branches; the last commit is `b9f3913`, if it's ever needed.
@@ -83,6 +82,7 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 
 - **Lounge check-in codes** (`supabase/migrations/202610080001_checkin.sql`). The member card's QR now holds six digits from the server, new every minute, good for two minutes and one check-in, instead of the member number. The adviser screen has a "Check in a member" field: a desk scanner types the QR and presses Enter, or someone types the digits; it shows the member's name, number and drink. Covered by 3 database tests and a browser test (scan, then the same code refused).
 
+- **Reels: all 36 English reels rendered and passing.**
 - **Reels: English only** (the owner's call, 2026-10-08). `render-all` renders English by default; `--lang en,zh,ms` still renders all three, because the Chinese and Malay copy stays in the reels. The Chinese and Malay files in `reels/out/` were deleted.
 
 - **Reels:** the store reveal's 3D renders once per format and the three languages share it (`reels/plates/`, see the top of `reels/scripts/render-all.ts`). Checked against a live render: the 3D pixels match exactly, and caption edges differ by at most 1 level in 255. A `--frames` test render now writes `…-fA-B.mp4`, so `--skip-existing` can't mistake it for a finished file. The member card reels are rendered and pass.
