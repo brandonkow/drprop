@@ -8,7 +8,7 @@
 brand/     品牌资产（唯一来源）：tokens、字体、Pulse Roof 线与四种形态、logo、诊金分档、3D 模型
 web/       官网（Vite + TypeScript，无框架）：三语静态页、诊金计算器、WebGL 背景（流体 + 脉搏线 + 颗粒）
 app/       会员 App（Expo SDK 57 + Expo Router）：首页、问诊流程、病历、会员卡、我
-reels/     营销视频（Remotion 4）：R1–R8，三语 × 三比例批量渲染
+reels/     营销视频（Remotion 4）：R1–R8，三比例批量渲染（默认只出英文）
 blender/   门店数字孪生（店屋 / 商场两种形态）、药柜与动线动画的 Blender 脚本（bpy）
 twin/      门店运营孪生（three.js）：交互式 3D 门店 + 看板，六种顾客走完一个模拟营业日
 supabase/  App 第二阶段后端：短信登录、顾问排班、预约、会员、Lounge 看板（行级安全 + 测试）
@@ -113,9 +113,9 @@ npm run render:all -- --still --safe-zone
 npm run render:all -- --skip-existing
 ```
 
-输出到 `reels/out/{name}-{lang}-{ratio}.mp4`：H.264 + AAC、30 fps，三语分开渲染，比例为 9:16、4:5、16:9。
+输出到 `reels/out/{name}-{lang}-{ratio}.mp4`：H.264 + AAC、30 fps，比例为 9:16、4:5、16:9。默认只渲染英文（业主 2026-10-08 的决定）；中文、马来文文案仍在，`--lang en,zh,ms` 可出三语。
 没有 GPU 的机器：`REMOTION_GL=swangle npm run render:all`。指定浏览器：`REMOTION_BROWSER=/path/to/chrome`。
-门店揭幕（R7）的 3D 在没有 GPU 时约 5 秒一帧，而三种语言的画面相同：每个比例只渲染一次 3D，存为 `reels/plates/` 里的 PNG 帧，三语文字再叠在上面。中断后从缺的那一帧接着渲染；整支完成后 `plates/` 自动清掉。
+门店揭幕（R7）的 3D 在没有 GPU 时约 5 秒一帧：每个比例先把 3D 渲染成 `reels/plates/` 里的 PNG 帧，再把文字叠在上面（出多种语言时共用同一套 3D）。中断后从缺的那一帧接着渲染；该比例完成后 `plates/` 自动清掉。
 
 | ID | 名称 | 时长 |
 |---|---|---|

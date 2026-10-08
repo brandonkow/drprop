@@ -1,6 +1,9 @@
 /**
- * Renders every reel in every language and format (brief §9.5, §10 step 13):
+ * Renders every reel in every format (brief §9.5, §10 step 13):
  *   out/{name}-{lang}-{ratio}.mp4      H.264 + AAC, 30 fps, BT.709, −14 LUFS
+ *
+ * English only by default: the owner's call (2026-10-08). The Chinese and Malay copy stays in
+ * the reels, so `--lang en,zh,ms` still renders all three.
  *
  * Every MP4 then goes through scripts/deliver.ts: BT.709 limited range, tagged,
  * and the sound at −14 LUFS with true peak at or below −1 dBTP. Check finished files with
@@ -23,7 +26,7 @@
  * The store reveal's 3D is slow without a GPU (about 5 s a frame), and it is the same in every
  * language. So it renders once per format into plates/ (PNG frames, served to the browser from
  * here), and each language draws its text over those frames. A stopped batch resumes at the first
- * missing frame; a format's plates go once its three languages are done. If you change the 3D
+ * missing frame; a format's plates go once its languages are done. If you change the 3D
  * while plates/ holds frames, delete plates/.
  *
  * GPU-less machines: REMOTION_GL=swangle. Custom Chrome: REMOTION_BROWSER=/path.
@@ -47,7 +50,7 @@ const value = (name: string) => {
 };
 const list = (name: string) => value(name)?.split(',').filter(Boolean);
 
-const LANGS = list('lang') ?? ['en', 'zh', 'ms'];
+const LANGS = list('lang') ?? ['en'];
 const RATIOS = list('ratio') ?? ['9x16', '4x5', '16x9'];
 const ONLY = list('only');
 const frames = value('frames')?.split('-').map(Number) as [number, number] | undefined;
