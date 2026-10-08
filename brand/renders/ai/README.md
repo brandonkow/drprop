@@ -49,4 +49,4 @@ fascia still reads "DR. PROP", and the consult screen still shows the Pulse Roof
 Check every image against the real fit-out before using it in print.
 
 The stills were saved as JPEG (quality 90). The clips are 1920×1080 at 24 fps, cropped
-to 16:9 from the 3:2 output. The film uses them in `reels/src/compositions/ProductFilm.tsx`.
+to 16:9 from the 3:2 output. `clip-street-vertical.mp4` is 1080×1920 (9:16). All clips are H.264, tagged BT.709, silent. The film uses them in `reels/src/compositions/ProductFilm.tsx`.
