@@ -74,7 +74,6 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 - The hosted backend, payments (next phase), media rights and print.
 
 ### Nice to have (not required by the brief)
-- In preview mode, the sample record's "Diagnosis (PDF)" could open `web/public/samples/diagnosis-{lang}.pdf`. It needs the website's address (set at launch), or expo-sharing to open a bundled PDF on phones.
 - Payments (FPX, Touch 'n Go, GrabPay, cards) and private report storage in supabase mode.
 
 ## What changed in the last session (newest first)

@@ -54,7 +54,9 @@
           "cameraPermission": "Dr Prop uses the camera at the front desk to scan members’ check-in codes.",
           "recordAudioAndroid": false
         }
-      ]
+      ],
+      "expo-sharing",
+      "expo-asset"
     ],
     "scheme": "drprop"
   }

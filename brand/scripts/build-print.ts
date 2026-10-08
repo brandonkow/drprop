@@ -5,6 +5,7 @@
  *   print/out/diagnosis-card-{en,zh,ms}.pdf     A6 letterpress card, front and back (§4.4)
  *   print/out/fee-plate.pdf                     the door plate, 300 × 400 mm (§6.1)
  *   web/public/samples/diagnosis-{lang}.pdf     the sample report, linked from the website's fee section
+ *   app/assets/samples/diagnosis-{lang}.pdf     the same, opened from the app preview's sample record
  *
  *     npx tsx scripts/build-print.ts            (from brand/)
  *     npx tsx scripts/build-print.ts --preview <dir>   also PNG previews of every page
@@ -70,10 +71,11 @@ async function pdf(html: string, file: string, size: { width: string; height: st
 }
 
 const samples = fileURLToPath(new URL('../../web/public/samples/', import.meta.url));
-mkdirSync(samples, { recursive: true });
+const appSamples = fileURLToPath(new URL('../../app/assets/samples/', import.meta.url));
+for (const dir of [samples, appSamples]) mkdirSync(dir, { recursive: true });
 for (const lang of LANGS) {
   await pdf(reportHtml(SAMPLE[lang], lang, fonts(lang), logo), `diagnosis-report-${lang}.pdf`, { width: '210mm', height: '297mm' });
-  copyFileSync(join(out, `diagnosis-report-${lang}.pdf`), join(samples, `diagnosis-${lang}.pdf`));
+  for (const dir of [samples, appSamples]) copyFileSync(join(out, `diagnosis-report-${lang}.pdf`), join(dir, `diagnosis-${lang}.pdf`));
   await pdf(cardHtml(SAMPLE[lang], lang, fonts(lang), line, wordmark), `diagnosis-card-${lang}.pdf`, { width: '148mm', height: '105mm' });
 }
 await pdf(plateHtml(allFonts, { opens: '10:00', closes: '20:00' }, wordmark), 'fee-plate.pdf', { width: '300mm', height: '400mm' });

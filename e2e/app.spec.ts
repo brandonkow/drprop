@@ -49,6 +49,11 @@ test('a review follows the sample diagnosis, at half its fee', async ({ page }) 
   await signIn(page);
   await page.goto('/records');
   await page.getByText(/Sample/).first().click();
+  // The sample record opens the sample report itself (a bundled PDF, in a new tab on the web).
+  const [pdf] = await Promise.all([page.context().waitForEvent('page'), page.getByText('Open the sample diagnosis (PDF)').click()]);
+  await pdf.waitForLoadState('domcontentloaded').catch(() => undefined);
+  expect(pdf.url()).toMatch(/diagnosis-en.*\.pdf/);
+  await pdf.close();
   await page.getByText('Book a pre-signing review').click();
   // RM 699 band, half price, rounded up to whole ringgit.
   await expect(page.getByText('RM 350', { exact: true })).toBeVisible();

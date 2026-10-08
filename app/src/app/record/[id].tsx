@@ -8,6 +8,7 @@ import { Linking, StyleSheet, View } from 'react-native';
 import { Body, Display, Label, Mono, Small } from '../../components/type';
 import { OutlineButton, Rule, Screen, TextLink } from '../../components/ui';
 import { errorKey } from '../../data/errors';
+import { openSampleReport } from '../../data/sample-report';
 import { source } from '../../data/source';
 import { formatWhen, rm } from '../../i18n/format';
 import { useApp } from '../../state/app-state';
@@ -54,6 +55,9 @@ export default function Record() {
       <Section label={t.records.report}>
         {c.reportUrl ? (
           <TextLink label={t.records.report} onPress={() => Linking.openURL(c.reportUrl!)} />
+        ) : mode !== 'connected' && c.id === 'sample' ? (
+          // The preview's sample record opens the sample report itself.
+          <TextLink label={t.records.openSample} onPress={() => void openSampleReport(language, t.records.openSample)} />
         ) : (
           // Supabase mode has no private file storage yet: the adviser sends the PDF.
           <Body muted>
