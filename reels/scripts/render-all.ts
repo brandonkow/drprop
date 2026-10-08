@@ -88,6 +88,7 @@ const jobs: Job[] = [
   { id: 'LoungeMoment', name: 'lounge-moment', props: {} },
   { id: 'StoreReveal', name: 'store-reveal', props: {}, stage: true },
   { id: 'MemberCardReveal', name: 'member-card', props: { memberNo: 'PJ-0001' } },
+  { id: 'Visit', name: 'visit', props: {}, langs: ['en'] },
   { id: 'HeroPromo', name: 'hero-promo', props: {}, langs: ['en'], ratios: ['16x9', '9x16'] },
   { id: 'ProductFilm', name: 'product-film', props: {}, langs: ['en'], ratios: ['16x9', '9x16'] },
 ].filter((j) => !ONLY || ONLY.includes(j.id) || ONLY.includes(j.name));

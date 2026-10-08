@@ -16,6 +16,7 @@ import { LoungeMoment, loungeMomentFrames } from './compositions/LoungeMoment';
 import { MarketPulse, marketPulseFrames, type MarketPulseProps } from './compositions/MarketPulse';
 import { MemberCardReveal, memberCardFrames, type MemberCardRevealProps } from './compositions/MemberCardReveal';
 import { StoreReveal, storeRevealFrames } from './compositions/StoreReveal';
+import { Visit, visitFrames } from './compositions/Visit';
 import { CASES, MARKET } from './data';
 import { FPS, FRAME } from './layout';
 
@@ -88,6 +89,13 @@ export function Root() {
         {...common}
         defaultProps={{ ...base, memberNo: 'PJ-0001' } as MemberCardRevealProps}
         calculateMetadata={meta<MemberCardRevealProps>(() => memberCardFrames + END_CARD_FRAMES)}
+      />
+      <Composition
+        id="Visit"
+        component={Visit}
+        {...common}
+        defaultProps={{ ...base, lang: 'en' } as ReelProps}
+        calculateMetadata={meta<ReelProps>(() => visitFrames + END_CARD_FRAMES)}
       />
       <Composition
         id="HeroPromo"

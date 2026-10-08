@@ -48,6 +48,14 @@ export const COPY = {
     sub: { en: 'Kopi, kuih, and the market talk.', zh: '咖啡、糕点，和最新市场消息。', ms: 'Kopi, kuih dan cerita pasaran.' } as T,
   },
 
+  // R9: a visit, over the photoreal concept clips (brand/renders/ai).
+  visit: {
+    arrive: { en: 'The independent property clinic.', zh: '独立房产诊所。', ms: 'Klinik hartanah bebas.' } as T,
+    kopi: { en: 'Your kopi, ready when you arrive.', zh: '你的咖啡，到店就备好。', ms: 'Kopi anda siap sebaik anda tiba.' } as T,
+    kopiSub: { en: 'Tell us once. The front desk remembers.', zh: '说一次就好，前台会记得。', ms: 'Beritahu sekali. Kaunter depan akan ingat.' } as T,
+    concept: { en: 'Concept imagery.', zh: '概念影像。', ms: 'Imej konsep.' } as T,
+  },
+
   store: {
     line: { en: 'Opening soon in Petaling Jaya.', zh: 'Petaling Jaya，即将开业。', ms: 'Dibuka tidak lama lagi di Petaling Jaya.' } as T,
     sub: { en: 'Join the member waitlist.', zh: '会员候补名单现已开放。', ms: 'Senarai menunggu ahli kini dibuka.' } as T,
