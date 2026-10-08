@@ -60,8 +60,8 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 
 ### 1. Reels
 - [x] All 36 English reels rendered and passed the delivery check (H.264, BT.709 limited range, −14 LUFS, true peak ≤ −1 dBTP). Reels are English only (the owner's call, 2026-10-08). Re-render any with `cd reels && REMOTION_GL=swangle npx tsx scripts/render-all.ts --only <Id>`; without a GPU the store reveal takes about 2½ hours (its 3D is about 5 s a frame), the rest a minute or two each.
-- [ ] Decide where delivered reels live. `reels/out/` is gitignored; the English set is 64 MB. The alternative is a shared drive.
-- [ ] Optional polish: in the store reveal, the small line "Join the member waitlist." crosses a door handle and a chair back in 9:16 and 4:5. It's legible; a fix (move it, or give it a backing) means re-rendering the store's 3D.
+- [x] Delivered reels live in `reels/delivered/` (tracked in git; see its README for which ratio goes where). `reels/out/` stays scratch.
+- [x] The store reveal's captions sit together at the top, over the plain wall (they had crossed a door handle and a chair back).
 
 ### 2. Only the owner can do these (GitHub)
 - [ ] Delete the old Codex branch `feat/brand-static-landing` (its useful parts are already ported). It's at https://github.com/brandonkow/drprop/branches; the last commit is `b9f3913`, if it's ever needed.
@@ -75,10 +75,11 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 
 ### Nice to have (not required by the brief)
 - In preview mode, the sample record's "Diagnosis (PDF)" could open `web/public/samples/diagnosis-{lang}.pdf`. It needs the website's address (set at launch), or expo-sharing to open a bundled PDF on phones.
-- A camera scanner in the adviser screen. Until then the desk uses a QR scanner that types (keyboard mode), or types the six digits.
 - Payments (FPX, Touch 'n Go, GrabPay, cards) and private report storage in supabase mode.
 
 ## What changed in the last session (newest first)
+
+- **Settled in this session:** the delivered reels are kept in `reels/delivered/`; R9 "a visit" (16.5 s, English, the new concept clips); the store reveal's captions moved clear of the door handle; the adviser screen scans member cards with the device camera (expo-camera). GitHub's default branch and the old Codex branch could not be changed from here (the session's permissions refuse it): both are one click in the repository settings.
 
 - **Brand imagery, second batch** (`brand/renders/ai/`, see its README): photoreal stills of the mall store (shopfront, reception, Lounge) and the shophouse pantry, a 9:16 shophouse street, four 5-second clips (mall walk-in, kopi poured, a member in the mall Lounge, a 9:16 blue-hour walk-in), and 4:5 images for the Instagram feed in `social/`. All concepts with generated people, labelled as such. This used the last of the free Higgsfield credits; the balance is 0.
 
@@ -134,5 +135,5 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 
 - The backend has never touched a hosted Supabase project, and no SMS has been sent. PGlite tests are single-connection.
 - Supabase mode takes no payment: bookings are requests the adviser confirms.
-- Check-in is checked by the database (single use, two minutes, active members only), but there's no camera scanner in the app yet: see "Nice to have".
+- Check-in is checked by the database (single use, two minutes, active members only). The adviser screen scans with the device camera, a desk scanner that types, or the six digits typed by hand.
 - The sound logo, film score and store imagery are placeholders or concepts, all labelled.

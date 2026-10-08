@@ -89,7 +89,7 @@ Nothing here has been applied to a hosted project, and no SMS has been sent.
 | Records | Requested → confirmed → done, the adviser's note and questions, cancel before the start. |
 | Me | Name, drink and language saved to the profile; membership from the operator; "Adviser schedule" for advisers. |
 | Member card | The check-in QR and its six digits, new every minute, for an active member. |
-| Adviser schedule | Check members in (a desk QR scanner types into the code field and presses Enter; or type the six digits), take call-backs, confirm and finish consults, write notes and questions, open 30-minute times (Malaysia time), set the Lounge board. |
+| Adviser schedule | Check members in (scan with the device camera, or a desk QR scanner types into the code field and presses Enter, or type the six digits), take call-backs, confirm and finish consults, write notes and questions, open 30-minute times (Malaysia time), set the Lounge board. |
 
 Sessions: on phones the session sits in the keychain (this device only), split into
 small chunks so it fits the keychain's limits. A failed write keeps the old session.

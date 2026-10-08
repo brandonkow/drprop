@@ -35,7 +35,7 @@ On a mid-range Android phone (4 GB) and a recent iPhone:
 
 - [ ] Member card: the Skia sheen follows the tilt; it still works if motion permission is denied or the sensor is missing; nothing runs in the background.
 - [ ] Haptics on booking; the document picker; the keyboard over every input.
-- [ ] Check-in at the desk: a QR scanner in keyboard mode reads the member card from a phone screen (try low and high brightness) into the adviser screen; a second scan of the same code is refused.
+- [ ] Check-in at the desk: scan a member card from a phone screen (try low and high brightness) with the adviser screen's camera, and with a desk scanner in keyboard mode if you buy one; a second scan of the same code is refused.
 - [ ] Supabase mode: SMS sign-in, wrong and expired codes, resend, leaving and resuming the app (the session sits in the keychain), sign-out.
 - [ ] Website scrolling and the ink effect on the Android phone.
 
@@ -45,7 +45,7 @@ On a mid-range Android phone (4 GB) and a recent iPhone:
 - [ ] SMS provider limits, spending cap, CAPTCHA decision.
 - [ ] Race tests on the real database: two clients for one slot; two advisers for one call-back.
 - [ ] Add advisers and members; confirm prices; open bookings.
-- [ ] Next phase: payments (FPX, Touch 'n Go, GrabPay, cards), private report PDFs, a camera scanner for check-in.
+- [ ] Next phase: payments (FPX, Touch 'n Go, GrabPay, cards), private report PDFs.
 
 ## Print (`npm run print -w @drprop/brand`)
 
