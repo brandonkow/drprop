@@ -49,11 +49,16 @@ test('a review follows the sample diagnosis, at half its fee', async ({ page }) 
   await signIn(page);
   await page.goto('/records');
   await page.getByText(/Sample/).first().click();
-  // The sample record opens the sample report itself (a bundled PDF, in a new tab on the web).
-  const [pdf] = await Promise.all([page.context().waitForEvent('page'), page.getByText('Open the sample diagnosis (PDF)').click()]);
-  await pdf.waitForLoadState('domcontentloaded').catch(() => undefined);
-  expect(pdf.url()).toMatch(/diagnosis-en.*\.pdf/);
-  await pdf.close();
+  // The sample record opens the sample report itself: a bundled PDF, in a new tab on the web.
+  // Headless Chromium downloads PDFs rather than showing them, so check the request and the file.
+  const [request] = await Promise.all([
+    page.context().waitForEvent('request', (r) => /diagnosis-en\.[0-9a-f]+\.pdf$/.test(r.url())),
+    page.getByText('Open the sample diagnosis (PDF)').click(),
+  ]);
+  const file = await page.request.get(request.url());
+  expect(file.ok()).toBe(true);
+  expect((await file.body()).subarray(0, 5).toString()).toBe('%PDF-');
+  for (const other of page.context().pages()) if (other !== page) await other.close();
   await page.getByText('Book a pre-signing review').click();
   // RM 699 band, half price, rounded up to whole ringgit.
   await expect(page.getByText('RM 350', { exact: true })).toBeVisible();
