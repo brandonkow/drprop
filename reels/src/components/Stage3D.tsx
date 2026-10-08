@@ -6,7 +6,7 @@
 import { ThreeCanvas } from '@remotion/three';
 import { useThree } from '@react-three/fiber';
 import { useLayoutEffect, type ReactNode } from 'react';
-import { useVideoConfig } from 'remotion';
+import { Img, useCurrentFrame, useVideoConfig } from 'remotion';
 import { PMREMGenerator, Vector3, type PerspectiveCamera } from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
@@ -55,10 +55,19 @@ export interface Stage3DProps {
   keyLight?: { position: V3; intensity: number; color?: string };
   /** Where the look-at point sits vertically, 0 top – 1 bottom. Default: centre. */
   centerY?: number;
+  /** Base URL of this stage already rendered ({frame}.png, see ReelProps.stageFrames): shown instead. */
+  frames?: string;
 }
 
-export function Stage3D({ children, background, camera, environment = 0.9, keyLight, centerY = 0.5 }: Stage3DProps) {
+/** The pre-rendered stage, frame for frame. The PNGs hold the same pixels the canvas would draw. */
+function StageFrames({ src }: { src: string }) {
+  const frame = useCurrentFrame();
+  return <Img src={`${src}/${frame}.png`} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />;
+}
+
+export function Stage3D({ children, background, camera, environment = 0.9, keyLight, centerY = 0.5, frames }: Stage3DProps) {
   const { width, height } = useVideoConfig();
+  if (frames) return <StageFrames src={frames} />;
   return (
     <ThreeCanvas
       width={width}

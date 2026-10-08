@@ -109,10 +109,13 @@ npm run render:all
 npm run render:all -- --only FeeReveal,case-001-lease-tenure --lang zh --ratio 9x16
 # 每支出一张静帧（检查排版用），可叠加安全区
 npm run render:all -- --still --safe-zone
+# 接着渲染中断的批次：已完成的 MP4 保留
+npm run render:all -- --skip-existing
 ```
 
 输出到 `reels/out/{name}-{lang}-{ratio}.mp4`：H.264 + AAC、30 fps，三语分开渲染，比例为 9:16、4:5、16:9。
 没有 GPU 的机器：`REMOTION_GL=swangle npm run render:all`。指定浏览器：`REMOTION_BROWSER=/path/to/chrome`。
+门店揭幕（R7）的 3D 在没有 GPU 时约 5 秒一帧，而三种语言的画面相同：每个比例只渲染一次 3D，存为 `reels/plates/` 里的 PNG 帧，三语文字再叠在上面。中断后从缺的那一帧接着渲染；整支完成后 `plates/` 自动清掉。
 
 | ID | 名称 | 时长 |
 |---|---|---|

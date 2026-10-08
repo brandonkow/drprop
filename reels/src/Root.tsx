@@ -80,7 +80,7 @@ export function Root() {
         component={StoreReveal}
         {...common}
         defaultProps={base}
-        calculateMetadata={meta<ReelProps>(() => storeRevealFrames + END_CARD_FRAMES)}
+        calculateMetadata={meta<ReelProps>((p) => storeRevealFrames + (p.stageOnly ? 0 : END_CARD_FRAMES))}
       />
       <Composition
         id="MemberCardReveal"

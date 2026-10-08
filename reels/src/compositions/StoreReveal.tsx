@@ -43,11 +43,12 @@ const LAMPS: V3[] = [
   [10.9, 2.3, -6.4],
 ];
 
-function Body({ lang, ratio }: ReelProps) {
+function Body({ lang, ratio, stageOnly, stageFrames }: ReelProps) {
   const frame = useCurrentFrame();
   return (
     <>
       <Stage3D
+        frames={stageFrames}
         background="#E9E2D4"
         camera={{ position: at(frame, 'pos'), target: at(frame, 'look'), fov: 50, near: 0.05, far: 80 }}
         environment={0.55}
@@ -58,14 +59,16 @@ function Body({ lang, ratio }: ReelProps) {
         ))}
         <Store3D />
       </Stage3D>
-      <SafeBox ratio={ratio} style={{ justifyContent: 'space-between' }}>
-        <Caption lang={lang} ratio={ratio} role="display" from={12 * FPS} to={storeRevealFrames} color={color.ink}>
-          {COPY.store.line[lang]}
-        </Caption>
-        <Caption lang={lang} ratio={ratio} from={14 * FPS} to={storeRevealFrames} color={color.ink}>
-          {COPY.store.sub[lang]}
-        </Caption>
-      </SafeBox>
+      {stageOnly ? null : (
+        <SafeBox ratio={ratio} style={{ justifyContent: 'space-between' }}>
+          <Caption lang={lang} ratio={ratio} role="display" from={12 * FPS} to={storeRevealFrames} color={color.ink}>
+            {COPY.store.line[lang]}
+          </Caption>
+          <Caption lang={lang} ratio={ratio} from={14 * FPS} to={storeRevealFrames} color={color.ink}>
+            {COPY.store.sub[lang]}
+          </Caption>
+        </SafeBox>
+      )}
     </>
   );
 }

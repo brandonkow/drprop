@@ -20,6 +20,10 @@ export type ReelProps = {
   lang: Lang;
   ratio: Ratio;
   showSafeZone?: boolean;
+  /** Only the 3D stage, no text or end card: render-all renders it once per format and the languages share it. */
+  stageOnly?: boolean;
+  /** Base URL of that pre-rendered stage ({frame}.png), shown instead of rendering the 3D again. */
+  stageFrames?: string;
 };
 
 /**
