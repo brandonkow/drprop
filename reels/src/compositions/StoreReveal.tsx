@@ -12,7 +12,7 @@ import { ease } from '../components/motion';
 import { ReelFrame, type ReelProps } from '../components/ReelFrame';
 import { SafeBox } from '../components/SafeBox';
 import { Stage3D } from '../components/Stage3D';
-import { FPS } from '../layout';
+import { FPS, safeRect } from '../layout';
 
 export const storeRevealFrames = 20 * FPS;
 
@@ -60,7 +60,8 @@ function Body({ lang, ratio, stageOnly, stageFrames }: ReelProps) {
         <Store3D />
       </Stage3D>
       {stageOnly ? null : (
-        <SafeBox ratio={ratio} style={{ justifyContent: 'space-between' }}>
+        // Both lines at the top, over the plain wall: lower down they cross door handles and chairs.
+        <SafeBox ratio={ratio} style={{ gap: safeRect(ratio).height * 0.025 }}>
           <Caption lang={lang} ratio={ratio} role="display" from={12 * FPS} to={storeRevealFrames} color={color.ink}>
             {COPY.store.line[lang]}
           </Caption>
