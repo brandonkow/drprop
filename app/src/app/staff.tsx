@@ -5,8 +5,9 @@
  * questions the client sees in Records, open 30-minute times, and set the Lounge
  * board on the home screen. Times are Malaysia time. The database checks the role.
  */
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { Body, Display, Label, Mono, Small } from '../components/type';
 import { OutlineButton, Rule, Screen, SolidButton, TextLink } from '../components/ui';
@@ -37,6 +38,7 @@ export default function Staff() {
   const [board, setBoard] = useState<Lounge>(lounge ?? { seatsFree: 0, mood: 'quiet', coffee: '' });
   const [code, setCode] = useState('');
   const [checkedIn, setCheckedIn] = useState<CheckedIn | null>(null);
+  const [scanning, setScanning] = useState(false);
   const now = useNow();
 
   const fetchAll = useCallback(
@@ -83,8 +85,7 @@ export default function Staff() {
   };
 
   if (!user) return null;
-  const checkIn = () => {
-    const scanned = code.trim();
+  const checkIn = (scanned = code.trim()) => {
     if (!scanned || busy) return;
     // Clear the field either way: a desk scanner types the next code into it.
     setCode('');
@@ -107,7 +108,7 @@ export default function Staff() {
         <TextInput
           value={code}
           onChangeText={setCode}
-          onSubmitEditing={checkIn}
+          onSubmitEditing={() => checkIn()}
           inputMode="numeric"
           maxLength={40}
           autoCorrect={false}
@@ -116,7 +117,18 @@ export default function Staff() {
           style={[s.input, { color: p.text, borderColor: p.rule }]}
           accessibilityLabel={t.staff.checkInCode}
         />
-        <OutlineButton label={t.staff.checkInButton} busy={busy} onPress={checkIn} />
+        <OutlineButton label={t.staff.checkInButton} busy={busy} onPress={() => checkIn()} />
+        {scanning ? (
+          <Scanner
+            onCode={(data) => {
+              setScanning(false);
+              checkIn(data);
+            }}
+            onClose={() => setScanning(false)}
+          />
+        ) : (
+          <TextLink label={t.staff.scan} onPress={() => setScanning(true)} disabled={busy} />
+        )}
         {checkedIn ? (
           <View accessibilityLiveRegion="polite">
             <Body>{fmt(t.staff.checkedIn, { name: checkedIn.name, no: checkedIn.memberNo })}</Body>
@@ -320,6 +332,39 @@ function Consult({
   );
 }
 
+/** The device camera as the desk scanner: takes the first Dr Prop check-in QR it sees. */
+function Scanner({ onCode, onClose }: { onCode(data: string): void; onClose(): void }) {
+  const { t } = useApp();
+  const [permission, requestPermission] = useCameraPermissions();
+  const taken = useRef(false);
+  if (!permission) return null;
+  if (!permission.granted) {
+    return (
+      <View style={s.note}>
+        <Small>{t.staff.cameraNeeded}</Small>
+        {permission.canAskAgain ? <OutlineButton label={t.staff.allowCamera} onPress={() => void requestPermission()} /> : null}
+        <TextLink label={t.common.cancel} onPress={onClose} muted />
+      </View>
+    );
+  }
+  return (
+    <View style={s.note}>
+      <CameraView
+        style={s.camera}
+        facing="back"
+        barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+        onBarcodeScanned={({ data }) => {
+          // One scan per opening; other QR codes in view are ignored.
+          if (taken.current || !data.startsWith('drprop:checkin:')) return;
+          taken.current = true;
+          onCode(data);
+        }}
+      />
+      <TextLink label={t.common.cancel} onPress={onClose} muted />
+    </View>
+  );
+}
+
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <View style={s.section}>
@@ -355,6 +400,7 @@ const s = StyleSheet.create({
   chip: { minHeight: TOUCH_MIN, minWidth: TOUCH_MIN, paddingHorizontal: SPACE[2], borderWidth: HAIRLINE, alignItems: 'center', justifyContent: 'center' },
   count: { minWidth: 32, textAlign: 'center' },
   note: { gap: SPACE[1], marginTop: SPACE[1] },
+  camera: { width: '100%', aspectRatio: 1, maxWidth: 360 },
   input: {
     ...INPUT_RESET,
     minHeight: TOUCH_MIN,

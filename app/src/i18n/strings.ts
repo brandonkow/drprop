@@ -169,6 +169,9 @@ const en = {
     checkInCode: 'Check-in code',
     checkInButton: 'Check in',
     checkedIn: 'Checked in: {name} · {no}',
+    scan: 'Scan with the camera',
+    cameraNeeded: 'Allow the camera to scan member cards.',
+    allowCamera: 'Allow the camera',
     status: { requested: 'Requested', confirmed: 'Confirmed', completed: 'Done', cancelled: 'Cancelled' },
   },
 };
@@ -340,6 +343,9 @@ const zh: Strings = {
     checkInCode: '签到码',
     checkInButton: '签到',
     checkedIn: '已签到：{name} · {no}',
+    scan: '用相机扫描',
+    cameraNeeded: '请允许使用相机来扫描会员卡。',
+    allowCamera: '允许使用相机',
     status: { requested: '待确认', confirmed: '已确认', completed: '已完成', cancelled: '已取消' },
   },
 };
@@ -513,6 +519,9 @@ const ms: Strings = {
     checkInCode: 'Kod daftar masuk',
     checkInButton: 'Daftar masuk',
     checkedIn: 'Sudah daftar masuk: {name} · {no}',
+    scan: 'Imbas dengan kamera',
+    cameraNeeded: 'Benarkan kamera untuk mengimbas kad ahli.',
+    allowCamera: 'Benarkan kamera',
     status: { requested: 'Diminta', confirmed: 'Disahkan', completed: 'Selesai', cancelled: 'Dibatalkan' },
   },
 };

@@ -47,7 +47,14 @@
           "motionPermission": "Dr Prop uses motion to light your member card as you tilt your phone."
         }
       ],
-      "expo-document-picker"
+      "expo-document-picker",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Dr Prop uses the camera at the front desk to scan members’ check-in codes.",
+          "recordAudioAndroid": false
+        }
+      ]
     ],
     "scheme": "drprop"
   }
