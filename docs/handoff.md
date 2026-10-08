@@ -5,6 +5,7 @@ Repository `brandonkow/drprop`. `main` and `claude/modest-ritchie-e7pjr3` are th
 Read first:
 - `docs/brief.md`: the brief, in Chinese. Every rule below comes from it.
 - `README.md`: the repo map and commands, in Chinese.
+- `docs/decisions.md`: every open decision, with what the code assumes today and what follows.
 - `docs/launch-checklist.md`: what only people can settle.
 - `supabase/README.md`: the backend.
 

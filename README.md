@@ -1,6 +1,6 @@
 # Dr Prop
 
-独立房产诊所的品牌、官网、App 与营销视频。设计与业务依据见 [`docs/brief.md`](docs/brief.md)；上线前待办见 [`docs/launch-checklist.md`](docs/launch-checklist.md)。
+独立房产诊所的品牌、官网、App 与营销视频。设计与业务依据见 [`docs/brief.md`](docs/brief.md)；上线前待办见 [`docs/launch-checklist.md`](docs/launch-checklist.md)；待你决定的事项汇总在 [`docs/decisions.md`](docs/decisions.md)。
 
 一个 npm workspaces 仓库，所有端共用同一套品牌资产：
 
