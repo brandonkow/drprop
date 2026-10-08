@@ -104,6 +104,29 @@ test('the adviser takes the call-back, finishes it, writes the note, and updates
   await page.context().close();
 });
 
+test('the front desk checks a member in with the code on their card, once', async ({ browser }) => {
+  const page = await signIn(browser, '011-1111 1111');
+  await page.getByText('Your member card').click();
+  // Six digits from the server, shown under the QR for typing when a scan fails.
+  const shown = await page.getByText(/^Code \d{3} \d{3}$/).textContent();
+  const code = shown!.replace(/\D/g, '');
+  expect(await axeViolations(page)).toEqual([]);
+  await page.getByText('Close', { exact: true }).click();
+
+  await page.getByText('Me', { exact: true }).last().click();
+  await page.getByText('Adviser schedule').last().click();
+  // A desk scanner types the QR text and presses Enter.
+  await page.getByLabel('Check-in code').fill(`drprop:checkin:${code}`);
+  await page.getByLabel('Check-in code').press('Enter');
+  await expect(page.getByText('Checked in: Aisyah · PJ-0001')).toBeVisible();
+  await expect(page.getByText('Drink: Teh tarik')).toBeVisible();
+
+  await page.getByLabel('Check-in code').fill(code);
+  await page.getByText('Check in', { exact: true }).click();
+  await expect(page.getByText('That code no longer works. Ask the member to open their card again.')).toBeVisible();
+  await page.context().close();
+});
+
 test('the client sees the finished call with the adviser’s note, and the new Lounge board', async ({ browser }) => {
   const page = await signIn(browser, '012-345 6789'); // returning: no name question
   await expect(page.getByText(/Mr Tan\./)).toBeVisible();

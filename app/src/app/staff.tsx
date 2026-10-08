@@ -1,6 +1,7 @@
 /**
  * Adviser schedule (supabase mode, active advisers only; reached from Me).
- * Take urgent call-backs, confirm and finish consults, write the note and
+ * Check members in to the Lounge (a desk QR scanner types into the code field),
+ * take urgent call-backs, confirm and finish consults, write the note and
  * questions the client sees in Records, open 30-minute times, and set the Lounge
  * board on the home screen. Times are Malaysia time. The database checks the role.
  */
@@ -11,7 +12,7 @@ import { Body, Display, Label, Mono, Small } from '../components/type';
 import { OutlineButton, Rule, Screen, SolidButton, TextLink } from '../components/ui';
 import { malaysiaClock, malaysiaDay, malaysiaInstant, nextMalaysiaDays } from '../backend/malaysia-time';
 import { errorKey } from '../data/errors';
-import { staffApi, type StaffBooking, type StaffSlot } from '../data/supabase';
+import { staffApi, type CheckedIn, type StaffBooking, type StaffSlot } from '../data/supabase';
 import type { Lounge } from '../data/types';
 import { formatDay } from '../i18n/format';
 import { useApp } from '../state/app-state';
@@ -34,6 +35,8 @@ export default function Staff() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [board, setBoard] = useState<Lounge>(lounge ?? { seatsFree: 0, mood: 'quiet', coffee: '' });
+  const [code, setCode] = useState('');
+  const [checkedIn, setCheckedIn] = useState<CheckedIn | null>(null);
   const now = useNow();
 
   const fetchAll = useCallback(
@@ -80,6 +83,14 @@ export default function Staff() {
   };
 
   if (!user) return null;
+  const checkIn = () => {
+    const scanned = code.trim();
+    if (!scanned || busy) return;
+    // Clear the field either way: a desk scanner types the next code into it.
+    setCode('');
+    setCheckedIn(null);
+    void act(async () => setCheckedIn(await staffApi.checkIn(scanned)));
+  };
   const callbacks = bookings.filter((b) => b.booking.adviser_id === null);
   const mine = bookings.filter((b) => b.booking.adviser_id !== null);
   const days = nextMalaysiaDays(14);
@@ -90,6 +101,29 @@ export default function Staff() {
       <TextLink label={t.common.back} onPress={() => router.back()} muted />
       <Display style={s.title}>{t.staff.title}</Display>
       {message ? <Small accessibilityLiveRegion="polite">{message}</Small> : null}
+
+      <Section label={t.staff.checkIn}>
+        <Small>{t.staff.checkInHint}</Small>
+        <TextInput
+          value={code}
+          onChangeText={setCode}
+          onSubmitEditing={checkIn}
+          inputMode="numeric"
+          maxLength={40}
+          autoCorrect={false}
+          placeholder="000 000"
+          placeholderTextColor={p.muted}
+          style={[s.input, { color: p.text, borderColor: p.rule }]}
+          accessibilityLabel={t.staff.checkInCode}
+        />
+        <OutlineButton label={t.staff.checkInButton} busy={busy} onPress={checkIn} />
+        {checkedIn ? (
+          <View accessibilityLiveRegion="polite">
+            <Body>{fmt(t.staff.checkedIn, { name: checkedIn.name, no: checkedIn.memberNo })}</Body>
+            {checkedIn.drink ? <Small>{fmt(t.staff.drink, { drink: checkedIn.drink })}</Small> : null}
+          </View>
+        ) : null}
+      </Section>
 
       {callbacks.length ? (
         <Section label={t.staff.callbacks}>

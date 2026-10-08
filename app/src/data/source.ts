@@ -8,7 +8,7 @@ import type { ConsultType, PriceBand } from '@drprop/brand/pricing';
 import { runtime } from '../backend/config';
 import { mockSource } from './mock';
 import { liveSource } from './supabase';
-import type { Consultation, Lang, Lounge, Membership, Slot, User } from './types';
+import type { CheckinCode, Consultation, Lang, Lounge, Membership, Slot, User } from './types';
 
 export interface BookingDraft {
   type: ConsultType;
@@ -48,6 +48,8 @@ export interface DataSource {
   /** requestId makes a retried request return the same booking. */
   book(user: User, draft: BookingDraft, fee: number, requestId: string): Promise<Consultation>;
   cancel(c: Consultation): Promise<Consultation>;
+  /** A fresh check-in code for an active member's card. The card asks for a new one every minute. */
+  checkinCode(): Promise<CheckinCode>;
   /** Renewal needs payment: the backend has none yet, so members renew at the desk. */
   canRenew: boolean;
   renew(m: Membership): Promise<Membership>;

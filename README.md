@@ -11,7 +11,7 @@ app/       会员 App（Expo SDK 57 + Expo Router）：首页、问诊流程、�
 reels/     营销视频（Remotion 4）：R1–R8，三比例批量渲染（默认只出英文）
 blender/   门店数字孪生（店屋 / 商场两种形态）、药柜与动线动画的 Blender 脚本（bpy）
 twin/      门店运营孪生（three.js）：交互式 3D 门店 + 看板，六种顾客走完一个模拟营业日
-supabase/  App 第二阶段后端：短信登录、顾问排班、预约、会员、Lounge 看板（行级安全 + 测试）
+supabase/  App 第二阶段后端：短信登录、顾问排班、预约、会员、Lounge 签到码与看板（行级安全 + 测试）
 docs/      执行文档
 ```
 

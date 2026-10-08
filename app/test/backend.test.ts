@@ -136,6 +136,8 @@ describe('rows', () => {
     expect(errorKey({ message: 'This appointment is no longer available' })).toBe('slotTaken');
     expect(errorKey({ message: 'The fee changed. Review the current quote before booking' })).toBe('feeChanged');
     expect(errorKey(new TypeError('Failed to fetch'))).toBe('offline');
+    expect(errorKey({ message: 'This check-in code is not valid. Ask the member to open their card again' })).toBe('checkinCode');
+    expect(errorKey({ message: 'This check-in code is not valid: the membership is not active' })).toBe('checkinCode');
     expect(errorKey('weird')).toBe('generic');
   });
 });

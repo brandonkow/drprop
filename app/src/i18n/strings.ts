@@ -105,6 +105,9 @@ const en = {
     checkIn: 'Show at the front desk to check in.',
     tilt: 'Tilt your phone.',
     inactive: 'Check-in opens when your membership is active.',
+    code: 'Code {code}',
+    refresh: 'A new code every minute.',
+    codeError: 'No code right now. Check your connection: the card tries again every minute.',
   },
   me: {
     title: 'Me',
@@ -133,6 +136,7 @@ const en = {
     urgentClosed: 'Urgent call-backs are closed right now.',
     notOpen: 'Bookings are not open yet.',
     reviewNeeds: 'A review follows a finished consult for the same property.',
+    checkinCode: 'That code no longer works. Ask the member to open their card again.',
     generic: 'Something went wrong. Try again.',
   },
   staff: {
@@ -160,6 +164,11 @@ const en = {
     seats: 'Seats free',
     coffee: "Today's coffee",
     update: 'Update the board',
+    checkIn: 'Check in a member',
+    checkInHint: 'Scan the member’s card, or type the six digits under the code.',
+    checkInCode: 'Check-in code',
+    checkInButton: 'Check in',
+    checkedIn: 'Checked in: {name} · {no}',
     status: { requested: 'Requested', confirmed: 'Confirmed', completed: 'Done', cancelled: 'Cancelled' },
   },
 };
@@ -267,6 +276,9 @@ const zh: Strings = {
     checkIn: '到店时出示给前台签到。',
     tilt: '倾斜手机看看。',
     inactive: '会员有效后才能签到。',
+    code: '签到码 {code}',
+    refresh: '每分钟换一个新码。',
+    codeError: '暂时取不到签到码。请检查网络，卡片每分钟会再试一次。',
   },
   me: {
     title: '我',
@@ -295,6 +307,7 @@ const zh: Strings = {
     urgentClosed: '现在不接急诊回电。',
     notOpen: '暂未开放预约。',
     reviewNeeds: '复诊需要同一房产已完成的诊断。',
+    checkinCode: '这个码已失效。请会员重新打开会员卡。',
     generic: '出了点问题，请再试一次。',
   },
   staff: {
@@ -322,6 +335,11 @@ const zh: Strings = {
     seats: '空位',
     coffee: '今日咖啡',
     update: '更新看板',
+    checkIn: '会员签到',
+    checkInHint: '扫描会员卡上的二维码，或输入码下面的六位数字。',
+    checkInCode: '签到码',
+    checkInButton: '签到',
+    checkedIn: '已签到：{name} · {no}',
     status: { requested: '待确认', confirmed: '已确认', completed: '已完成', cancelled: '已取消' },
   },
 };
@@ -431,6 +449,9 @@ const ms: Strings = {
     checkIn: 'Tunjukkan di kaunter untuk daftar masuk.',
     tilt: 'Condongkan telefon anda.',
     inactive: 'Daftar masuk dibuka apabila keahlian anda aktif.',
+    code: 'Kod {code}',
+    refresh: 'Kod baharu setiap minit.',
+    codeError: 'Tiada kod buat masa ini. Semak sambungan anda: kad akan cuba lagi setiap minit.',
   },
   me: {
     title: 'Saya',
@@ -459,6 +480,7 @@ const ms: Strings = {
     urgentClosed: 'Panggilan segera ditutup sekarang.',
     notOpen: 'Tempahan belum dibuka.',
     reviewNeeds: 'Semakan menyusul konsultasi yang selesai bagi hartanah yang sama.',
+    checkinCode: 'Kod itu tidak sah lagi. Minta ahli membuka kad mereka semula.',
     generic: 'Ada masalah. Cuba lagi.',
   },
   staff: {
@@ -486,6 +508,11 @@ const ms: Strings = {
     seats: 'Tempat kosong',
     coffee: 'Kopi hari ini',
     update: 'Kemas kini papan',
+    checkIn: 'Daftar masuk ahli',
+    checkInHint: 'Imbas kad ahli, atau taip enam digit di bawah kod.',
+    checkInCode: 'Kod daftar masuk',
+    checkInButton: 'Daftar masuk',
+    checkedIn: 'Sudah daftar masuk: {name} · {no}',
     status: { requested: 'Diminta', confirmed: 'Disahkan', completed: 'Selesai', cancelled: 'Dibatalkan' },
   },
 };

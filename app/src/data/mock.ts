@@ -157,6 +157,11 @@ export const mockSource: DataSource = {
     await wait(500);
     return { ...c, status: 'cancelled' };
   },
+  // Nothing to scan it against in the preview; the code only has to look like the real one.
+  checkinCode: async () => ({
+    code: String(Math.floor(Math.random() * 1_000_000)).padStart(6, '0'),
+    expiresAt: new Date(Date.now() + 120_000).toISOString(),
+  }),
   canRenew: true,
   renew,
   signOut: async () => {},

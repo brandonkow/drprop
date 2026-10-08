@@ -7,7 +7,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { backendClient, clearSavedSignIn } from '../backend/client';
 import { normalizePhone, toConsultation, type BookingRow } from './rows';
 import type { BookingDraft, DataSource } from './source';
-import type { Lang, Lounge, Membership, Slot, User } from './types';
+import type { CheckinCode, Lang, Lounge, Membership, Slot, User } from './types';
 
 interface ProfileRow {
   user_id: string;
@@ -133,6 +133,13 @@ export const liveSource: DataSource = {
     return toConsultation(data as BookingRow);
   },
 
+  async checkinCode(): Promise<CheckinCode> {
+    const { data, error } = await client().rpc('dp_checkin_code').single();
+    if (error) throw error;
+    const row = data as { code: string; expires_at: string };
+    return { code: row.code, expiresAt: row.expires_at };
+  },
+
   canRenew: false,
   renew: async () => {
     throw new Error('renew-at-desk');
@@ -151,6 +158,13 @@ export interface StaffBooking {
   customerName: string;
   customerPhone: string;
   customerDrink: string;
+}
+
+/** Who a redeemed check-in code belongs to. */
+export interface CheckedIn {
+  memberNo: string;
+  name: string;
+  drink: string;
 }
 
 export interface StaffSlot {
@@ -191,4 +205,9 @@ export const staffApi = {
   note: (bookingId: string, note: string, questions: string[]) =>
     rpc('dp_adviser_note', { p_booking: bookingId, p_note: note, p_questions: questions }),
   setLounge: (l: Lounge) => rpc('dp_set_lounge', { p_seats_free: l.seatsFree, p_mood: l.mood, p_coffee: l.coffee }),
+  /** Redeems a member's check-in code (scanned or typed). Each code works once. */
+  async checkIn(code: string): Promise<CheckedIn> {
+    const r = await rpc<{ member_no: string; name: string; drink: string }>('dp_check_in', { p_code: code });
+    return { memberNo: r.member_no, name: r.name, drink: r.drink };
+  },
 };

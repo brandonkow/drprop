@@ -276,6 +276,54 @@ describe('with bookings open', () => {
     await expect(as(customer, "update public.dp_memberships set status = 'active'")).rejects.toThrow(/permission denied/);
   });
 
+  it('gives only an active member a check-in code: six digits, good for two minutes, never readable as a table', async () => {
+    const member = (user: string, no: string, status: string) =>
+      db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, $2, $3, '2027-01-01')", [user, no, status]);
+    await expect(as(customer, 'select * from public.dp_checkin_code()')).rejects.toThrow(/active membership/);
+    await member(customer, 'PJ-0001', 'active');
+    await member(other, 'PJ-0002', 'waitlist');
+    const [c] = await as(customer, 'select * from public.dp_checkin_code()');
+    expect(c!.code).toMatch(/^\d{6}$/);
+    expect(Date.parse(c!.expires_at) - Date.now()).toBeGreaterThan(110_000);
+    expect(Date.parse(c!.expires_at) - Date.now()).toBeLessThanOrEqual(120_000);
+    await expect(as(other, 'select * from public.dp_checkin_code()')).rejects.toThrow(/active membership/);
+    await expect(as(unverified, 'select * from public.dp_checkin_code()')).rejects.toThrow(/Verified phone/);
+    await expect(as(customer, 'select * from public.dp_checkin_codes')).rejects.toThrow(/permission denied/);
+  });
+
+  it('lets an adviser redeem a check-in code once; the member sees the visit', async () => {
+    await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', '2027-01-01')", [customer]);
+    const code = (await as(customer, 'select * from public.dp_checkin_code()'))[0]!.code as string;
+    await expect(as(customer, 'select public.dp_check_in($1)', [code])).rejects.toThrow(/adviser access/);
+    // A desk scanner types the whole QR text; a person types the digits, maybe with a space.
+    const [r] = await as(adviser, 'select public.dp_check_in($1) as r', [`drprop:checkin:${code}`]);
+    expect(r!.r).toEqual({ member_no: 'PJ-0001', name: 'User 0', drink: 'Kopi-O kosong' });
+    await expect(as(adviser, 'select public.dp_check_in($1)', [code])).rejects.toThrow(/check-in code is not valid/);
+    expect(await as(customer, 'select store_id from public.dp_checkins')).toEqual([{ store_id: 'pj' }]);
+    expect(await as(other, 'select * from public.dp_checkins')).toHaveLength(0);
+
+    const typed = (await as(customer, 'select * from public.dp_checkin_code()'))[0]!.code as string;
+    expect((await as(adviser, 'select public.dp_check_in($1) as r', [`${typed.slice(0, 3)} ${typed.slice(3)}`]))[0]!.r.member_no).toBe('PJ-0001');
+    await expect(as(adviser, "select public.dp_check_in('12345')")).rejects.toThrow(/not valid/);
+  });
+
+  it('refuses expired codes and members who lapsed; keeps only the previous code alive', async () => {
+    await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', '2027-01-01')", [customer]);
+    const issue = async () => (await as(customer, 'select * from public.dp_checkin_code()'))[0]!.code as string;
+    const [first, second, third] = [await issue(), await issue(), await issue()];
+    // The newest and the one before it: a card that refreshed mid-scan still checks in.
+    expect((await db.query<Row>('select code from public.dp_checkin_codes order by expires_at')).rows.map((r) => r.code)).toEqual([second, third]);
+    await expect(as(adviser, 'select public.dp_check_in($1)', [first])).rejects.toThrow(/not valid/);
+    await as(adviser, 'select public.dp_check_in($1)', [second]);
+
+    await db.query("update public.dp_checkin_codes set expires_at = now() - interval '1 second'");
+    await expect(as(adviser, 'select public.dp_check_in($1)', [third])).rejects.toThrow(/not valid/);
+
+    const late = await issue();
+    await db.query("update public.dp_memberships set status = 'expired'");
+    await expect(as(adviser, 'select public.dp_check_in($1)', [late])).rejects.toThrow(/not active/);
+  });
+
   it('lets advisers, and only advisers, update the Lounge board', async () => {
     await expect(as(customer, "select public.dp_set_lounge(3, 'quiet', 'Kopi Tarik')")).rejects.toThrow(/adviser access/);
     await as(adviser, "select public.dp_set_lounge(3, 'quiet', ' Kopi Tarik · Ipoh ')");

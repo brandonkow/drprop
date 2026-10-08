@@ -9,6 +9,7 @@ Nothing here has been applied to a hosted project, and no SMS has been sent.
 ## What the database enforces
 
 `migrations/202610070001_core.sql` is additive: one private schema and `dp_`-prefixed tables.
+`migrations/202610080001_checkin.sql` adds Lounge check-in codes on top of it.
 
 - **Row-level security on every table.** A client reads only their own profile,
   bookings and membership. An adviser reads only their own slots and the bookings
@@ -31,6 +32,13 @@ Nothing here has been applied to a hosted project, and no SMS has been sent.
 - **Advisers write the note and questions** the client sees in Records
   (`dp_adviser_note`). Brief §2 still applies: a diagnosis, never a valuation or a unit recommendation.
 - **The front desk sees the client's drink** with each booking (brief §4.1).
+- **Check-in codes, not member numbers** (brief §3.3, §8.3). The member card's QR
+  holds six digits from `dp_checkin_code`, good for two minutes and one check-in,
+  and only for an active member. The card asks for a new one every minute; the
+  previous code stays good until it expires. Only an active adviser redeems a code
+  (`dp_check_in`), and gets the member's name, number and drink back. Each visit
+  is logged in `dp_checkins`, which the member can read. A screenshot or a printed
+  number stops working by itself.
 - **Fresh installs take no bookings.** `bookings_enabled` is false and no price is
   confirmed until the operator says so.
 - **No payment yet.** Every booking is `unpaid`. Payment (FPX, Touch 'n Go, GrabPay,
@@ -80,7 +88,8 @@ Nothing here has been applied to a hosted project, and no SMS has been sent.
 | Booking | Published adviser times, the server's fee, "Request this time". Urgent: "Request the call", only when call-backs are open. No payment is taken. |
 | Records | Requested → confirmed → done, the adviser's note and questions, cancel before the start. |
 | Me | Name, drink and language saved to the profile; membership from the operator; "Adviser schedule" for advisers. |
-| Adviser schedule | Take call-backs, confirm and finish consults, write notes and questions, open 30-minute times (Malaysia time), set the Lounge board. |
+| Member card | The check-in QR and its six digits, new every minute, for an active member. |
+| Adviser schedule | Check members in (a desk QR scanner types into the code field and presses Enter; or type the six digits), take call-backs, confirm and finish consults, write notes and questions, open 30-minute times (Malaysia time), set the Lounge board. |
 
 Sessions: on phones the session sits in the keychain (this device only), split into
 small chunks so it fits the keychain's limits. A failed write keeps the old session.
@@ -94,7 +103,7 @@ On the web it is kept in this tab's sessionStorage. No client records are cached
   with a stand-in for Supabase Auth. It checks reading and writing rights, staff
   isolation, the opening gates, fees, tampering, slot conflicts, retries, overlaps,
   the three-booking cap, cancellation, urgent call-backs, reviews, the booking
-  lifecycle, notes, membership and the Lounge board.
+  lifecycle, notes, membership, check-in codes and the Lounge board.
 - `app/test/backend.test.ts` checks the config gate, session chunking, Malaysia
   time, the row mapping, phone numbers and error messages.
 
@@ -104,7 +113,7 @@ connections. Before launch, on the real project:
 - Check grants, the functions and row security through the real API.
 - Check real SMS delivery: wrong and expired codes, resend, sign-out, provider limits.
 - Race two clients for one slot (one wins), one client for two overlapping times,
-  and two advisers taking the same call-back.
+  and two advisers taking the same call-back, and two desks scanning the same check-in code.
 - Test the keychain session on real Android and iOS phones, including resuming the app.
 
 The schema follows Codex's earlier design (the `feat/brand-static-landing` branch),

@@ -8,6 +8,7 @@ export type ErrorKey =
   | 'urgentClosed'
   | 'notOpen'
   | 'reviewNeeds'
+  | 'checkinCode'
   | 'generic';
 
 /**
@@ -26,6 +27,7 @@ export function errorKey(error: unknown): ErrorKey {
     [/closed right now/i, 'urgentClosed'],
     [/not open yet/i, 'notOpen'],
     [/pre-signing review/i, 'reviewNeeds'],
+    [/check-in code/i, 'checkinCode'],
   ];
   return rules.find(([re]) => re.test(message))?.[1] ?? 'generic';
 }

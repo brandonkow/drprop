@@ -26,12 +26,12 @@ Read first:
 ```bash
 npm install
 npm run typecheck            # every package
-npm test                     # 153 unit tests (vitest), incl. 22 database tests on PGlite
+npm test                     # 156 unit tests (vitest), incl. 25 database tests on PGlite
 npm run lint -w @drprop/app
 npm run build                # website; fails if JS > 250 KB gzip or a launch build has placeholders
 npm run export:web -w @drprop/app                  # app/dist (preview), always --clear
 npm run export:connected-fixture -w @drprop/app    # app/dist-connected (fixture backend); never deploy
-npm run test:e2e             # 19 browser tests: web 14, app 2, connected 3
+npm run test:e2e             # 20 browser tests: web 14, app 2, connected 4
 ```
 
 Other commands:
@@ -75,11 +75,13 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 - The hosted backend, payments (next phase), media rights and print.
 
 ### Nice to have (not required by the brief)
-- In preview mode, the sample record's "Diagnosis (PDF)" could open `web/public/samples/diagnosis-{lang}.pdf`.
-- The member card QR (`drprop:checkin:<memberNo>`) needs a signed, expiring token before real check-in.
+- In preview mode, the sample record's "Diagnosis (PDF)" could open `web/public/samples/diagnosis-{lang}.pdf`. It needs the website's address (set at launch), or expo-sharing to open a bundled PDF on phones.
+- A camera scanner in the adviser screen. Until then the desk uses a QR scanner that types (keyboard mode), or types the six digits.
 - Payments (FPX, Touch 'n Go, GrabPay, cards) and private report storage in supabase mode.
 
 ## What changed in the last session (newest first)
+
+- **Lounge check-in codes** (`supabase/migrations/202610080001_checkin.sql`). The member card's QR now holds six digits from the server, new every minute, good for two minutes and one check-in, instead of the member number. The adviser screen has a "Check in a member" field: a desk scanner types the QR and presses Enter, or someone types the digits; it shows the member's name, number and drink. Covered by 3 database tests and a browser test (scan, then the same code refused).
 
 - **Reels: English only** (the owner's call, 2026-10-08). `render-all` renders English by default; `--lang en,zh,ms` still renders all three, because the Chinese and Malay copy stays in the reels. The Chinese and Malay files in `reels/out/` were deleted.
 
@@ -130,5 +132,5 @@ Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and ac
 
 - The backend has never touched a hosted Supabase project, and no SMS has been sent. PGlite tests are single-connection.
 - Supabase mode takes no payment: bookings are requests the adviser confirms.
-- The member card QR (`drprop:checkin:<memberNo>`) is not a secure credential yet.
+- Check-in is checked by the database (single use, two minutes, active members only), but there's no camera scanner in the app yet: see "Nice to have".
 - The sound logo, film score and store imagery are placeholders or concepts, all labelled.

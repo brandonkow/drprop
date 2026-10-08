@@ -56,6 +56,13 @@ export interface Store {
   loungeMood: 'quiet' | 'lively';
 }
 
+/** What the member card's QR holds: six digits from the server, good for one check-in (S5). */
+export interface CheckinCode {
+  code: string;
+  /** ISO time the code stops working (two minutes after it was issued). */
+  expiresAt: string;
+}
+
 /** The Lounge right now, for the home screen. */
 export interface Lounge {
   mood: 'quiet' | 'lively';

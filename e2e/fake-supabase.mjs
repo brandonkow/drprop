@@ -35,6 +35,8 @@ const adviserId = randomUUID();
 await db.query("insert into auth.users values ($1, $2, now())", [adviserId, ADVISER_PHONE]);
 await db.query("insert into public.dp_profiles (user_id, display_name, drink_preference) values ($1, 'Aisyah', 'Teh tarik')", [adviserId]);
 await db.query("insert into public.dp_staff values ($1, 'Aisyah', true)", [adviserId]);
+// Aisyah is also a Lounge member, so the check-in test can scan her own card.
+await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', current_date + 30)", [adviserId]);
 await db.exec(`
   update public.dp_settings set bookings_enabled = true, urgent_from = '00:00', urgent_until = '23:59:59', closed_isodow = null;
   update public.dp_prices set confirmed = true;
