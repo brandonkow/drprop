@@ -5,8 +5,8 @@ import zh from './zh.json' with { type: 'json' };
 /** English is the source dictionary; the others must match its shape. */
 export type Dict = typeof en;
 
-export const langs = ['en', 'zh', 'ms'] as const;
-export type Lang = (typeof langs)[number];
+export const langs = ['en'] as const;
+export type Lang = 'en' | 'zh' | 'ms';
 
 export const dicts: Record<Lang, Dict> = { en, zh, ms };
 

@@ -5,7 +5,7 @@
 import { bands } from '@drprop/brand/pricing';
 import { roofPath } from '@drprop/brand/pulse';
 import { PULSE_LAYOUT, type PulseLayout } from '../config/pulse.ts';
-import { site, whatsappUrl } from '../config/site.ts';
+import { isPreview, site, whatsappUrl } from '../config/site.ts';
 import { groupDigits, formatRM } from '../features/money.ts';
 import { dicts, fmt, langMeta, langs, type Dict, type Lang } from '../i18n/index.ts';
 
@@ -75,7 +75,7 @@ function businessJsonLd(lang: Lang): string {
 
 function head(t: Dict, lang: Lang, page: PageId): string {
   const title = t.meta[titles[page]];
-  const alternates = site.origin
+  const alternates = !isPreview()
     ? [
         `<link rel="canonical" href="${site.origin}${pagePath(lang, page)}">`,
         ...langs.map(
@@ -97,6 +97,7 @@ function head(t: Dict, lang: Lang, page: PageId): string {
     <title>${esc(title)}</title>
     <meta name="description" content="${esc(t.meta.description)}">
     <meta name="theme-color" content="#F4F1EA">
+    ${isPreview() ? '<meta name="robots" content="noindex,nofollow">' : ''}
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Dr Prop">
     <meta property="og:locale" content="${langMeta[lang].locale}">
@@ -110,19 +111,11 @@ function head(t: Dict, lang: Lang, page: PageId): string {
   </head>`;
 }
 
-function header(t: Dict, lang: Lang, page: PageId, logoSvg: string): string {
-  const langLinks = langs
-    .map((l) => {
-      const m = langMeta[l];
-      const current = l === lang ? ' aria-current="true"' : '';
-      return `<a href="${pagePath(l, page)}" hreflang="${m.html}" lang="${m.html}" title="${esc(m.name)}"${current}>${m.short}</a>`;
-    })
-    .join('');
+function header(t: Dict, lang: Lang, _page: PageId, logoSvg: string): string {
   return `<header class="site-header">
     <div class="wrap site-header__inner">
       <a class="brand" href="${langMeta[lang].base}" aria-label="${esc(t.a11y.home)}">${logoSvg}</a>
-      <nav class="langs" aria-label="${esc(t.a11y.languages)}">${langLinks}</nav>
-      <a class="cta" data-cta href="${esc(whatsappUrl(t.cta.message))}"
+      <a class="cta" data-cta ${isPreview() ? 'role="link" aria-disabled="true"' : `href="${esc(whatsappUrl(t.cta.message))}"`}
          data-message="${esc(t.cta.message)}" data-message-fee="${esc(t.cta.messageWithFee)}"
          target="_blank" rel="noopener" aria-label="${esc(t.cta.label)}"><span class="cta__full">${esc(t.cta.label)}</span><span class="cta__short">${esc(t.cta.short)}</span></a>
     </div>
@@ -372,6 +365,7 @@ export function renderDocument(entry: Pick<PageEntry, 'lang' | 'page'>, logoSvg:
   <a class="skip" href="#main">${esc(t.a11y.skip)}</a>
   ${header(t, lang, page, logoSvg)}
   <main id="main">
+  ${isPreview() ? '<p id="preview-notice" class="wrap small" role="status">Concept preview. Bookings are unavailable; business details, fees and hours await confirmation.</p>' : ''}
   ${body}
   </main>
   ${footer(t, lang)}

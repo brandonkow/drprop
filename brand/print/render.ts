@@ -200,10 +200,10 @@ export function cardHtml(d: Diagnosis, lang: Lang, fonts: Fonts, roofPathD: stri
 const PLATE_COPY = {
   heading: { en: 'Consultation fees', zh: '诊金', ms: 'Yuran konsultasi' },
   by: { en: 'By property value', zh: '按房产价值', ms: 'Mengikut nilai hartanah' },
-  urgent: { en: 'Urgent, video within 2 hours: fee + 50%', zh: '急诊，两小时内视频：诊金 + 50%', ms: 'Segera, video dalam 2 jam: yuran + 50%' },
+  urgent: { en: 'Urgent call-back within 2 hours: fee + 50%', zh: '急诊，两小时内视频：诊金 + 50%', ms: 'Segera, video dalam 2 jam: yuran + 50%' },
   review: { en: 'Pre-signing review: half fee', zh: '签约前复诊：半价', ms: 'Semakan sebelum tandatangan: separuh yuran' },
   commission: { en: 'No commission. Ever.', zh: '零佣金。', ms: 'Tiada komisen.' },
-  hours: { en: 'Tue – Sun', zh: '周二至周日', ms: 'Sel – Ahd' },
+  hours: { en: 'Tue - Sun', zh: '周二至周日', ms: 'Sel – Ahd' },
   closed: { en: 'Closed Mondays', zh: '周一休息', ms: 'Tutup hari Isnin' },
 } as const;
 
@@ -215,11 +215,11 @@ const PLATE_COPY = {
 export function plateHtml(fonts: Fonts, hours: { opens: string; closes: string }, wordmarkSvg: string): string {
   const rows = bands.map((b, i) => {
     const prev = bands[i - 1];
-    const range = b.upTo === null ? `> RM ${group((prev?.upTo ?? 0) / 1000)}k` : prev ? `RM ${group(prev.upTo! / 1000)}k – ${group(b.upTo / 1000)}k` : `≤ RM ${group(b.upTo / 1000)}k`;
+    const range = b.upTo === null ? `> RM ${group((prev?.upTo ?? 0) / 1000)}k` : prev ? `RM ${group(prev.upTo! / 1000)}k - ${group(b.upTo / 1000)}k` : `≤ RM ${group(b.upTo / 1000)}k`;
     return `<tr><td>${range.replace('1,000k', '1M').replace('2,000k', '2M')}</td><td class="fee">${rm(consultFee('clinic', b.id))}</td></tr>`;
   });
   const tri = (k: keyof typeof PLATE_COPY) =>
-    `<span>${esc(PLATE_COPY[k].en)}</span><span class="zh">${esc(PLATE_COPY[k].zh)}</span><span>${esc(PLATE_COPY[k].ms)}</span>`;
+    `<span>${esc(PLATE_COPY[k].en)}</span>`;
   const css = `
     .plate { width: 300mm; height: 400mm; padding: 26mm 24mm; display: flex; flex-direction: column; color: ${color.ink}; }
     .plate .wordmark svg { width: 92mm; height: auto; color: ${color.ink}; }
@@ -248,7 +248,7 @@ export function plateHtml(fonts: Fonts, hours: { opens: string; closes: string }
     </div>
     <div class="bottom">
       <div class="tri">${tri('commission')}</div>
-      <div class="tri" style="text-align:right">${tri('hours')}<span class="mono">${hours.opens} – ${hours.closes}</span><span>${esc(PLATE_COPY.closed.en)} · <span class="zh">${esc(PLATE_COPY.closed.zh)}</span> · ${esc(PLATE_COPY.closed.ms)}</span></div>
+      <div class="tri" style="text-align:right">${tri('hours')}<span class="mono">${hours.opens} - ${hours.closes}</span><span>${esc(PLATE_COPY.closed.en)}</span></div>
     </div>
   </section>
 </body></html>`;

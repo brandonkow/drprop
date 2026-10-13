@@ -21,6 +21,7 @@ export interface BookingRow {
   advisor_note: string | null;
   questions: string[];
   created_at: string;
+  urgent_overdue_acknowledged_at?: string | null;
 }
 
 /** The row → the app's record (brief §8.4 shape). */
@@ -34,6 +35,8 @@ export function toConsultation(b: BookingRow): Consultation {
     scheduledAt: b.consultation_type === 'urgent' ? undefined : b.starts_at,
     status: b.status === 'completed' ? 'done' : b.status === 'cancelled' ? 'cancelled' : 'booked',
     pending: b.status === 'requested',
+    urgentDueAt: b.consultation_type === 'urgent' ? b.ends_at : undefined,
+    urgentRecoveryAt: b.urgent_overdue_acknowledged_at ?? undefined,
     followUpOf: b.follow_up_of ?? undefined,
     advisorNote: b.advisor_note ?? undefined,
     questions: b.questions.length ? b.questions : undefined,

@@ -16,7 +16,6 @@ async function signIn(browser: Browser, phone: string, name?: string): Promise<P
     throw e;
   });
   await page.goto('/');
-  await page.getByText('EN', { exact: true }).click();
   await page.getByRole('textbox').fill(phone);
   await page.getByText('Send code').click();
   await expect(page.getByText('The six-digit code.')).toBeVisible();
@@ -136,5 +135,71 @@ test('the client sees the finished call with the adviser’s note, and the new L
   await expect(page.getByText('Ask the bank about the lease first.')).toBeVisible();
   await expect(page.getByText('How many years are left on the lease?')).toBeVisible();
   await expect(page.getByText(/not legal, tax or financial advice/)).toBeVisible();
+  await page.context().close();
+});
+
+
+test('profile save failure is visible and retry persists the latest English profile', async ({ browser }) => {
+  const page = await signIn(browser, '012-345 6789');
+  await expect(page.getByText(/Mr Tan\./)).toBeVisible();
+  await page.getByText('Me', { exact: true }).last().click();
+  await page.route('**/rpc/dp_save_profile', (route) => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ message: 'Offline test' }) }));
+  await page.getByRole('textbox').first().fill('Tan Updated');
+  await expect(page.getByText('Your changes were not saved. Check your connection and retry.')).toBeVisible();
+  await page.unroute('**/rpc/dp_save_profile');
+  const saved = page.waitForResponse((r) => r.url().includes('/rpc/dp_save_profile') && r.status() === 200);
+  await page.getByText('Retry saving profile').click();
+  const response = await saved;
+  expect(response.request().postDataJSON()).toMatchObject({ p_name: 'Tan Updated', p_language: 'en' });
+  await expect(page.getByText('Retry saving profile')).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole('textbox').first()).toHaveValue('Tan Updated');
+  await page.context().close();
+});
+
+test('a delayed foreground refresh cannot restore a signed-out account', async ({ browser }) => {
+  const page = await signIn(browser, '011-1111 1111');
+  await expect(page.getByText(/Aisyah\./)).toBeVisible();
+  await page.getByText('Me', { exact: true }).last().click();
+  let release!: () => void;
+  let started!: () => void;
+  const held = new Promise<void>((resolve) => { release = resolve; });
+  const requested = new Promise<void>((resolve) => { started = resolve; });
+  await page.route('**/rest/v1/dp_bookings?*', async (route) => {
+    const response = await route.fetch();
+    started();
+    await held;
+    await route.fulfill({ response });
+  });
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
+    document.dispatchEvent(new Event('visibilitychange'));
+    Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'visible' });
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  await requested;
+  await page.getByText('Sign out', { exact: true }).click();
+  await expect(page.getByText('Send code')).toBeVisible();
+  const returned = page.waitForResponse((r) => r.url().includes('/rest/v1/dp_bookings?'));
+  release();
+  await returned;
+  await expect(page.getByText('Send code')).toBeVisible();
+  await expect(page.getByText('Adviser schedule')).toHaveCount(0);
+  await page.context().close();
+});
+
+test('an expired displayed check-in code disappears even when refresh fails', async ({ browser }) => {
+  const page = await signIn(browser, '011-1111 1111');
+  await expect(page.getByText(/Aisyah\./)).toBeVisible();
+  await page.clock.install();
+  await page.route('**/rpc/dp_checkin_code', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ code: '654321', expires_at: new Date(Date.now() + 2000).toISOString() }) }));
+  await page.getByText('Your member card').click();
+  await expect(page.getByText('Code 654 321')).toBeVisible();
+  await page.clock.fastForward(3000);
+  await expect(page.getByText('Code 654 321')).toHaveCount(0);
+  await page.unroute('**/rpc/dp_checkin_code');
+  await page.route('**/rpc/dp_checkin_code', (route) => route.abort());
+  await page.clock.fastForward(60000);
+  await expect(page.getByText('Code 654 321')).toHaveCount(0);
   await page.context().close();
 });

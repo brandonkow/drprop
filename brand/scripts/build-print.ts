@@ -28,7 +28,7 @@ import { roofPath } from '../pulse/pulse-roof.ts';
 const require = createRequire(import.meta.url);
 const css = (pkg: string) => pathToFileURL(require.resolve(pkg)).href;
 const out = fileURLToPath(new URL('../print/out/', import.meta.url));
-const LANGS: Lang[] = ['en', 'zh', 'ms'];
+const LANGS: Lang[] = ['en'];
 
 const fonts = (lang: Lang) => ({
   css: [
@@ -38,7 +38,7 @@ const fonts = (lang: Lang) => ({
     ...(lang === 'zh' ? [css('@fontsource/noto-serif-sc/300.css'), css('@fontsource/noto-sans-sc/400.css')] : []),
   ],
 });
-const allFonts = { css: [...fonts('zh').css] };
+const allFonts = fonts('en');
 
 const logo = readFileSync(fileURLToPath(new URL('../logo/logo.svg', import.meta.url)), 'utf8')
   .replace(/<title>.*?<\/title>/s, '')
@@ -73,7 +73,7 @@ async function pdf(html: string, file: string, size: { width: string; height: st
 const samples = fileURLToPath(new URL('../../web/public/samples/', import.meta.url));
 const appSamples = fileURLToPath(new URL('../../app/assets/samples/', import.meta.url));
 for (const dir of [samples, appSamples]) mkdirSync(dir, { recursive: true });
-for (const lang of LANGS) {
+for (const lang of process.argv.includes('--plate-only') ? [] : LANGS) {
   await pdf(reportHtml(SAMPLE[lang], lang, fonts(lang), logo), `diagnosis-report-${lang}.pdf`, { width: '210mm', height: '297mm' });
   for (const dir of [samples, appSamples]) copyFileSync(join(out, `diagnosis-report-${lang}.pdf`), join(dir, `diagnosis-${lang}.pdf`));
   await pdf(cardHtml(SAMPLE[lang], lang, fonts(lang), line, wordmark), `diagnosis-card-${lang}.pdf`, { width: '148mm', height: '105mm' });

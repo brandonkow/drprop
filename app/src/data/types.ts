@@ -31,6 +31,8 @@ export interface Consultation {
   status: 'booked' | 'done' | 'cancelled';
   /** Booked but not yet confirmed by an adviser (supabase mode only). */
   pending?: boolean;
+  urgentDueAt?: string;
+  urgentRecoveryAt?: string;
   /** For a pre-signing review: the consult it follows. */
   followUpOf?: string;
   reportUrl?: string;

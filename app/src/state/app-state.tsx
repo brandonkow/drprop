@@ -8,7 +8,9 @@
  * records stay on the server; only the language is kept on the phone.
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getLocales } from 'expo-localization';
+import { AppState as NativeAppState, Platform } from 'react-native';
+import { backendClient } from '../backend/client';
+import { SessionGuard } from './session-guard';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { source, type BookingDraft } from '../data/source';
 import type { Consultation, Lang, Lounge, Membership, User } from '../data/types';
@@ -25,8 +27,7 @@ interface Persisted {
 }
 
 function deviceLanguage(): Lang {
-  const code = getLocales()[0]?.languageCode;
-  return code === 'zh' ? 'zh' : code === 'ms' ? 'ms' : 'en';
+  return 'en';
 }
 
 interface AppState extends Persisted {
@@ -39,6 +40,8 @@ interface AppState extends Persisted {
   lounge: Lounge | null;
   /** An active adviser (supabase mode). */
   staff: boolean;
+  profileError: string | null;
+  retryProfile(): void;
   setLanguage(lang: Lang): void;
   /** After sign-in and the name question. Saves the profile and loads the records. */
   signIn(user: User): Promise<void>;
@@ -62,16 +65,29 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [draft, setDraft] = useState<BookingDraft | null>(null);
   const [lounge, setLounge] = useState<Lounge | null>(null);
   const [staff, setStaff] = useState(false);
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const guard = useRef(new SessionGuard());
+  const currentUser = useRef<User | null>(null);
+  const revision = useRef(0);
+  const profileRevision = useRef(0);
+  const saves = useRef(Promise.resolve());
+  const persistence = useRef(Promise.resolve());
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const loadFor = useCallback(async (user: User) => {
+  const loadFor = useCallback(async (user: User, ticket = guard.current.ticket()) => {
+    const version = ++revision.current;
     const [loaded, l] = await Promise.all([source.load(user), source.lounge().catch(() => null)]);
-    setState((s) => ({ ...s, user, membership: loaded.membership, consultations: loaded.consultations }));
+    if (!guard.current.current(ticket) || version !== revision.current) return;
+    const loadedUser = currentUser.current?.id === user.id ? currentUser.current : { ...user, language: 'en' as const };
+    currentUser.current = loadedUser;
+    setState((s) => guard.current.current(ticket) ? ({ ...s, language: 'en', user: loadedUser, membership: loaded.membership, consultations: loaded.consultations }) : s);
     setStaff(loaded.staff);
     setLounge(l);
   }, []);
 
   useEffect(() => {
+    const sessionGuard = guard.current;
+    const ticket = sessionGuard.ticket();
     (async () => {
       let saved: Persisted | null = null;
       try {
@@ -80,40 +96,63 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       } catch {
         saved = null;
       }
-      const language = saved?.language ?? deviceLanguage();
+      if (!guard.current.current(ticket)) return;
+      const language = deviceLanguage();
       if (!connected) {
-        if (saved) setState(saved);
-        setLounge(await source.lounge().catch(() => null));
+        const board = await source.lounge().catch(() => null);
+        if (!guard.current.current(ticket)) return;
+        if (saved) {
+          currentUser.current = saved.user ? { ...saved.user, language } : null;
+          setState({ ...saved, language, user: currentUser.current });
+        }
+        setLounge(board);
         return;
       }
       setState(signedOut(language));
       try {
         const user = await source.restore();
         // A user who never answered the name question signs in again.
-        if (user?.displayName) await loadFor({ ...user, language: user.language ?? language });
+        if (user?.displayName && guard.current.current(ticket)) await loadFor({ ...user, language }, ticket);
       } catch {
         // Offline or a stale session: start at sign-in.
       }
-    })().finally(() => setReady(true));
+    })().finally(() => { if (guard.current.current(ticket)) setReady(true); });
+    return () => { sessionGuard.invalidate(); if (saveTimer.current) clearTimeout(saveTimer.current); };
   }, [loadFor]);
 
   useEffect(() => {
     if (!ready) return;
     const keep: Persisted = connected ? signedOut(state.language) : state;
-    AsyncStorage.setItem(KEY, JSON.stringify(keep)).catch(() => {});
+    persistence.current = persistence.current.catch(() => {}).then(() => AsyncStorage.setItem(KEY, JSON.stringify(keep)));
+    void persistence.current.catch(() => {});
   }, [ready, state]);
 
   /** Supabase: save the profile a moment after the last edit, not on every keystroke. */
   const saveSoon = useCallback((user: User) => {
-    if (!connected || !user.displayName.trim()) return;
+    if (!connected) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
+    const version = ++profileRevision.current;
+    const ticket = guard.current.ticket();
+    if (!user.displayName.trim() || user.displayName.trim().length > 40 || (user.drinkPreference?.length ?? 0) > 80) {
+      setProfileError('Use a name of 1–40 characters and a drink preference of up to 80 characters.'); return;
+    }
+    setProfileError(null);
     saveTimer.current = setTimeout(() => {
-      source.saveProfile({ ...user, displayName: user.displayName.trim() }).catch(() => {});
+      saves.current = saves.current.catch(() => {}).then(async () => {
+        if (!guard.current.current(ticket) || version !== profileRevision.current) return;
+        try {
+          await source.saveProfile({ ...user, language: 'en', displayName: user.displayName.trim() });
+          if (guard.current.current(ticket) && version === profileRevision.current) setProfileError(null);
+        } catch {
+          if (guard.current.current(ticket) && version === profileRevision.current) setProfileError('Your changes were not saved. Check your connection and retry.');
+        }
+      });
     }, 800);
   }, []);
 
   const setLanguage = useCallback(
-    (language: Lang) => {
+    (_language: Lang) => {
+      const language = 'en' as const;
       setState((s) => {
         const user = s.user && { ...s.user, language };
         if (user) saveSoon(user);
@@ -125,47 +164,81 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(
     async (user: User) => {
-      await source.saveProfile(user);
-      await loadFor(user);
+      guard.current.invalidate();
+      const ticket = guard.current.ticket();
+      await saves.current.catch(() => {});
+      if (!guard.current.current(ticket)) return;
+      await source.saveProfile({ ...user, language: 'en' });
+      if (guard.current.current(ticket)) await loadFor({ ...user, language: 'en' }, ticket);
     },
     [loadFor],
   );
 
   const updateUser = useCallback(
     (patch: Partial<User>) => {
-      setState((s) => {
-        if (!s.user) return s;
-        const user = { ...s.user, ...patch };
-        saveSoon(user);
-        return { ...s, user };
-      });
+      if (!currentUser.current) return;
+      const user = { ...currentUser.current, ...patch, id: currentUser.current.id, language: 'en' as const };
+      currentUser.current = user;
+      saveSoon(user);
+      setState((s) => ({ ...s, user }));
     },
     [saveSoon],
   );
 
-  const signOut = useCallback(async () => {
+  const clear = useCallback(() => {
+    guard.current.invalidate();
+    currentUser.current = null;
     if (saveTimer.current) clearTimeout(saveTimer.current);
-    await source.signOut().catch(() => {});
-    setState((s) => signedOut(s.language));
+    setState(signedOut('en'));
     setStaff(false);
     setDraft(null);
+    setLounge(null);
+    setProfileError(null);
   }, []);
 
+  const signOut = useCallback(async () => {
+    clear();
+    await saves.current.catch(() => {});
+    await source.signOut();
+  }, [clear]);
+
+  useEffect(() => {
+    if (!connected) return;
+    const auth = backendClient().auth;
+    const { data } = auth.onAuthStateChange((event, session) => {
+      // Keep this callback synchronous: Auth holds a lock while dispatching it.
+      if (event === 'SIGNED_OUT' || (currentUser.current && session?.user.id && session.user.id !== currentUser.current.id)) {
+        clear(); setReady(true);
+      }
+    });
+    const foreground = () => {
+      if (Platform.OS !== 'web') {
+        if (NativeAppState.currentState === 'active') auth.startAutoRefresh(); else auth.stopAutoRefresh();
+      }
+      if (NativeAppState.currentState === 'active' && currentUser.current) void loadFor(currentUser.current).catch(() => {});
+    };
+    foreground();
+    const sub = NativeAppState.addEventListener('change', foreground);
+    return () => { data.subscription.unsubscribe(); sub.remove(); if (Platform.OS !== 'web') auth.stopAutoRefresh(); };
+  }, [clear, loadFor]);
+
+  const retryProfile = useCallback(() => { if (currentUser.current) saveSoon(currentUser.current); }, [saveSoon]);
+
   const addConsultation = useCallback((c: Consultation) => {
-    setState((s) => ({ ...s, consultations: [c, ...s.consultations.filter((x) => x.id !== c.id)] }));
+    setState((s) => s.user?.id === c.userId ? ({ ...s, consultations: [c, ...s.consultations.filter((x) => x.id !== c.id)] }) : s);
   }, []);
 
   const replaceConsultation = useCallback((c: Consultation) => {
-    setState((s) => ({ ...s, consultations: s.consultations.map((x) => (x.id === c.id ? c : x)) }));
+    setState((s) => s.user?.id === c.userId ? ({ ...s, consultations: s.consultations.map((x) => (x.id === c.id ? c : x)) }) : s);
   }, []);
 
   const setMembership = useCallback((membership: Membership) => {
-    setState((s) => ({ ...s, membership }));
+    setState((s) => s.user?.id === membership.userId ? ({ ...s, membership }) : s);
   }, []);
 
   const refresh = useCallback(async () => {
-    if (state.user) await loadFor(state.user);
-  }, [state.user, loadFor]);
+    if (currentUser.current) await loadFor(currentUser.current);
+  }, [loadFor]);
 
   const value = useMemo<AppState>(
     () => ({
@@ -177,6 +250,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       draft,
       lounge,
       staff,
+      profileError,
+      retryProfile,
       setLanguage,
       signIn,
       updateUser,
@@ -187,7 +262,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       setMembership,
       refresh,
     }),
-    [state, ready, draft, lounge, staff, setLanguage, signIn, updateUser, signOut, addConsultation, replaceConsultation, setMembership, refresh],
+    [state, ready, draft, lounge, staff, profileError, retryProfile, setLanguage, signIn, updateUser, signOut, addConsultation, replaceConsultation, setMembership, refresh],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

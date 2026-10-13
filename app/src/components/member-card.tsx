@@ -1,21 +1,16 @@
 /**
  * S5 member card (brief §8.3): night card, hairline Pulse Roof, member number in
  * Geist Mono, member name, and a very faint brushed-metal sheen that follows the
- * phone's tilt (DeviceMotion). Without a motion sensor the sheen drifts slowly.
+ * phone's tilt (DeviceMotion). Motion is opt-in; denied permissions and reduced motion keep the card static.
  */
 import { LOGO } from '@drprop/brand/logo/paths';
 import { color } from '@drprop/brand/tokens';
 import { Canvas, Fill, Group, Path, Shader, Skia, vec } from '@shopify/react-native-skia';
 import { DeviceMotion } from 'expo-sensors';
-import { useEffect, useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import {
-  Easing,
-  useDerivedValue,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from 'react-native-reanimated';
+import { useEffect, useMemo, useState } from 'react';
+import { AccessibilityInfo, AppState, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useDerivedValue, useSharedValue } from 'react-native-reanimated';
+import { cardTilt } from './card-motion';
 import { FONT, SIZE, SPACE } from '../theme';
 import { pulseForms } from './pulse-paths';
 
@@ -46,7 +41,6 @@ half4 main(float2 p) {
 const wordmark = Skia.Path.MakeFromSVGString(LOGO.wordmark)!;
 const logoLine = Skia.Path.MakeFromSVGString(LOGO.line)!;
 
-const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 export function MemberCard({
   width,
@@ -63,37 +57,46 @@ export function MemberCard({
 }) {
   const tilt = useSharedValue({ x: 0, y: 0 });
 
+  const [enabled, setEnabled] = useState(false);
+  const [motionMessage, setMotionMessage] = useState('Enable card motion');
+
   useEffect(() => {
+    let live = true;
+    let generation = 0;
+    let reduced = true;
     let sub: { remove(): void } | undefined;
-    let cancelled = false;
-    DeviceMotion.isAvailableAsync()
-      .then((ok) => {
-        if (cancelled) return;
-        if (!ok) {
-          // No sensor (simulator, web): a slow drift keeps the card alive.
-          tilt.set(
-            withRepeat(withTiming({ x: 0.6, y: -0.3 }, { duration: 4000, easing: Easing.inOut(Easing.sin) }), -1, true),
-          );
-          return;
-        }
+    const stop = () => { generation++; sub?.remove(); sub = undefined; tilt.set({ x: 0, y: 0 }); };
+    const start = async () => {
+      stop();
+      const ticket = generation;
+      if (!enabled || reduced || AppState.currentState !== 'active') return;
+      try {
+        const ok = await DeviceMotion.isAvailableAsync();
+        if (!live || ticket !== generation || !ok) return;
         DeviceMotion.setUpdateInterval(50);
         sub = DeviceMotion.addListener(({ rotation }) => {
           if (!rotation) return;
-          // beta: front/back tilt around 45° when held; gamma: left/right. Degrees.
-          const target = {
-            x: clamp(rotation.gamma / 35, -1, 1),
-            y: clamp((rotation.beta - 45) / 35, -1, 1),
-          };
+          const target = cardTilt(rotation.beta, rotation.gamma);
           const prev = tilt.get();
           tilt.set({ x: prev.x + (target.x - prev.x) * 0.2, y: prev.y + (target.y - prev.y) * 0.2 });
         });
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-      sub?.remove();
+      } catch { /* Static card remains available without motion. */ }
     };
-  }, [tilt]);
+    const preference = AccessibilityInfo.addEventListener('reduceMotionChanged', (value) => { reduced = value; void start(); });
+    const foreground = AppState.addEventListener('change', () => { void start(); });
+    void AccessibilityInfo.isReduceMotionEnabled().then((value) => { if (live) { reduced = value; void start(); } }).catch(() => {});
+    return () => { live = false; stop(); preference.remove(); foreground.remove(); };
+  }, [enabled, tilt]);
+
+  const enableMotion = async () => {
+    if (enabled) { setEnabled(false); setMotionMessage('Enable card motion'); return; }
+    try {
+      // Request directly from the press gesture, including on mobile web.
+      const permission = await DeviceMotion.requestPermissionsAsync();
+      setEnabled(permission.granted);
+      setMotionMessage(permission.granted ? 'Disable card motion' : 'Motion unavailable; card remains usable');
+    } catch { setMotionMessage('Motion unavailable; card remains usable'); }
+  };
 
   const uniforms = useDerivedValue(() => ({
     uSize: vec(width, height),
@@ -107,7 +110,7 @@ export function MemberCard({
   const logoScale = (width * 0.42) / LOGO.width;
 
   return (
-    <View style={[s.card, { width, height }]} accessibilityRole="image" accessibilityLabel={`DR. PROP · ${name} · ${memberNo}`}>
+    <View style={[s.card, { width, height }]} accessibilityLabel={`DR. PROP · ${name} · ${memberNo}`}>
       <Canvas style={StyleSheet.absoluteFill}>
         <Fill>
           <Shader source={METAL} uniforms={uniforms} />
@@ -118,6 +121,9 @@ export function MemberCard({
           <Path path={wordmark} color={color.nightText} />
         </Group>
       </Canvas>
+      <Pressable accessibilityRole="button" accessibilityLabel={motionMessage} onPress={() => void enableMotion()} style={{ position: 'absolute', top: 8, right: 8, minHeight: 44, justifyContent: 'center', maxWidth: width * 0.45 }}>
+        <Text style={{ color: color.nightText, fontFamily: FONT.body, fontSize: 11 }}>{motionMessage}</Text>
+      </Pressable>
       <View style={s.bottom}>
         <Text style={s.caption}>{caption}</Text>
         <Text style={s.name} numberOfLines={1} adjustsFontSizeToFit>

@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --mode preview",
     "preview": "vite preview",
-    "og": "tsx scripts/og-image.ts"
+    "og": "tsx scripts/og-image.ts",
+    "build:production": "vite build --mode production"
   },
   "dependencies": {
     "@drprop/brand": "*",

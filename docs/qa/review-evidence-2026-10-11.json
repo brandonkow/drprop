@@ -1,0 +1,131 @@
+{
+  "reviewDate": "2026-10-11",
+  "timezone": "Asia/Kuala_Lumpur",
+  "reviewedCommit": "6c03a0fce5d3bcc4f7829fe3cc41b2b7b7192f12",
+  "ci": {
+    "url": "https://github.com/brandonkow/drprop/actions/runs/37773926703",
+    "completedAtDate": "2026-10-08",
+    "conclusion": "success",
+    "unitAndDatabaseTests": 157,
+    "browserTests": 20,
+    "source": "GitHub Actions run and job logs; not a new local full-suite run"
+  },
+  "databaseReproductions": [
+    {
+      "case": "Membership with active status and renews_at 2000-01-01",
+      "result": "Code issuance and check-in accepted"
+    },
+    {
+      "case": "Urgent request two hours beyond deadline",
+      "result": "Adviser assignment accepted and status became confirmed"
+    },
+    {
+      "case": "Monday configured closed; slot Monday 03:00 Asia/Kuala_Lumpur",
+      "result": "Publication accepted"
+    }
+  ],
+  "otherReproductions": [
+    {
+      "case": "320x180, 5 fps, 0.4-second H264 BT709 video with no audio",
+      "result": "Current media check returned no problems"
+    },
+    {
+      "case": "EXPO_PUBLIC_APP_MODE=preview prefix in Windows cmd.exe",
+      "result": "Rejected as an unrecognized command"
+    },
+    {
+      "case": "Member-card tilt with native pitch 0, pi/4 and pi/2 radians",
+      "result": "All three y targets clamp to -1; matching expo-sensors version 57.0.3 inspected"
+    }
+  ],
+  "media": {
+    "count": 39,
+    "bytes": 72943137,
+    "scope": "FFprobe metadata and SHA256 only; no fresh full decoding, loudness or visual review",
+    "sampleFiles": [
+      "reels/delivered/market-2026-q2-sample-en-16x9.mp4",
+      "reels/delivered/market-2026-q2-sample-en-4x5.mp4",
+      "reels/delivered/market-2026-q2-sample-en-9x16.mp4"
+    ]
+  },
+  "dependencyAudit": {
+    "counts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 3,
+      "high": 21,
+      "critical": 0,
+      "total": 24
+    },
+    "note": "Affected package entries include transitive propagation; no runtime exploitability claim.",
+    "advisories": [
+      {
+        "source": 1240992,
+        "name": "braces",
+        "dependency": "braces",
+        "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+        "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+        "severity": "high",
+        "cwe": [
+          "CWE-674"
+        ],
+        "cvss": {
+          "score": 7.5,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        },
+        "range": "<=3.0.3"
+      },
+      {
+        "source": 1147955,
+        "name": "decode-uri-component",
+        "dependency": "decode-uri-component",
+        "title": "decode-uri-component: Denial of service via exponential decoding of malformed percent-encoded input",
+        "url": "https://github.com/advisories/GHSA-vcc3-ghjq-m6fr",
+        "severity": "moderate",
+        "cwe": [
+          "CWE-400",
+          "CWE-405",
+          "CWE-407",
+          "CWE-1176"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        },
+        "range": "<=0.4.2"
+      },
+      {
+        "source": 1240912,
+        "name": "node-forge",
+        "dependency": "node-forge",
+        "title": "node-forge RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements",
+        "url": "https://github.com/advisories/GHSA-86w9-cpqp-85rv",
+        "severity": "high",
+        "cwe": [
+          "CWE-347"
+        ],
+        "cvss": {
+          "score": 7.5,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+        },
+        "range": "<=1.4.0"
+      }
+    ]
+  },
+  "notPerformed": [
+    "Hosted Supabase/API/SMS checks",
+    "Multi-connection database races",
+    "Real payments",
+    "Native/device tests",
+    "Fresh full browser suite",
+    "Fresh full video decode/loudness/visual review",
+    "Fresh print rendering/visual review",
+    "Live deployed-host verification"
+  ],
+  "mutations": {
+    "implementation": false,
+    "main": false,
+    "remotePush": false,
+    "deployment": false
+  }
+}

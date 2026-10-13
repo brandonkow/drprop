@@ -3,6 +3,7 @@
  * checks who is calling; fees come from the server. No payment is taken yet:
  * a booking is a request until its adviser confirms it.
  */
+import { membershipStatus, type CalendarSettings } from '../backend/calendar';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { backendClient, clearSavedSignIn } from '../backend/client';
 import { normalizePhone, toConsultation, type BookingRow } from './rows';
@@ -30,14 +31,14 @@ async function profile(userId: string): Promise<ProfileRow | null> {
   return data as ProfileRow | null;
 }
 
-async function userFrom(id: string, phone: string, language: Lang): Promise<User> {
+async function userFrom(id: string, phone: string, _language: Lang): Promise<User> {
   const p = await profile(id);
   return {
     id,
     phone: phone.startsWith('+') ? phone : `+${phone}`,
     displayName: p?.display_name ?? '',
     drinkPreference: p?.drink_preference || undefined,
-    language: p?.language ?? language,
+    language: 'en',
   };
 }
 
@@ -87,7 +88,7 @@ export const liveSource: DataSource = {
     const m = membership.data as { store_id: string; member_no: string; status: Membership['status']; renews_at: string } | null;
     return {
       consultations: (bookings.data as BookingRow[]).map(toConsultation),
-      membership: m && { userId: user.id, storeId: m.store_id, memberNo: m.member_no, status: m.status, renewsAt: m.renews_at },
+      membership: m && { userId: user.id, storeId: m.store_id, memberNo: m.member_no, status: membershipStatus(m.status, m.renews_at) as Membership['status'], renewsAt: m.renews_at },
       staff: (staff.data as { enabled: boolean } | null)?.enabled === true,
     };
   },
@@ -101,7 +102,13 @@ export const liveSource: DataSource = {
 
   async slots(type) {
     if (type === 'urgent') return [];
-    const rows = await rpc<{ id: string; adviser_name: string; starts_at: string }[]>('dp_availability', { p_type: type });
+    const rows: { id: string; adviser_name: string; starts_at: string }[] = [];
+    for (let offset = 0; ; offset += 200) {
+      const { data, error } = await client().rpc('dp_availability', { p_type: type }).range(offset, offset + 199);
+      if (error) throw error;
+      rows.push(...(data ?? []));
+      if ((data?.length ?? 0) < 200) break;
+    }
     return rows.map((r): Slot => ({ id: r.id, at: r.starts_at, adviser: r.adviser_name }));
   },
 
@@ -175,6 +182,7 @@ export interface StaffSlot {
 
 /** What an active adviser can do (Me → Adviser schedule). The database checks the role. */
 export const staffApi = {
+  calendar: () => rpc<CalendarSettings>('dp_calendar'),
   async bookings(): Promise<StaffBooking[]> {
     const rows = await rpc<{ booking: BookingRow; customer_name: string; customer_phone: string; customer_drink: string }[]>(
       'dp_adviser_bookings',
@@ -187,19 +195,20 @@ export const staffApi = {
     }));
   },
   async slots(userId: string): Promise<StaffSlot[]> {
-    const { data, error } = await client()
-      .from('dp_slots')
-      .select('id, starts_at, enabled')
-      .eq('adviser_id', userId)
-      .gte('starts_at', new Date().toISOString())
-      .order('starts_at')
-      .limit(200);
-    if (error) throw error;
-    return data as StaffSlot[];
+    const rows: StaffSlot[] = [];
+    const from = new Date().toISOString();
+    for (let offset = 0; ; offset += 200) {
+      const { data, error } = await client().from('dp_slots').select('id, starts_at, enabled')
+        .eq('adviser_id', userId).gte('starts_at', from).order('starts_at').order('id').range(offset, offset + 199);
+      if (error) throw error;
+      rows.push(...(data as StaffSlot[]));
+      if (data.length < 200) break;
+    }
+    return rows;
   },
   publish: (startsAt: string) => rpc('dp_publish_slot', { p_start: startsAt }),
   close: (slotId: string) => rpc('dp_close_slot', { p_slot: slotId }),
-  takeUrgent: (bookingId: string) => rpc('dp_take_urgent', { p_booking: bookingId }),
+  takeUrgent: (bookingId: string, allowOverdue = false) => rpc('dp_take_urgent', { p_booking: bookingId, p_allow_overdue: allowOverdue }),
   status: (bookingId: string, status: 'confirmed' | 'completed' | 'cancelled') =>
     rpc('dp_adviser_status', { p_booking: bookingId, p_status: status }),
   note: (bookingId: string, note: string, questions: string[]) =>

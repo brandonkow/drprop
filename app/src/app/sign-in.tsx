@@ -9,14 +9,13 @@ import { Body, Display, Small } from '../components/type';
 import { Screen, SolidButton, TextLink } from '../components/ui';
 import { source } from '../data/source';
 import type { User } from '../data/types';
-import { LANGUAGES } from '../i18n/strings';
 import { useApp } from '../state/app-state';
 import { FONT, HAIRLINE, INPUT_RESET, SIZE, SPACE, usePalette } from '../theme';
 
 type Step = 'phone' | 'code' | 'name';
 
 export default function SignIn() {
-  const { t, fmt, language, setLanguage, signIn, mode } = useApp();
+  const { t, fmt, language, signIn, mode } = useApp();
   const p = usePalette();
   const [step, setStep] = useState<Step>('phone');
   const [phone, setPhone] = useState('');
@@ -71,17 +70,6 @@ export default function SignIn() {
 
   return (
     <Screen>
-      <View style={s.langs} accessibilityRole="radiogroup">
-        {LANGUAGES.map((l) => (
-          <TextLink
-            key={l.id}
-            label={l.label}
-            muted={l.id !== language}
-            onPress={() => setLanguage(l.id)}
-            style={s.lang}
-          />
-        ))}
-      </View>
 
       <View style={s.body}>
         {step === 'phone' ? (

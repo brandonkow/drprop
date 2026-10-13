@@ -7,14 +7,10 @@ import { Asset } from 'expo-asset';
 import * as Sharing from 'expo-sharing';
 import { Linking, Platform } from 'react-native';
 import en from '../../assets/samples/diagnosis-en.pdf';
-import ms from '../../assets/samples/diagnosis-ms.pdf';
-import zh from '../../assets/samples/diagnosis-zh.pdf';
 import type { Lang } from './types';
 
-const SAMPLES: Record<Lang, number> = { en, zh, ms };
-
-export async function openSampleReport(lang: Lang, title: string): Promise<void> {
-  const asset = Asset.fromModule(SAMPLES[lang]);
+export async function openSampleReport(_lang: Lang, title: string): Promise<void> {
+  const asset = Asset.fromModule(en);
   if (Platform.OS === 'web') {
     await Linking.openURL(asset.uri);
     return;

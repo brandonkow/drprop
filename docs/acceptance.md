@@ -1,42 +1,23 @@
 # Acceptance record
 
-The acceptance lists in the brief (§9.8 for the reels, §10 for the whole delivery),
-each with its result and how it was checked. Re-run the checks after any change
-they cover.
+Current evidence and item-by-item anti-template review are in
+[the 2026-10-13 hardening report](hardening-2026-10-13.md). Earlier claims that all
+acceptance was complete are superseded by the boundaries below.
 
-## Reels (brief §9.8)
+| Area | Current scope and evidence boundary |
+|---|---|
+| Language | English release only; historical dictionaries/print assets are source archives. Old website language URLs redirect to English. |
+| Website | Preview is explicit and booking is disabled until launch configuration is complete. Production build rejects placeholders. JavaScript budget remains 250 KB gzipped. |
+| Fallbacks | Browser tests cover no JavaScript, reduced motion, data saver, and interactive calculator. Physical Android scrolling remains pending. |
+| Booking | Four screens from home through request. Connected mode takes no payment and states that confirmation is pending. |
+| Database | Serial PGlite tests use the real migrations. Hosted Auth, PostgREST, concurrency across connections and deployment remain pending. |
+| Member card | Explicit motion permission, radians conversion, reduced-motion/background cleanup, expiry-aware check-in. Native sensor/camera/permission behavior requires real phones. |
+| Media | Manifest covers 45 files: 36 release-candidate reels, 3 internal market samples, 4 promotional films, 2 silent internal layout films. Forty publication candidates still require content/rights approval. |
+| Media tests | Hashes, dimensions, fps, duration, frame count, full decode, colour and loudness. Historical safe-zone/model-fallback visual reviews were not repeated frame by frame in this repair pass. |
+| Print | English-only fee plate regenerated and checked. Historical multilingual outputs are not current release deliverables. |
+| Store | Accepted concept only; no approved measured plan or construction acceptance. |
+| Dependencies | Patched decoder with compatibility regression tests; braces and node-forge remain open under dated exceptions, not resolved. |
 
-| Criterion | Result | How it was checked |
-|---|---|---|
-| `npm run render:all` outputs every reel in three languages and three formats | Pass, in English only (the owner's change, 2026-10-08): 36 of 36 rendered, plus R9 "a visit" in three formats; all 39 pass the delivery check and are kept in `reels/delivered/` (70 MB). The Chinese and Malay renders were removed; their copy stays in the reels, and `--lang en,zh,ms` renders all three. The store reveal's 3D took about 5 s a frame without a GPU (about 2½ hours for its three formats). | R1–R8 (12 reels, counting each case and market episode) × three formats → 36 MP4s in `reels/out/`. Each goes through `reels/scripts/deliver.ts`, and `deliver.ts --check` checks H.264, BT.709 limited range and −14 LUFS ±1 at ≤ −1 dBTP. |
-| A new case episode is one new JSON file | Pass | `reels/src/data/index.ts` loads every file in `data/cases/`. `reels/test/data.test.ts` checks each case in three languages and its `basis` (general, or anonymised with a consent reference). |
-| All text inside the safe zone (`showSafeZone`) | Pass | `--safe-zone` stills of every series at two moments in Malay (the longest language), 9:16. Then R3's closing frame in all three languages and all three formats. Two fixes came out of it: 9:16 captions now stop at the like/share column (`TEXT_MAX_9x16`), and R3's closing call-to-action now fits the 9:16 safe area. |
-| A missing 3D model falls back to a placeholder; the render doesn't stop | Pass | StoreReveal rendered with `brand/3d/store.glb` removed: the procedural store appeared. Fix: the stand-in cabinet had sat inside the wall. |
-| No template violations (§5.6, §9.6) | Pass | No gradients, glass, emoji, icon lists, Inter, large radii, fake counts, carousels, chatbots, whooshes or flashes. Captions are static fades. Every educational reel ends with "General information, not personal advice." |
-
-Also checked (§9.5–§9.7):
-- Sound: a placeholder sound logo is on every reel, and loudness is −14 LUFS.
-- Market data: the market figures name their source and date (NAPIC 2025, verified against the report).
-- Samples: sample data carries a "not for publication" watermark.
-
-## Delivery (brief §10)
-
-| Criterion | Result | How it was checked |
-|---|---|---|
-| Zero §5.6 violations | Pass | Audit of the website, app, reels and print pieces (last pass: terms page, report template, share cards, adviser screen). |
-| Landing page scrolls smoothly on a mid-range Android (4 GB) | Not yet checked: needs a phone | Supports it: JavaScript is 195 KB gzipped of a 250 KB budget (build fails above); the fluid layer is off below 4 GB; the data saver and reduced motion skip WebGL; pixel ratio is capped at 1.5. |
-| Without WebGL the page is complete and still looks right | Pass | `e2e/web.spec.ts`: no JavaScript (text, fee table, booking link), reduced motion and the data saver (static Pulse Roof, no WebGL script). |
-| App: open to a finished booking in four screens or fewer | Pass | Home → type → property → time and confirm. Covered by `e2e/app.spec.ts` (preview) and `e2e/connected.spec.ts` (real database schema). |
-
-Steps 1–14 of §10 are all delivered: brand, landing page, line, fluid and grain, fallbacks, app skeleton, S0–S6, the 3D models, reels, Blender, render-all and the README. Beyond them:
-- the store twin;
-- the product film;
-- the Supabase backend;
-- the diagnosis report, letterpress card and door fee plate;
-- terms and licence notices;
-- the browser tests.
-
-## Not covered here
-
-Physical phones, the hosted backend, payments, legal review and founder decisions:
-see `docs/launch-checklist.md`.
+Private reports/uploads, payments, notifications, audited membership renewal/cap
+workflows and further store modelling are held feature scope. Nothing in this ledger
+authorizes those builds or deployment. See `launch-checklist.md` for external inputs.

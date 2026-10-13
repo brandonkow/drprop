@@ -33,7 +33,7 @@ const line = roofPath({ width: W, height: 70, baseline: 92 }, { apex: 0.78, half
 
 function html(lang: (typeof langs)[number]): string {
   const t = dicts[lang];
-  const zh = lang === 'zh';
+  const zh = false; // English-only release.
   return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8">
   <link rel="stylesheet" href="${css('@fontsource/instrument-serif/400.css')}">
   <link rel="stylesheet" href="${css('@fontsource/geist/400.css')}">

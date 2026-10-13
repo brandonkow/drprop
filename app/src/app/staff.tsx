@@ -1,3 +1,4 @@
+import { calendarDays, calendarTimes, type CalendarSettings } from '../backend/calendar';
 /**
  * Adviser schedule (supabase mode, active advisers only; reached from Me).
  * Check members in to the Lounge (a desk QR scanner types into the code field),
@@ -20,15 +21,10 @@ import { useApp } from '../state/app-state';
 import { useNow } from '../state/use-now';
 import { FONT, HAIRLINE, INPUT_RESET, SIZE, SPACE, TOUCH_MIN, usePalette } from '../theme';
 
-/** 10:00 to 19:30, every 30 minutes (brief §11: hours to be confirmed). */
-const TIMES = Array.from({ length: 20 }, (_, i) => {
-  const m = 10 * 60 + i * 30;
-  return `${String(Math.floor(m / 60)).padStart(2, '0')}:${m % 60 ? '30' : '00'}`;
-});
-
 export default function Staff() {
   const { t, fmt, user, language, lounge, refresh } = useApp();
   const p = usePalette();
+  const [calendar, setCalendar] = useState<CalendarSettings | null>(null);
   const [bookings, setBookings] = useState<StaffBooking[]>([]);
   const [slots, setSlots] = useState<StaffSlot[]>([]);
   const [day, setDay] = useState(() => nextMalaysiaDays(1)[0]!);
@@ -42,7 +38,7 @@ export default function Staff() {
   const now = useNow();
 
   const fetchAll = useCallback(
-    () => (user ? Promise.all([staffApi.bookings(), staffApi.slots(user.id)]) : Promise.resolve(null)),
+    () => (user ? Promise.all([staffApi.bookings(), staffApi.slots(user.id), staffApi.calendar()]) : Promise.resolve(null)),
     [user],
   );
   const load = useCallback(async () => {
@@ -50,6 +46,8 @@ export default function Staff() {
     if (all) {
       setBookings(all[0]);
       setSlots(all[1]);
+      setCalendar(all[2]);
+      setDay((old) => calendarDays(all[2]).includes(old) ? old : calendarDays(all[2])[0] ?? old);
     }
   }, [fetchAll]);
 
@@ -60,6 +58,8 @@ export default function Staff() {
         if (live && all) {
           setBookings(all[0]);
           setSlots(all[1]);
+      setCalendar(all[2]);
+      setDay((old) => calendarDays(all[2]).includes(old) ? old : calendarDays(all[2])[0] ?? old);
         }
       })
       .catch((e) => live && setMessage(t.errors[errorKey(e)]));
@@ -94,7 +94,8 @@ export default function Staff() {
   };
   const callbacks = bookings.filter((b) => b.booking.adviser_id === null);
   const mine = bookings.filter((b) => b.booking.adviser_id !== null);
-  const days = nextMalaysiaDays(14);
+  const days = calendar ? calendarDays(calendar) : [];
+  const times = calendar ? calendarTimes(calendar) : [];
   const at = (iso: string) => `${formatDay(iso, language)} · ${malaysiaClock(iso)}`;
 
   return (
@@ -147,7 +148,8 @@ export default function Staff() {
                 {customerDrink ? ` · ${fmt(t.staff.drink, { drink: customerDrink })}` : ''}
               </Small>
               <Mono muted>{fmt(t.staff.callBy, { time: malaysiaClock(b.ends_at) })}</Mono>
-              <OutlineButton label={t.staff.take} busy={busy} onPress={() => act(() => staffApi.takeUrgent(b.id))} />
+              {Date.parse(b.ends_at) <= now ? <Small accessibilityLiveRegion="polite">Overdue: call the client to agree recovery. Taking this request records your acknowledgment.</Small> : null}
+              <OutlineButton label={Date.parse(b.ends_at) <= now ? 'Take overdue recovery' : t.staff.take} busy={busy} onPress={() => act(() => staffApi.takeUrgent(b.id, Date.parse(b.ends_at) <= now))} />
             </View>
           ))}
         </Section>
@@ -176,7 +178,7 @@ export default function Staff() {
           ))}
         </ScrollView>
         <View style={s.wrap}>
-          {TIMES.map((tm) => {
+          {times.map((tm) => {
             const taken = slots.some((sl) => sl.enabled && malaysiaDay(sl.starts_at) === day && malaysiaClock(sl.starts_at) === tm);
             // The server only accepts future times.
             const past = Date.parse(malaysiaInstant(day, tm)) <= now;

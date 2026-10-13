@@ -1,139 +1,41 @@
-# Handoff: where the work stands
+# Current handoff
 
-Repository `brandonkow/drprop`. `main` and `claude/modest-ritchie-e7pjr3` are the same commit. Work on a branch from `main`.
+Work only on `main`. This is the user's latest instruction and supersedes older feature-branch restrictions. New feature builds remain on hold; repairing the existing implementation is authorized. All released UI and documentation are English-only. Historical translation source data is retained but is not an enabled product language.
 
-Read first:
-- `docs/brief.md`: the brief, in Chinese. Every rule below comes from it.
-- `README.md`: the repo map and commands, in Chinese.
-- `docs/decisions.md`: every open decision, with what the code assumes today and what follows.
-- `docs/launch-checklist.md`: what only people can settle.
-- `supabase/README.md`: the backend.
+Read [README](../README.md), [brief](brief.md), [repair verification](hardening-2026-10-13.md), [decisions](decisions.md), [launch checklist](launch-checklist.md) and [backend setup](../supabase/README.md).
 
-## Repo in one minute
+## Existing implementation
 
-| Folder | What it is |
-|---|---|
-| `brand/` | The single source for tokens, fonts, logo, Pulse Roof, fees (`pricing.ts`), 3D models and renders, and the print pieces (`print/`) |
-| `web/` | Website: Vite + TS, no framework. Three languages, five sections; terms and privacy pages; fee calculator; WebGL background |
-| `app/` | Expo SDK 57 app, three languages. Preview mode (mock, the default) or supabase mode (`app/.env`) |
-| `supabase/` | Database migration (row-level security everywhere) and PGlite tests |
-| `reels/` | Remotion reels R1–R8, hero promo and product film; `scripts/deliver.ts` sets BT.709 colour and −14 LUFS sound |
-| `blender/` | bpy scripts for the store (shophouse and mall), layout films, film plates, twin export |
-| `twin/` | Interactive 3D store and operations dashboard (three.js) |
-| `e2e/` | Playwright tests for the website, the preview app, and the connected app against `e2e/fake-supabase.mjs` |
+- Shared brand, fee calculator, static website and effects/fallbacks.
+- Expo preview/connected app, SMS auth integration, customer appointments, urgent requests, adviser notes and Lounge board.
+- Server-controlled fees, ownership checks, single-use check-in codes, membership renewal-date validation and shared operating calendar.
+- Explicit acknowledgment and audit evidence when an adviser takes an overdue urgent request.
+- Store concepts/simulation, English reels and print samples.
 
-## Checks (all green at handoff)
+## Repair verification
 
-```bash
-npm install
-npm run typecheck            # every package
-npm test                     # 156 unit tests (vitest), incl. 25 database tests on PGlite
-npm run lint -w @drprop/app
-npm run build                # website; fails if JS > 250 KB gzip or a launch build has placeholders
-npm run export:web -w @drprop/app                  # app/dist (preview), always --clear
-npm run export:connected-fixture -w @drprop/app    # app/dist-connected (fixture backend); never deploy
-npm run test:e2e             # 20 browser tests: web 14, app 2, connected 4
-```
+Use the current commands in README. The repair report records the exact tests actually completed. Earlier CI counts and statements in Git history refer to earlier revisions, not the current working tree.
 
-Other commands:
-- `npm run print -w @drprop/brand` writes the report, card and plate PDFs and copies the sample report to `web/public/samples/`.
-- `npm run og -w @drprop/web` writes the share cards.
-- `npm run verify:media -w @drprop/reels` checks the delivered films.
+Database tests run the migrations against PGlite on one connection. Connected browser tests use a local Auth/REST stand-in. Neither proves real SMS, hosted PostgREST permissions, multi-connection concurrency, hosted persistence or physical camera/sensor performance.
 
-Without a GPU, Remotion needs `REMOTION_GL=swangle`. ffmpeg comes bundled with Remotion; `reels/scripts/deliver.ts` finds it.
+The media manifest verifies all 45 tracked MP4 assets. Publication candidates exclude three sample-data reels and two silent internal layout films. Full technical validation is separate from business/legal/music approval.
 
-## Rules that must not break (brief §1.4, §2, §5.6, §9)
+## Scope held by the user
 
-- **Words:** never "valuer", "valuation", 估价 or 估值. No recommendations of units for sale (笋盘), no price or negotiation advice. Zero commission.
-- **Disclaimer:** every diagnosis carries 本诊断为资讯与分析，不构成法律、税务或财务意见，最终决定由客户自行作出。 (tested)
-- **Visual rules:**
-  - no component-library theme, gradients, glass, Inter or emoji;
-  - radius 0–2 px; bronze at most 3 times per page;
-  - one CTA, "Book a consult"; no cross symbol;
-  - no whoosh or flash in motion.
-- **No fake data:** samples are labelled as samples. Market data needs provenance (`reels/src/data/validate.ts` enforces it).
-- **Three languages everywhere,** with the same keys (tested). English is the source language. Exception: reels render in English only (the owner's call, 2026-10-08); their Chinese and Malay copy is kept.
-- **App style:** single quotes and wide lines. There is no Prettier config, so don't run Prettier with its defaults.
+Do not start private document uploads, report publication, payments, notifications infrastructure, additional store modelling or another feature roadmap without renewed authorization. Do not deploy merely because implementation tests pass.
 
-## Left to do (in order)
+## External inputs still needed
 
-Steps 1–3 of the earlier list (app screens §8, visual rules §5, reels and acceptance §9–§11) are done; see `docs/acceptance.md`.
+Confirmed fees/rounding, operating hours and staffing; membership term/grace/cap policy; cancellation/refund/report commitments; registration, contact and address details; responsible adviser/operator; hosted Supabase/SMS access; physical Android/iOS checks; business/legal review; approved sound/music and measured plans when moving beyond the store concept.
 
-### 1. Reels
-- [x] All 36 English reels rendered and passed the delivery check (H.264, BT.709 limited range, −14 LUFS, true peak ≤ −1 dBTP). Reels are English only (the owner's call, 2026-10-08). Re-render any with `cd reels && REMOTION_GL=swangle npx tsx scripts/render-all.ts --only <Id>`; without a GPU the store reveal takes about 2½ hours (its 3D is about 5 s a frame), the rest a minute or two each.
-- [x] Delivered reels live in `reels/delivered/` (tracked in git; see its README for which ratio goes where). `reels/out/` stays scratch.
-- [x] The store reveal's captions sit together at the top, over the plain wall (they had crossed a door handle and a chair back).
+No missing business data should be fabricated. Production website builds fail on placeholders. Fresh databases keep bookings disabled and prices unconfirmed.
 
-### 2. Only the owner can do these (GitHub)
-- [ ] Delete the old Codex branch `feat/brand-static-landing` (its useful parts are already ported). It's at https://github.com/brandonkow/drprop/branches; the last commit is `b9f3913`, if it's ever needed.
-- [ ] Optional: make `main` the default branch (Settings → General).
+## Design and service boundaries
 
-### 3. Before launch: `docs/launch-checklist.md`
-- Founder decisions (now including name and trademark, an REA or valuer partner, the floor plan, social platforms).
-- Lawyer review, real details in `web/src/config/site.ts` (set `origin` last), native-speaker review.
-- Real-phone tests (Android 4 GB smooth scrolling is the one §10 criterion still open).
-- The hosted backend, payments (next phase), media rights and print.
+- Preserve the independent, zero-commission service positioning and diagnosis disclaimer.
+- Do not claim a regulated valuation or recommend units for sale.
+- Every diagnosis states that it is information and analysis, not legal, tax or financial advice, with the final decision left to the client.
+- Follow every item in brief §5.6, including restrained colours, 0–2 px corners, the existing fonts, one website CTA and static/reduced-motion fallbacks.
+- Clearly label sample data, anonymised examples and store concepts. Keep market provenance.
 
-### Nice to have (not required by the brief)
-- Payments (FPX, Touch 'n Go, GrabPay, cards) and private report storage in supabase mode.
-
-## What changed in the last session (newest first)
-
-- **Settled in this session:** the delivered reels are kept in `reels/delivered/`; R9 "a visit" (16.5 s, English, the new concept clips); the store reveal's captions moved clear of the door handle; the adviser screen scans member cards with the device camera (expo-camera). GitHub's default branch and the old Codex branch could not be changed from here (the session's permissions refuse it): both are one click in the repository settings.
-
-- **Brand imagery, second batch** (`brand/renders/ai/`, see its README): photoreal stills of the mall store (shopfront, reception, Lounge) and the shophouse pantry, a 9:16 shophouse street, four 5-second clips (mall walk-in, kopi poured, a member in the mall Lounge, a 9:16 blue-hour walk-in), and 4:5 images for the Instagram feed in `social/`. All concepts with generated people, labelled as such. This used the last of the free Higgsfield credits; the balance is 0.
-
-- **Lounge check-in codes** (`supabase/migrations/202610080001_checkin.sql`). The member card's QR now holds six digits from the server, new every minute, good for two minutes and one check-in, instead of the member number. The adviser screen has a "Check in a member" field: a desk scanner types the QR and presses Enter, or someone types the digits; it shows the member's name, number and drink. Covered by 3 database tests and a browser test (scan, then the same code refused).
-
-- **Reels: all 36 English reels rendered and passing.**
-- **Reels: English only** (the owner's call, 2026-10-08). `render-all` renders English by default; `--lang en,zh,ms` still renders all three, because the Chinese and Malay copy stays in the reels. The Chinese and Malay files in `reels/out/` were deleted.
-
-- **Reels:** the store reveal's 3D renders once per format and the three languages share it (`reels/plates/`, see the top of `reels/scripts/render-all.ts`). Checked against a live render: the 3D pixels match exactly, and caption edges differ by at most 1 level in 255. A `--frames` test render now writes `…-fA-B.mp4`, so `--skip-existing` can't mistake it for a finished file. The member card reels are rendered and pass.
-
-- **Reels:** `render-all --skip-existing` resumes a stopped batch. Renders go to `.part.mp4` and are renamed only when finished and delivered, so a stopped render never leaves a half file that looks done.
-
-- **Reels:**
-  - 9:16 captions stop at the like/share column;
-  - R3's closing call-to-action fits the safe area (it had spilled out in English and Malay);
-  - the stand-in store cabinet no longer sits inside the wall.
-- **Docs:**
-  - `docs/acceptance.md` records the brief's acceptance lists;
-  - the launch checklist gains the §11 founder items.
-- **Web:** terms headings in the label style.
-- **App:**
-  - 44-point touch targets on links and the coffee field;
-  - no past times offered on the adviser screen;
-  - `npm run export:web` / `export:connected-fixture` (`-w @drprop/app`) always build with `--clear`, because a cached build from the other mode leaks backend settings.
-
-- **Connected-app browser test:** `e2e/connected.spec.ts` with `e2e/fake-supabase.mjs`, which runs the real migration on PGlite. Client books, cancels and requests an urgent call-back; the adviser takes it and writes a note; the client sees the note.
-- **App fixes:**
-  - member card for non-members and inactive members;
-  - honest PDF line in supabase mode;
-  - splash and row labels fixed for accessibility (WCAG 2.5.3).
-- **Print:**
-  - `brand/print/` holds the diagnosis report (A4, three languages, sample), the A6 letterpress card and the 300 × 400 mm door fee plate;
-  - the sample report is linked from the website's fee section.
-- **Website:**
-  - share cards;
-  - terms page (zero commission and referral-fee promise, §2.4);
-  - Lounge concept image;
-  - JS budget check, data-saver path, launch guard, licence notices (`/third-party-notices.txt`);
-  - fee-calculator fix: "500000.00" had read as RM 50 million.
-- **Backend:**
-  - `supabase/migrations/202610070001_core.sql`, adapted from Codex's design: urgent consults as call-backs, whole-ringgit fees, language, drink, membership, notes, Lounge board;
-  - the app's data source switch (`app/src/data/source.ts`; mock or Supabase);
-  - adviser screen and cancellation.
-- **Reels:**
-  - BT.709 colour and −14 LUFS delivery for all films;
-  - placeholder sound logo (`reels/scripts/sound-logo.ts`);
-  - verified NAPIC data with provenance;
-  - `basis` (general or anonymised) on case files.
-- **Dependencies:** overrides for shell-quote, source-map-js and Xcode's uuid. Still open: braces and node-forge (no fix released) and decode-uri-component 0.2 in expo-router (the fix is ESM-only).
-- **App:** diagnosis disclaimer on every record.
-
-## Known limits
-
-- The backend has never touched a hosted Supabase project, and no SMS has been sent. PGlite tests are single-connection.
-- Supabase mode takes no payment: bookings are requests the adviser confirms.
-- Check-in is checked by the database (single use, two minutes, active members only). The adviser screen scans with the device camera, a desk scanner that types, or the six digits typed by hand.
-- The sound logo, film score and store imagery are placeholders or concepts, all labelled.
+Historical implementation details remain in Git history at `6c03a0f`; this current handoff supersedes its stale branch, language, dependency and completion instructions.

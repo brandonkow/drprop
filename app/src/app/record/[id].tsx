@@ -50,6 +50,11 @@ export default function Record() {
         <Display>{c.propertyLabel || t.records.untitled}</Display>
         <Mono muted>{c.scheduledAt ? formatWhen(c.scheduledAt, language) : t.records.urgentWhen}</Mono>
         <Mono muted>{rm(c.fee)}</Mono>
+        {c.urgentDueAt && c.status === 'booked' ? <Small accessibilityLiveRegion="polite">{
+          Date.parse(c.urgentDueAt) <= now
+            ? c.urgentRecoveryAt ? 'The call-back is overdue. An adviser has acknowledged recovery and will contact you.' : 'The call-back is overdue and needs adviser follow-up. You can cancel this request below.'
+            : `Call-back due by ${formatWhen(c.urgentDueAt, language)}.`
+        }</Small> : null}
       </View>
 
       <Section label={t.records.report}>

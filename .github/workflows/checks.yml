@@ -35,6 +35,9 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Dependency audit (reviewed exceptions expire)
+        run: npm run audit:dependencies
+
       - name: Unit and database tests
         run: npm test
 
@@ -43,6 +46,12 @@ jobs:
 
       - name: Website build
         run: npm run build
+
+      - name: Production configuration guard
+        run: npm run verify:launch-guard
+
+      - name: Delivered media, full decode and loudness
+        run: npm run verify:media -w @drprop/reels
 
       # Both exports use --clear: a cached build from the other mode would leak backend settings.
       - name: App export (preview)
@@ -66,3 +75,19 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run lint -w @drprop/app
+      - run: npm run export:web -w @drprop/app
+      - run: npm run export:connected-fixture -w @drprop/app

@@ -1,0 +1,14 @@
+[
+  {
+    "package": "braces",
+    "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+    "reviewBy": "2026-11-11T00:00:00Z",
+    "reason": "No upstream patched release. Transitive Metro/Remotion build globbing; only repository-controlled patterns are used. Do not accept untrusted glob expressions or expose development servers publicly. Residual build-time denial-of-service risk remains."
+  },
+  {
+    "package": "node-forge",
+    "url": "https://github.com/advisories/GHSA-86w9-cpqp-85rv",
+    "reviewBy": "2026-11-11T00:00:00Z",
+    "reason": "No upstream patched release. Transitive Expo CLI certificate/signing tooling, not the app's own authentication. Do not treat certificates or updates supplied by untrusted parties as verified through this dependency; native signing/update release review remains required. Residual tooling risk remains."
+  }
+]

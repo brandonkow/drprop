@@ -1,3 +1,5 @@
+import { malaysiaDay } from '../../backend/malaysia-time';
+import { slotDays } from '../../backend/calendar';
 /**
  * S3 step 3: time and confirmation on one screen, so opening the app to a
  * finished booking takes four screens (home + three steps).
@@ -22,29 +24,15 @@ import { formatDay, formatTime, formatWhen, rm } from '../../i18n/format';
 import { useApp } from '../../state/app-state';
 import { FONT, HAIRLINE, SPACE, TOUCH_MIN, usePalette } from '../../theme';
 
-function nextDays(n: number): Date[] {
-  const out: Date[] = [];
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  for (let i = 0; i < n; i++) {
-    out.push(new Date(d));
-    d.setDate(d.getDate() + 1);
-  }
-  return out;
-}
-
-const sameDay = (iso: string, day: Date) => {
-  const d = new Date(iso);
-  return d.getFullYear() === day.getFullYear() && d.getMonth() === day.getMonth() && d.getDate() === day.getDate();
-};
+const sameDay = (iso: string, day: Date) => malaysiaDay(iso) === malaysiaDay(day);
 
 export default function Schedule() {
   const { t, fmt, draft, setDraft, user, language, addConsultation, mode } = useApp();
   const p = usePalette();
   const { width } = useWindowDimensions();
   const connected = mode === 'connected';
-  const days = useMemo(() => nextDays(8), []);
   const [slots, setSlots] = useState<Slot[] | null>(null);
+  const days = useMemo(() => slotDays(slots ?? []), [slots]);
   const [day, setDay] = useState<Date | null>(null);
   const [fee, setFee] = useState<number | null>(draft ? consultFee(draft.type, draft.band) : null);
   const [urgentOpen, setUrgentOpen] = useState<boolean | null>(null);
@@ -67,7 +55,7 @@ export default function Schedule() {
       .slots(draft.type)
       .then((all) => {
         setSlots(all);
-        setDay((d) => d ?? days.find((x) => all.some((sl) => sameDay(sl.at, x))) ?? days[1]!);
+        setDay((d) => d && all.some((slot) => sameDay(slot.at, d)) ? d : slotDays(all)[0] ?? null);
       })
       .catch((e) => {
         setSlots([]);
@@ -160,6 +148,7 @@ export default function Schedule() {
         <Small>{t.flow.noOpenTimes}</Small>
       ) : (
         <View style={s.picker}>
+          <Small>All appointments use Malaysia time (MYT, UTC+8).</Small>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.days}>
             {days.map((d) => {
               const on = !!day && d.getTime() === day.getTime();
@@ -180,7 +169,7 @@ export default function Schedule() {
             })}
           </ScrollView>
           {daySlots.length === 0 ? (
-            <Small>{day?.getDay() === 1 ? t.flow.closedMonday : t.flow.noSlots}</Small>
+            <Small>{t.flow.noSlots}</Small>
           ) : (
             <View style={s.slots}>
               {daySlots.map((slot) => {

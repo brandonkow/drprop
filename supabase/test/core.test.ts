@@ -15,7 +15,11 @@ const adviser = '00000000-0000-4000-8000-000000000003';
 const secondAdviser = '00000000-0000-4000-8000-000000000004';
 const unverified = '00000000-0000-4000-8000-000000000005';
 const req = (n: number) => `10000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
-const hoursFromNow = (h = 24) => new Date(Date.now() + h * 3_600_000).toISOString();
+const hoursFromNow = (h = 24) => {
+  if (h < 0) return new Date(Date.now() + h * 3_600_000).toISOString();
+  const day = new Date(Date.now() + 8 * 3_600_000 + 86_400_000).toISOString().slice(0, 10);
+  return new Date(Date.parse(`${day}T12:00:00+08:00`) + (h - 24) * 3_600_000).toISOString();
+};
 
 type Row = Record<string, any>;
 
@@ -61,7 +65,7 @@ beforeAll(async () => {
     grant execute on function auth.uid() to authenticated, anon;`);
   const dir = new URL('../migrations/', import.meta.url);
   for (const file of readdirSync(dir).sort()) await db.exec(readFileSync(new URL(file, dir), 'utf8'));
-});
+}, 60_000); // WASM/Postgres initialization is slower on Windows and cold CI machines.
 
 afterAll(() => db.close());
 
@@ -80,7 +84,7 @@ describe('a fresh install', () => {
 describe('with bookings open', () => {
   beforeEach(async () => {
     await db.exec(`truncate auth.users cascade;
-      update public.dp_settings set bookings_enabled = true, urgent_from = '10:00', urgent_until = '18:00', closed_isodow = 1;
+      update public.dp_settings set bookings_enabled = true, urgent_from = '10:00', urgent_until = '18:00', closed_isodow = null, opens_at = '00:00', closes_at = '24:00', booking_days = 90;
       update public.dp_prices set confirmed = true;
       update public.dp_lounge set seats_free = 0, mood = 'quiet', todays_coffee = '';`);
     for (const [i, id] of [customer, other, adviser, secondAdviser, unverified].entries()) {
@@ -105,7 +109,7 @@ describe('with bookings open', () => {
 
   it('scopes profiles to their owner, keeps the language, and grants no staff rights from the client', async () => {
     const [p] = await as(customer, "select * from public.dp_save_profile(' Alex ', 'Teh tarik', 'zh')");
-    expect(p).toMatchObject({ display_name: 'Alex', drink_preference: 'Teh tarik', language: 'zh' });
+    expect(p).toMatchObject({ display_name: 'Alex', drink_preference: 'Teh tarik', language: 'en' });
     expect(await as(customer, 'select * from public.dp_profiles')).toHaveLength(1);
     await expect(as(customer, "select public.dp_save_profile('Alex', '', 'fr')")).rejects.toThrow(/language/);
     await expect(as(customer, 'update public.dp_profiles set display_name = $1 where user_id = $2', ['Intruder', other])).rejects.toThrow(/permission denied/);
@@ -270,7 +274,7 @@ describe('with bookings open', () => {
   });
 
   it('shows each member only their own membership', async () => {
-    await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', '2027-01-01')", [customer]);
+    await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', ((now() at time zone 'Asia/Kuala_Lumpur')::date + 365))", [customer]);
     expect(await as(customer, 'select member_no from public.dp_memberships')).toEqual([{ member_no: 'PJ-0001' }]);
     expect(await as(other, 'select * from public.dp_memberships')).toHaveLength(0);
     await expect(as(customer, "update public.dp_memberships set status = 'active'")).rejects.toThrow(/permission denied/);
@@ -278,7 +282,7 @@ describe('with bookings open', () => {
 
   it('gives only an active member a check-in code: six digits, good for two minutes, never readable as a table', async () => {
     const member = (user: string, no: string, status: string) =>
-      db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, $2, $3, '2027-01-01')", [user, no, status]);
+      db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, $2, $3, ((now() at time zone 'Asia/Kuala_Lumpur')::date + 365))", [user, no, status]);
     await expect(as(customer, 'select * from public.dp_checkin_code()')).rejects.toThrow(/active membership/);
     await member(customer, 'PJ-0001', 'active');
     await member(other, 'PJ-0002', 'waitlist');
@@ -292,7 +296,7 @@ describe('with bookings open', () => {
   });
 
   it('lets an adviser redeem a check-in code once; the member sees the visit', async () => {
-    await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', '2027-01-01')", [customer]);
+    await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', ((now() at time zone 'Asia/Kuala_Lumpur')::date + 365))", [customer]);
     const code = (await as(customer, 'select * from public.dp_checkin_code()'))[0]!.code as string;
     await expect(as(customer, 'select public.dp_check_in($1)', [code])).rejects.toThrow(/adviser access/);
     // A desk scanner types the whole QR text; a person types the digits, maybe with a space.
@@ -308,7 +312,7 @@ describe('with bookings open', () => {
   });
 
   it('refuses expired codes and members who lapsed; keeps only the previous code alive', async () => {
-    await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', '2027-01-01')", [customer]);
+    await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', ((now() at time zone 'Asia/Kuala_Lumpur')::date + 365))", [customer]);
     const issue = async () => (await as(customer, 'select * from public.dp_checkin_code()'))[0]!.code as string;
     const [first, second, third] = [await issue(), await issue(), await issue()];
     // The newest and the one before it: a card that refreshed mid-scan still checks in.
@@ -341,4 +345,45 @@ describe('with bookings open', () => {
     await expect(as(adviser, 'select * from public.dp_adviser_bookings()')).rejects.toThrow(/adviser access/);
     expect(await as(adviser, 'select * from public.dp_slots')).toHaveLength(0);
   });
+  it('rejects membership issuance and redemption at the Malaysia renewal boundary', async () => {
+    await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', (now() at time zone 'Asia/Kuala_Lumpur')::date + 1)", [customer]);
+    const code = (await as(customer, 'select * from public.dp_checkin_code()'))[0]!.code;
+    await db.exec("update public.dp_memberships set renews_at = (now() at time zone 'Asia/Kuala_Lumpur')::date");
+    await expect(as(customer, 'select * from public.dp_checkin_code()')).rejects.toThrow(/active membership/);
+    await expect(as(adviser, 'select public.dp_check_in($1)', [code])).rejects.toThrow(/not active/);
+    expect((await db.query<Row>('select count(*)::int n from public.dp_checkins')).rows[0]!.n).toBe(0);
+  });
+
+  it('uses the configured calendar for publication, discovery and booking', async () => {
+    const at = hoursFromNow();
+    const day = new Date(Date.parse(at) + 8 * 3_600_000).getUTCDay() || 7;
+    const slot = await publish(adviser, at);
+    await db.query("update public.dp_settings set opens_at='10:00', closes_at='20:00', closed_isodow=$1", [day]);
+    await expect(publish(secondAdviser, at)).rejects.toThrow(/opening days/);
+    expect(await as(customer, 'select * from public.dp_availability()')).toHaveLength(0);
+    await expect(book(slot.id)).rejects.toThrow(/no longer available/);
+    await db.exec('update public.dp_settings set closed_isodow=null');
+    const date = new Date(Date.parse(at) + 8 * 3_600_000).toISOString().slice(0,10);
+    await expect(publish(adviser, `${date}T03:00:00+08:00`)).rejects.toThrow(/opening days/);
+    await expect(publish(adviser, `${date}T19:45:00+08:00`)).rejects.toThrow(/opening days/);
+    expect(await as(customer, 'select * from public.dp_availability()')).toHaveLength(1);
+    const config = (await as(customer, 'select public.dp_calendar() c'))[0]!.c;
+    expect(config).toMatchObject({ bookingDays: 90, closedIsodow: null, opensAt: '10:00:00' });
+    await db.exec('update public.dp_settings set booking_days=1');
+    await expect(publish(secondAdviser, hoursFromNow(48))).rejects.toThrow(/opening days/);
+  });
+
+  it('requires explicit, audited recovery for an overdue urgent request', async () => {
+    await urgentAlwaysOpen();
+    const b = await book(null, { type: 'urgent' });
+    await db.query("update public.dp_bookings set starts_at=now()-interval '4 hours', ends_at=now()-interval '2 hours' where id=$1", [b.id]);
+    await expect(as(adviser, 'select public.dp_take_urgent($1)', [b.id])).rejects.toThrow(/overdue/);
+    await expect(as(customer, 'select public.dp_take_urgent($1, true)', [b.id])).rejects.toThrow(/adviser access/);
+    const [taken] = await as(adviser, 'select * from public.dp_take_urgent($1, true)', [b.id]);
+    expect(taken!.urgent_overdue_acknowledged_at).not.toBeNull();
+    expect(taken!.status).toBe('confirmed');
+    expect((await db.query<Row>("select status from public.dp_booking_events where booking_id=$1 order by id desc limit 1", [b.id])).rows[0]!.status).toBe('overdue_recovery');
+    await expect(as(secondAdviser, 'select public.dp_take_urgent($1, true)', [b.id])).rejects.toThrow(/already been taken/);
+  });
+
 });

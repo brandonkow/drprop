@@ -9,14 +9,13 @@ import { Body, Display, Label, Mono, Small } from '../../components/type';
 import { OutlineButton, Rule, Screen, TextLink } from '../../components/ui';
 import { source } from '../../data/source';
 import { formatDate } from '../../i18n/format';
-import { LANGUAGES } from '../../i18n/strings';
 import { useApp } from '../../state/app-state';
 import { FONT, HAIRLINE, INPUT_RESET, SIZE, SPACE, TOUCH_MIN, usePalette } from '../../theme';
 
-const DRINKS = ['Kopi-O kosong', 'Kopi tarik', 'Teh tarik', 'Milo ais', 'Barley ais'];
+const DRINKS = ['Black coffee, no sugar', 'Pulled milk coffee', 'Pulled milk tea', 'Iced malt chocolate', 'Iced barley'];
 
 export default function Me() {
-  const { t, fmt, user, updateUser, membership, setMembership, language, setLanguage, signOut, mode, staff } = useApp();
+  const { t, fmt, user, updateUser, membership, setMembership, language, signOut, mode, staff, profileError, retryProfile } = useApp();
   const p = usePalette();
   const [renewing, setRenewing] = useState(false);
   if (!user) return null;
@@ -26,11 +25,13 @@ export default function Me() {
   return (
     <Screen edges={['top']}>
       <Display style={s.title}>{t.me.title}</Display>
+      {profileError ? <View accessibilityLiveRegion="polite"><Small>{profileError}</Small><TextLink label="Retry saving profile" onPress={retryProfile} /></View> : null}
 
       <Field label={t.me.name}>
         <TextInput
           style={input}
           value={user.displayName}
+          maxLength={40}
           onChangeText={(displayName) => updateUser({ displayName })}
           accessibilityLabel={t.me.name}
         />
@@ -40,6 +41,7 @@ export default function Me() {
         <TextInput
           style={input}
           value={user.drinkPreference ?? ''}
+          maxLength={80}
           onChangeText={(drinkPreference) => updateUser({ drinkPreference })}
           placeholder={t.me.drinkPlaceholder}
           placeholderTextColor={p.muted}
@@ -103,13 +105,6 @@ export default function Me() {
         </Field>
       ) : null}
 
-      <Field label={t.me.language}>
-        <View style={s.langs} accessibilityRole="radiogroup">
-          {LANGUAGES.map((l) => (
-            <TextLink key={l.id} label={l.label} muted={l.id !== language} onPress={() => setLanguage(l.id)} style={s.lang} />
-          ))}
-        </View>
-      </Field>
 
       <Rule />
       <TextLink label={t.me.signOut} onPress={() => void signOut()} muted />

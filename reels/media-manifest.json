@@ -1,0 +1,456 @@
+[
+  {
+    "file": "reels/delivered/before-you-sign-en-16x9.mp4",
+    "sha256": "caf8e385e7c239871e0e47f44964f2bb3e458a08591671b2b5bea4d2782f0854",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 23.5,
+    "frames": 705,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/before-you-sign-en-4x5.mp4",
+    "sha256": "ed8208afbb42bceb151283e8930928a13f0dae0b3efbe66c9cdf7c78bb4e00eb",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 23.5,
+    "frames": 705,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/before-you-sign-en-9x16.mp4",
+    "sha256": "f26b213d3e1ba6cab3f58f470fd4a57e9de1ef4f1dcb8de8f5e272d0455cc829",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 23.5,
+    "frames": 705,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/brand-pulse-15s-en-16x9.mp4",
+    "sha256": "538b4b6dc4a3cf7de497407c544fa74b356cbc2a9da4f57b88f6f309a295a7cc",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 15.0,
+    "frames": 450,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/brand-pulse-15s-en-4x5.mp4",
+    "sha256": "6482ddb430348305bfbe790c11218745cc3d67e1a202798dac689d32235cbc09",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 15.0,
+    "frames": 450,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/brand-pulse-15s-en-9x16.mp4",
+    "sha256": "762ca2ead49af3cac5f95be9a72a509a755daa598b368f67eb09db5f9bd0639a",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 15.0,
+    "frames": 450,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/brand-pulse-7s-en-16x9.mp4",
+    "sha256": "3a7a2a73514d83944497948d8165319cc1edeb2297988ee7fbaed3e4118fc6ea",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 7.0,
+    "frames": 210,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/brand-pulse-7s-en-4x5.mp4",
+    "sha256": "21bb59b85c2b2dc725cd21720f484a4e8b3939d93adbfd719d6c33dd696172a9",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 7.0,
+    "frames": 210,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/brand-pulse-7s-en-9x16.mp4",
+    "sha256": "5435944cb0734d166a8fe5f43565ec53f04105a0bc512b876cc89c540b4e8a4f",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 7.0,
+    "frames": 210,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/case-001-lease-tenure-en-16x9.mp4",
+    "sha256": "a714b52425dec38789b8da691aced18a134a26d772ecdbb8b7457804265d4983",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 27.0,
+    "frames": 810,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/case-001-lease-tenure-en-4x5.mp4",
+    "sha256": "8c81433dd6fc24f62ff454db4bca20a864ae38fc4953970755080bb4407fc984",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 27.0,
+    "frames": 810,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/case-001-lease-tenure-en-9x16.mp4",
+    "sha256": "96e19eb0558c62c6ca6c27a43914865871e2c8a0fbebd37b4b4a04aa1dffbc30",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 27.0,
+    "frames": 810,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/case-002-sinking-fund-en-16x9.mp4",
+    "sha256": "cce3907ae308d7951e6a666d9a64101e757deba69f1db996beb0ce6b82a33472",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 27.0,
+    "frames": 810,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/case-002-sinking-fund-en-4x5.mp4",
+    "sha256": "a1887f545016b405e0b69a9b8a70e1b2ab89af836ebc92bcd68d6a66ff094140",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 27.0,
+    "frames": 810,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/case-002-sinking-fund-en-9x16.mp4",
+    "sha256": "2c38af233e8d3b04b6665a4643f47857d3622ccc1d01068e85c8cfd90a4ac88a",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 27.0,
+    "frames": 810,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/case-003-spa-late-delivery-en-16x9.mp4",
+    "sha256": "3452f458bccb6c86032b5af74d643fe8a8d9cc4af18e3ffad20bb666d2b4b21d",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 27.0,
+    "frames": 810,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/case-003-spa-late-delivery-en-4x5.mp4",
+    "sha256": "5715568683e408f5cc3957aaf1472f815604c2296a4da90df9754fdb0f2469e9",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 27.0,
+    "frames": 810,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/case-003-spa-late-delivery-en-9x16.mp4",
+    "sha256": "d984b5e9a6809cef856a29d41ae180a02d914c545d1ae620382783d188192e4d",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 27.0,
+    "frames": 810,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/fee-reveal-en-16x9.mp4",
+    "sha256": "633bd5c380ba5be0a3264c3ebc7f7301fcb7a328994ebedb6c971c0d930785f1",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 15.0,
+    "frames": 450,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/fee-reveal-en-4x5.mp4",
+    "sha256": "600c8280b6c13669898405254ab62505960c1ebb14b8ab68a531286092c5cae1",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 15.0,
+    "frames": 450,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/fee-reveal-en-9x16.mp4",
+    "sha256": "64e68b66f6db2730120a4110cc855984d0ca73c476f1158eba82bea97bba9d07",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 15.0,
+    "frames": 450,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/lounge-moment-en-16x9.mp4",
+    "sha256": "312ea32f8598a02964d4938f1e986fec5452fa9da504a54c5328f20a3631cdca",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 14.5,
+    "frames": 435,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/lounge-moment-en-4x5.mp4",
+    "sha256": "899d6448ec88e239621e1ce8a3d88226295cdcd1c6b88ffea5c80fac47641b79",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 14.5,
+    "frames": 435,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/lounge-moment-en-9x16.mp4",
+    "sha256": "03a4f9c0fa6f588a1eb654e453feb9f8d52f4a7e353eba846dd42c07b7a7865e",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 14.5,
+    "frames": 435,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/market-2025-selangor-residential-value-en-16x9.mp4",
+    "sha256": "0bc469bf25900a4484062768434b3751563722bf38b6aa374560018d3dcb2d99",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 22.5,
+    "frames": 675,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/market-2025-selangor-residential-value-en-4x5.mp4",
+    "sha256": "7da60b281853623d480499c5791718f6eefbbebd5b49f16017e5d2eb42edbf9a",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 22.5,
+    "frames": 675,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/market-2025-selangor-residential-value-en-9x16.mp4",
+    "sha256": "c761c08b91f0807b0c5e42727fbbc7c63fb67aa56c0f442700d969245485685c",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 22.5,
+    "frames": 675,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/member-card-en-16x9.mp4",
+    "sha256": "b590da64f324825a5a7cfe7dee73ac414ea36922bb1a0234d581a86ca59872b5",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 10.5,
+    "frames": 315,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/member-card-en-4x5.mp4",
+    "sha256": "ded8cc2822e88157ae8424caf767b991c8082a503b7e2b0e75be3dbf443a5ec7",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 10.5,
+    "frames": 315,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/member-card-en-9x16.mp4",
+    "sha256": "2d01bfd6346fa172cd378c7ff497ab246f3067e36fdf7d15a1d11204e5202782",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 10.5,
+    "frames": 315,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/store-reveal-en-16x9.mp4",
+    "sha256": "7787846d10357b9d14b1bd1988f4808190a559b4aa608b7f04c1f0f8c21e72ff",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 22.5,
+    "frames": 675,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/store-reveal-en-4x5.mp4",
+    "sha256": "b7c8bbda72f129db8436de95f81dfe9fcde30b9259d3dec12b80bb98dbee1fc2",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 22.5,
+    "frames": 675,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/store-reveal-en-9x16.mp4",
+    "sha256": "e1cffd8fbf727b935cd96b5bbeae5a9dba040c3daf3a7ae3ccf6670c1b9ab193",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 22.5,
+    "frames": 675,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/visit-en-16x9.mp4",
+    "sha256": "5c5e590cc7bed5c27c384142159bcfb062235a8b56b7fc15d4d13d9ecaaef602",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 16.5,
+    "frames": 495,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/visit-en-4x5.mp4",
+    "sha256": "8e02f17dcb0994a2bb29b4118fd74c5da7594ce05cd2a41157f6b0bb667f50f5",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 16.5,
+    "frames": 495,
+    "publication": true
+  },
+  {
+    "file": "reels/delivered/visit-en-9x16.mp4",
+    "sha256": "0add36be43194b19d0235f87c36e8bc25f6144f182b0ad1fe9dd336f06dda16b",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 16.5,
+    "frames": 495,
+    "publication": true
+  },
+  {
+    "file": "reels/samples/market-2026-q2-sample-en-16x9.mp4",
+    "sha256": "7059b94442e372ca52562278ad32d747280a2a3ec49df3cc0229ca83850a7987",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 22.5,
+    "frames": 675,
+    "publication": false
+  },
+  {
+    "file": "reels/samples/market-2026-q2-sample-en-4x5.mp4",
+    "sha256": "7125260d2410bcebf36cfbb93b44d221d68c46c307a28a61f34a65ed59552acf",
+    "width": 1080,
+    "height": 1350,
+    "fps": 30.0,
+    "duration": 22.5,
+    "frames": 675,
+    "publication": false
+  },
+  {
+    "file": "reels/samples/market-2026-q2-sample-en-9x16.mp4",
+    "sha256": "eac43e6a6c4f5c816723e3d16a555ac5faf87bfd2aa93e8e20a77531a278808e",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 22.5,
+    "frames": 675,
+    "publication": false
+  },
+  {
+    "file": "brand/renders/hero-promo-en-16x9.mp4",
+    "sha256": "5ed34c54a6ec6f13119aca76ebc95cef3161f99186ca293892c2fb38fe5c2896",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 48.5,
+    "frames": 1455,
+    "publication": true
+  },
+  {
+    "file": "brand/renders/hero-promo-en-9x16.mp4",
+    "sha256": "7f546666ba19550e23c0d5da72e187447842e16f629ea85c5cc0a1541be613b4",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 48.5,
+    "frames": 1455,
+    "publication": true
+  },
+  {
+    "file": "brand/renders/layout-flow-mall.mp4",
+    "sha256": "f0796403355846dcd7af7e488bf954d1bf8a6c395f1c2d29e64788c943587264",
+    "width": 960,
+    "height": 540,
+    "fps": 30.0,
+    "duration": 23.833333,
+    "frames": 715,
+    "publication": false,
+    "allowSilent": true,
+    "audioRequired": false
+  },
+  {
+    "file": "brand/renders/layout-flow.mp4",
+    "sha256": "9283f28235dc529d67e0bf468c17d2e1aea48eed122aceadfa4ece8bf3bb3b87",
+    "width": 960,
+    "height": 540,
+    "fps": 30.0,
+    "duration": 95.833333,
+    "frames": 2875,
+    "publication": false,
+    "allowSilent": true,
+    "audioRequired": false
+  },
+  {
+    "file": "brand/renders/product-film-en-16x9.mp4",
+    "sha256": "6c8b2df1d9b5521781f362936c1814ddf1c150ff2e870248a1735dbc2e8f78eb",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30.0,
+    "duration": 70.466667,
+    "frames": 2114,
+    "publication": true
+  },
+  {
+    "file": "brand/renders/product-film-en-9x16.mp4",
+    "sha256": "4c9e376e3ac9432450f49f5d85c97094b8a1cae4e64cbec6b746734670775f36",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "duration": 70.466667,
+    "frames": 2114,
+    "publication": true
+  }
+]

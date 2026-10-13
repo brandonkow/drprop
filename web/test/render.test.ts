@@ -7,17 +7,11 @@ import { ogImagePath, pages, renderDocument } from '../src/render/page.ts';
 const html = (entry: (typeof pages)[number]) => renderDocument(entry, '<svg></svg>');
 
 describe('rendered pages', () => {
-  it('renders nine pages: home, privacy and terms in three languages', () => {
+  it('renders home, privacy and terms in English only', () => {
     expect(pages.map((p) => p.file).sort()).toEqual([
       'index.html',
-      'ms/index.html',
-      'ms/privacy/index.html',
-      'ms/terms/index.html',
       'privacy/index.html',
       'terms/index.html',
-      'zh/index.html',
-      'zh/privacy/index.html',
-      'zh/terms/index.html',
     ]);
   });
 
@@ -50,11 +44,13 @@ describe('rendered pages', () => {
     }
   });
 
-  it.each(pages)('$file has exactly one CTA and it goes to WhatsApp', (entry) => {
+  it.each(pages)('$file disables booking in preview, including without JavaScript', (entry) => {
     const out = html(entry);
     const ctas = out.match(/class="cta"/g) ?? [];
     expect(ctas).toHaveLength(1);
-    expect(out).toMatch(/class="cta" data-cta href="https:\/\/wa\.me\//);
+    expect(out).toContain('data-cta role="link" aria-disabled="true"');
+    expect(out).not.toContain('https://wa.me/');
+    expect(out).toContain('noindex,nofollow');
   });
 
   it.each(pages.filter((p) => p.page === 'home'))('$file has exactly the five sections', (entry) => {
@@ -64,8 +60,7 @@ describe('rendered pages', () => {
   it('sets the html lang per language', () => {
     const langOf = (file: string) => html(pages.find((p) => p.file === file)!).match(/<html lang="([^"]+)"/)?.[1];
     expect(langOf('index.html')).toBe('en');
-    expect(langOf('zh/index.html')).toBe('zh-Hans');
-    expect(langOf('ms/index.html')).toBe('ms');
+    expect(html(pages[0]!)).not.toContain('class="langs"');
   });
 
   it('only the Chinese pages load the CJK font stylesheet', () => {
@@ -89,9 +84,10 @@ describe('rendered pages', () => {
         ssm: 'SSM 000000000000 (0000000-X)',
         store: { address: 'Jalan —, 46000 Petaling Jaya', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Petaling+Jaya' },
       }),
-    ).toHaveLength(4);
+    ).toHaveLength(5);
     expect(
       launchProblems({
+        origin: 'https://example.com',
         whatsapp: '60123456789',
         ssm: 'SSM 202601012345 (1234567-A)',
         store: { address: '12 Jalan SS 2/24, 47300 Petaling Jaya, Selangor', mapsUrl: 'https://maps.app.goo.gl/AbCdEf' },

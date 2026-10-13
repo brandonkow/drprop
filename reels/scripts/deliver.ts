@@ -26,7 +26,7 @@ export const TARGET = { lufs: -14, truePeak: -1, tolerance: 1 };
 function tools(): { ffmpeg: string; ffprobe: string; env: NodeJS.ProcessEnv } {
   if (process.env.FFMPEG && process.env.FFPROBE) return { ffmpeg: process.env.FFMPEG, ffprobe: process.env.FFPROBE, env: process.env };
   const require = createRequire(import.meta.url);
-  const libc = process.platform === 'linux' ? '-gnu' : '';
+  const libc = process.platform === 'linux' ? '-gnu' : process.platform === 'win32' ? '-msvc' : '';
   for (const pkg of [`@remotion/compositor-${process.platform}-${process.arch === 'x64' ? 'x64' : process.arch}${libc}`]) {
     try {
       const dir = dirname(require.resolve(`${pkg}/package.json`));
@@ -52,8 +52,8 @@ function run(bin: string, args: string[]): { stdout: string; stderr: string } {
   return { stdout: r.stdout, stderr: r.stderr };
 }
 
-interface Probe {
-  video: { codec: string; pixFmt: string; range: string; space: string; primaries: string; transfer: string; fps: string } | null;
+export interface Probe {
+  video: { codec: string; pixFmt: string; range: string; space: string; primaries: string; transfer: string; fps: string; width: number; height: number; duration: number; frames: number } | null;
   audio: { codec: string } | null;
 }
 
@@ -73,6 +73,7 @@ export function probe(file: string): Probe {
           primaries: v.color_primaries ?? 'unknown',
           transfer: v.color_transfer ?? 'unknown',
           fps: v.r_frame_rate ?? '',
+          width: Number(v.width), height: Number(v.height), duration: Number(v.duration), frames: Number(v.nb_frames),
         }
       : null,
     audio: a ? { codec: a.codec_name ?? '' } : null,
@@ -83,9 +84,10 @@ export function probe(file: string): Probe {
 export function loudness(file: string): { lufs: number; truePeak: number; lra: number; thresh: number; offset: number } | null {
   const err = run(ffmpeg, ['-hide_banner', '-nostats', '-i', file, '-vn', '-af', `loudnorm=I=${TARGET.lufs}:TP=${TARGET.truePeak}:LRA=11:print_format=json`, '-f', 'null', '-']).stderr;
   const m = JSON.parse(err.slice(err.lastIndexOf('{'), err.lastIndexOf('}') + 1)) as Record<string, string>;
+  if (m.input_i === '-inf') return null;
   const lufs = Number(m.input_i);
-  // ffmpeg reports silence as -inf (Number() gives -Infinity); anything below -70 is silence too.
-  if (!Number.isFinite(lufs) || lufs < -70) return null;
+  if (!Number.isFinite(lufs)) throw new Error('Invalid loudness measurement');
+  if (lufs < -70) return null;
   return { lufs, truePeak: Number(m.input_tp), lra: Number(m.input_lra), thresh: Number(m.input_thresh), offset: Number(m.target_offset) };
 }
 
@@ -93,15 +95,34 @@ const isBt709 = (v: NonNullable<Probe['video']>) =>
   v.pixFmt === 'yuv420p' && v.range === 'tv' && v.space === 'bt709' && v.primaries === 'bt709' && v.transfer === 'bt709';
 
 /** Problems with a delivered file; empty when it passes. */
-export function check(file: string): string[] {
-  const p = probe(file);
+export interface MediaExpectation { width: number; height: number; fps: number; duration: number; frames: number; allowSilent?: boolean; audioRequired?: boolean }
+
+export function checkMetadata(p: Probe, expected?: MediaExpectation): string[] {
   const out: string[] = [];
   if (!p.video) return ['no video stream'];
   if (p.video.codec !== 'h264') out.push(`video is ${p.video.codec}, not H.264`);
   if (!isBt709(p.video)) out.push(`colour is ${p.video.pixFmt}/${p.video.range}/${p.video.space}, not yuv420p/tv/bt709`);
+  const [numerator, denominator = 1] = p.video.fps.split('/').map(Number);
+  const fps = numerator! / denominator;
+  if (!Number.isFinite(fps) || Math.abs(fps - (expected?.fps ?? 30)) > 0.001) out.push('incorrect frame rate');
+  if (expected ? p.video.width !== expected.width || p.video.height !== expected.height :
+    ![[1920,1080],[1080,1920],[1080,1350]].some(([w,h]) => p.video!.width === w && p.video!.height === h)) out.push('incorrect dimensions');
+  if (!Number.isFinite(p.video.duration) || p.video.duration < 1 || (expected && Math.abs(p.video.duration - expected.duration) > 1 / expected.fps)) out.push('incorrect duration');
+  if (!Number.isFinite(p.video.frames) || p.video.frames <= 0 || (expected && p.video.frames !== expected.frames)) out.push('incorrect frame count');
+  if (!p.audio && expected?.audioRequired !== false) out.push('missing required audio stream');
+  if (p.audio && p.audio.codec !== 'aac') out.push(`audio is ${p.audio.codec}, not AAC`);
+  return out;
+}
+
+export function check(file: string, expected?: MediaExpectation): string[] {
+  const p = probe(file);
+  const out = checkMetadata(p, expected);
+  // Decode every frame and packet. ffprobe metadata alone cannot detect damaged tails.
+  try { run(ffmpeg, ['-v', 'error', '-xerror', '-i', file, '-map', '0:v:0', '-map', '0:a:0?', '-c:v', 'rawvideo', '-c:a', 'pcm_s16le', '-f', 'null', '-']); }
+  catch (error) { out.push(`full decoding failed: ${String(error).slice(-600)}`); }
   if (p.audio) {
-    if (p.audio.codec !== 'aac') out.push(`audio is ${p.audio.codec}, not AAC`);
     const l = loudness(file);
+    if (!l && !expected?.allowSilent) out.push('audio is silent');
     if (l && Math.abs(l.lufs - TARGET.lufs) > TARGET.tolerance) out.push(`loudness ${l.lufs.toFixed(1)} LUFS, not ${TARGET.lufs} ±${TARGET.tolerance}`);
     if (l && l.truePeak > TARGET.truePeak + 0.2) out.push(`true peak ${l.truePeak.toFixed(1)} dBTP, above ${TARGET.truePeak}`);
   }
@@ -168,6 +189,7 @@ export function deliver(file: string, opts: { tagOnly?: boolean } = {}): string 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const argv = process.argv.slice(2);
   const files = argv.filter((a) => !a.startsWith('--'));
+  if (!files.length) throw new Error('Specify at least one media file');
   if (argv.includes('--check')) {
     let failed = 0;
     for (const f of files) {

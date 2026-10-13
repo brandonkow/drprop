@@ -9,7 +9,7 @@ test('home: five sections, one CTA, the calculator prices every band', async ({ 
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('main section')).toHaveCount(5);
   await expect(page.locator('a.cta')).toHaveCount(1);
-  await expect(page.locator('a.cta')).toHaveAttribute('href', /^https:\/\/wa\.me\//);
+  await expect(page.locator('a.cta')).toHaveAttribute('aria-disabled', 'true');
 
   const input = page.getByLabel('Property value');
   const fee = page.locator('[data-fee]');
@@ -26,24 +26,22 @@ test('home: five sections, one CTA, the calculator prices every band', async ({ 
     await input.fill(typed);
     await expect(fee).toHaveText(expected);
   }
-  await expect(page.locator('a.cta')).toHaveAttribute('href', /RM%201%2C999/);
+  await expect(page.locator('a.cta')).not.toHaveAttribute('href');
   await input.fill('abc');
   await expect(fee).toHaveText('—');
   expect(errors).toEqual([]);
 });
 
-for (const path of ['/', '/zh/', '/ms/', '/terms/', '/zh/terms/', '/privacy/']) {
+for (const path of ['/', '/terms/', '/privacy/']) {
   test(`${path} has no WCAG A/AA violations`, async ({ page }) => {
     await page.goto(path);
     expect(await axeViolations(page)).toEqual([]);
   });
 }
 
-test('terms carry the zero-commission and referral-fee promises in all three languages', async ({ page }) => {
+test('terms carry the zero-commission and referral-fee promises in English', async ({ page }) => {
   for (const [path, re] of [
     ['/terms/', /no commission[\s\S]*no referral fees/i],
-    ['/zh/terms/', /不从任何交易中收取佣金[\s\S]*不收转介费/],
-    ['/ms/terms/', /tidak mengambil komisen[\s\S]*tidak mengambil yuran rujukan/i],
   ] as const) {
     await page.goto(path);
     await expect(page.locator('main')).toContainText(re);
@@ -59,7 +57,7 @@ test('without JavaScript, the text, fee table and booking link are all there', a
   await page.goto('/');
   await expect(page.locator('h1')).toBeVisible();
   await expect(page.locator('table.bands tr')).toHaveCount(5);
-  await expect(page.locator('a.cta')).toHaveAttribute('href', /^https:\/\/wa\.me\//);
+  await expect(page.locator('a.cta')).toHaveAttribute('aria-disabled', 'true');
   await context.close();
 });
 
@@ -83,7 +81,7 @@ test('reduced motion and the data saver keep the static line and skip WebGL', as
 for (const width of [320, 390, 768, 1440]) {
   test(`no sideways scrolling at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    for (const path of ['/', '/zh/', '/terms/']) {
+    for (const path of ['/', '/privacy/', '/terms/']) {
       await page.goto(path);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       expect(overflow, path).toBeLessThanOrEqual(0);

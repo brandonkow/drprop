@@ -160,7 +160,7 @@ createServer(async (req, res) => {
       ).rows;
       if (!meta) return send(res, 404, { code: 'PGRST202', message: `function ${fn} not found` });
       const values = names.map((n) => args[n]);
-      if (meta.set) return send(res, 200, await asUser(userFromAuth(req), `select * from ${call}`, values));
+      if (meta.set) return send(res, 200, await asUser(userFromAuth(req), `select * from ${call} limit ${Number(url.searchParams.get('limit') ?? 1000)} offset ${Number(url.searchParams.get('offset') ?? 0)}`, values));
       if (meta.name === 'void') {
         await asUser(userFromAuth(req), `select ${call}`, values);
         return send(res, 200, null);
@@ -181,10 +181,12 @@ createServer(async (req, res) => {
       const values = [];
       let order = '';
       let limit = '';
+      let offset = '';
       let cols = '*';
       for (const [k, v] of url.searchParams) {
         if (k === 'select') cols = v === '*' ? '*' : v.split(',').map((c) => ident(c.trim())).join(', ');
         else if (k === 'order') order = `order by ${v.split(',').map((o) => { const [c, dir] = o.split('.'); return `${ident(c)} ${dir === 'desc' ? 'desc' : 'asc'}`; }).join(', ')}`;
+        else if (k === 'offset') offset = `offset ${Number(v)}`;
         else if (k === 'limit') limit = `limit ${Number(v)}`;
         else {
           const [op, ...rest] = v.split('.');
@@ -194,7 +196,7 @@ createServer(async (req, res) => {
           where.push(`${ident(k)} ${sqlOp} $${values.length}`);
         }
       }
-      const rows = await asUser(userFromAuth(req), `select ${cols} from public.${name} ${where.length ? `where ${where.join(' and ')}` : ''} ${order} ${limit}`, values);
+      const rows = await asUser(userFromAuth(req), `select ${cols} from public.${name} ${where.length ? `where ${where.join(' and ')}` : ''} ${order} ${limit} ${offset}`, values);
       if ((req.headers.accept ?? '').includes('vnd.pgrst.object')) {
         return rows.length === 1 ? send(res, 200, rows[0]) : send(res, 406, { code: 'PGRST116', message: 'JSON object requested, multiple (or no) rows returned' });
       }

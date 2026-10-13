@@ -14,6 +14,8 @@ import { QrCode } from '../components/qr';
 import { TextLink } from '../components/ui';
 import { source } from '../data/source';
 import type { CheckinCode } from '../data/types';
+import { membershipStatus } from '../backend/calendar';
+import { useNow } from '../state/use-now';
 import { useApp } from '../state/app-state';
 import { FONT, SIZE, SPACE } from '../theme';
 
@@ -48,8 +50,11 @@ export default function Card() {
   const { t, fmt, user, membership } = useApp();
   const { width, height } = useWindowDimensions();
   // Only an active member checks in to the Lounge.
-  const active = membership?.status === 'active';
-  const { code, failed } = useCheckinCode(!!user && active);
+  const now = useNow(1000);
+  const status = membership && membershipStatus(membership.status, membership.renewsAt, new Date(now));
+  const active = status === 'active';
+  const { code: issuedCode, failed } = useCheckinCode(!!user && active);
+  const code = issuedCode && Date.parse(issuedCode.expiresAt) > now ? issuedCode : null;
   if (!user) return null;
   if (!membership) {
     return (
@@ -101,7 +106,7 @@ export default function Card() {
           </>
         ) : (
           <Text style={s.hint}>
-            {t.me.status[membership.status]} · {t.card.inactive}
+            {t.me.status[status as typeof membership.status]} · {t.card.inactive}
           </Text>
         )}
       </View>

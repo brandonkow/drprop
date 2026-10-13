@@ -4,7 +4,6 @@ import { axeViolations } from './axe';
 
 async function signIn(page: Page) {
   await page.goto('/');
-  await page.getByText('EN', { exact: true }).click();
   await page.getByRole('textbox').fill('+60 12 345 6789');
   await page.getByText('Send code').click();
   await expect(page.getByText('The six-digit code.')).toBeVisible();

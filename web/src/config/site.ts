@@ -66,16 +66,21 @@ export interface StoreImage {
  * any of these once `origin` is set (vite.config.ts), so a placeholder number can
  * never become the live booking link.
  */
-export function launchProblems(s: { whatsapp: string; ssm: string; store: { address: string; mapsUrl: string } } = site): string[] {
+export function launchProblems(s: { origin?: string | null; whatsapp: string; ssm: string; store: { address: string; mapsUrl: string } } = site): string[] {
   const out: string[] = [];
+  try {
+    const url = new URL(s.origin ?? '');
+    if (url.protocol !== 'https:' || url.username || url.password || url.pathname !== '/' || url.search || url.hash || /^(localhost|127\.|0\.|\[::1\])/.test(url.hostname)) throw new Error();
+  } catch { out.push('site.origin: the public HTTPS origin without a path'); }
   if (!/^60\d{8,11}$/.test(s.whatsapp)) out.push('site.whatsapp: the real WhatsApp Business number, digits only, starting 60');
-  if (/0{6,}|X\)/.test(s.ssm)) out.push('site.ssm: the real SSM registration number');
-  if (s.store.address.includes('—')) out.push('site.store.address: the street address');
-  if (!/^https:\/\/(www\.)?google\.[a-z.]+\/maps|^https:\/\/maps\.app\.goo\.gl\//.test(s.store.mapsUrl) || s.store.mapsUrl.includes('query=Petaling+Jaya')) {
+  if (!s.ssm.trim() || /0{6,}|X\)/.test(s.ssm)) out.push('site.ssm: the real SSM registration number');
+  if (!s.store.address.trim() || s.store.address.includes('—')) out.push('site.store.address: the street address');
+  if (!/^https:\/\/(?:(?:www\.)?google\.com(?:\.my)?\/maps(?:[/?]|$)|maps\.app\.goo\.gl\/[^/?]+)/.test(s.store.mapsUrl) || s.store.mapsUrl.includes('query=Petaling+Jaya')) {
     out.push('site.store.mapsUrl: the Google Maps link to the store');
   }
   return out;
 }
 
-export const whatsappUrl = (message: string) =>
+export const isPreview = () => launchProblems().length > 0;
+export const whatsappUrl = (message: string) => isPreview() ? '#preview-notice' :
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;

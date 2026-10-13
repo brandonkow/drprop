@@ -10,6 +10,7 @@ Nothing here has been applied to a hosted project, and no SMS has been sent.
 
 `migrations/202610070001_core.sql` is additive: one private schema and `dp_`-prefixed tables.
 `migrations/202610080001_checkin.sql` adds Lounge check-in codes on top of it.
+`migrations/202610110001_workflow_hardening.sql` adds renewal-date enforcement, configured calendars and overdue recovery. Apply all three in order; do not edit historical migrations.
 
 - **Row-level security on every table.** A client reads only their own profile,
   bookings and membership. An adviser reads only their own slots and the bookings
@@ -46,7 +47,7 @@ Nothing here has been applied to a hosted project, and no SMS has been sent.
 
 ## Setting up a project
 
-1. Apply the migration with your migration workflow (`supabase db push`, or the SQL
+1. Apply the migrations in filename order with your migration workflow (`supabase db push`, or the SQL
    editor on a new project). Don't reset a shared database. Then reload the API schema
    cache: `notify pgrst, 'reload schema';`.
 2. Turn on phone sign-in and an SMS provider in Supabase Auth. Set code expiry, rate
@@ -119,3 +120,22 @@ connections. Before launch, on the real project:
 The schema follows Codex's earlier design (the `feat/brand-static-landing` branch),
 adapted to the brief: call-back urgent consults, whole-ringgit fees, languages,
 drinks, membership, notes and the Lounge board.
+
+## Existing-workflow hardening
+
+Membership validity ends at the start of `renews_at` in Asia/Kuala_Lumpur, even if
+status still says active. Both code issuance and redemption recheck this. Membership
+and code locks use the same order. Confirm the term/grace policy before production.
+
+`dp_settings.opens_at`, `closes_at`, `closed_isodow`, and `booking_days` (1–90)
+control publication, availability and booking. `dp_calendar()` supplies the staff
+picker; customer dates come from paginated server availability. Opening defaults
+remain provisional 10:00–20:00. All appointment display/grouping uses Malaysia time.
+
+An overdue urgent request cannot be taken silently. `dp_take_urgent(id, true)`
+records recovery acknowledgment and an `overdue_recovery` event. It does not pretend
+the original two-hour response window was met. No notification infrastructure is added.
+
+Profile language is normalized to English, including existing profiles when this
+migration is applied. Hosted migration, PostgREST pagination, parallel connection
+races, SMS delivery and native session lifecycle still need environment checks.

@@ -25,17 +25,23 @@
     "reels": "npm run studio -w @drprop/reels",
     "render:all": "npm run render:all -w @drprop/reels",
     "twin": "npm run dev -w @drprop/twin",
-    "twin:build": "npm run build -w @drprop/twin"
+    "twin:build": "npm run build -w @drprop/twin",
+    "build:production": "npm run brand:build && npm run build:production -w @drprop/web",
+    "audit:dependencies": "node scripts/audit-dependencies.mjs",
+    "verify:launch-guard": "node scripts/verify-launch-guard.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
     "@playwright/test": "^1.56.1",
     "@types/node": "^26.6.3",
     "axe-core": "^4.14.0",
+    "decode-uri-component": "file:vendor/decode-uri-component",
+    "query-string": "^7.1.3",
     "typescript": "~6.0.3",
     "vitest": "^5.0.2"
   },
   "overrides": {
+    "decode-uri-component": "$decode-uri-component",
     "shell-quote": "^1.12.0",
     "source-map-js": "^1.2.2",
     "xcode": {

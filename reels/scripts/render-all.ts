@@ -51,6 +51,7 @@ const value = (name: string) => {
 const list = (name: string) => value(name)?.split(',').filter(Boolean);
 
 const LANGS = list('lang') ?? ['en'];
+if (LANGS.some((lang) => lang !== 'en')) throw new Error('This release is English-only. Additional languages require owner approval.');
 const RATIOS = list('ratio') ?? ['9x16', '4x5', '16x9'];
 const ONLY = list('only');
 const frames = value('frames')?.split('-').map(Number) as [number, number] | undefined;
