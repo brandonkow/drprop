@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calendarDays, calendarTimes, membershipStatus, previewCalendar, slotDays } from '../src/backend/calendar';
+import { calendarDays, calendarTimes, membershipStatus, previewCalendar, previewDaySlots, slotDays } from '../src/backend/calendar';
 import { cardTilt } from '../src/components/card-motion';
 import { SessionGuard } from '../src/state/session-guard';
 import { formatWhen } from '../src/i18n/format';
@@ -33,4 +33,14 @@ describe('existing workflow regressions', () => {
     expect(await work).toBe(false);
     expect(guard.current(guard.ticket())).toBe(true);
   });
+});
+
+it('preview slots stay within Malaysia hours even on UTC devices', () => {
+  const now = Date.parse('2026-10-13T12:00:00Z');
+  expect(previewDaySlots('2026-10-13', now)).toEqual([]); // Already 20:00 in Malaysia.
+  const tomorrow = previewDaySlots('2026-10-14', now);
+  expect(tomorrow).toHaveLength(20);
+  expect(tomorrow[0]!.toISOString()).toBe('2026-10-14T02:00:00.000Z');
+  expect(tomorrow.at(-1)!.toISOString()).toBe('2026-10-14T11:30:00.000Z');
+  expect(previewDaySlots('2026-10-19', now)).toEqual([]); // Monday in Malaysia.
 });

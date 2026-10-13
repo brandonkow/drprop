@@ -3,6 +3,8 @@
  * screens are written against the shape of the real (Supabase) calls.
  * Nothing here is real customer data.
  */
+import { previewDaySlots } from '../backend/calendar';
+import { malaysiaDay, nextMalaysiaDays } from '../backend/malaysia-time';
 import { consultFee } from '@drprop/brand/pricing';
 import type { BookingDraft, DataSource } from './source';
 import type { Consultation, Lang, Membership, Store, User } from './types';
@@ -122,14 +124,7 @@ export async function renew(m: Membership): Promise<Membership> {
 
 /** Open slots for a day: every 30 minutes from 10:00 to 19:30. Mondays closed. */
 export function slotsFor(day: Date): Date[] {
-  if (day.getDay() === 1) return [];
-  const out: Date[] = [];
-  for (let m = 10 * 60; m <= 19 * 60 + 30; m += 30) {
-    const d = new Date(day);
-    d.setHours(Math.floor(m / 60), m % 60, 0, 0);
-    if (d.getTime() > Date.now() + 60 * 60 * 1000) out.push(d);
-  }
-  return out;
+  return previewDaySlots(malaysiaDay(day));
 }
 
 /** The preview: everything above, nothing leaves the phone. */
@@ -142,13 +137,8 @@ export const mockSource: DataSource = {
   load: async (user) => ({ membership: membershipFor(user), consultations: sampleHistory(user), staff: false }),
   lounge: async () => ({ mood: STORE.loungeMood, seatsFree: STORE.loungeSeatsFree, coffee: STORE.todaysCoffee }),
   slots: async () => {
-    const out = [];
-    const day = new Date();
-    day.setHours(0, 0, 0, 0);
-    for (let i = 0; i < 8; i++, day.setDate(day.getDate() + 1)) {
-      for (const d of slotsFor(day)) out.push({ id: d.toISOString(), at: d.toISOString() });
-    }
-    return out;
+    return nextMalaysiaDays(8).flatMap((day) => previewDaySlots(day))
+      .map((d) => ({ id: d.toISOString(), at: d.toISOString() }));
   },
   quote: async (type, band) => consultFee(type, band),
   urgentOpen: async () => true,

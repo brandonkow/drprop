@@ -2,6 +2,9 @@
 import { expect, test, type Page } from '@playwright/test';
 import { axeViolations } from './axe';
 
+// Exercise a non-Malaysian device timezone, matching the hosted Linux runner.
+test.use({ timezoneId: 'UTC' });
+
 async function signIn(page: Page) {
   await page.goto('/');
   await page.getByRole('textbox').fill('+60 12 345 6789');
@@ -27,7 +30,7 @@ test('sign in, book a consult, see it in Records, cancel it', async ({ page }) =
   await page.getByText('RM 300k – 600k').click();
   expect(await axeViolations(page)).toEqual([]);
   await page.getByText('Next').click();
-  await page.locator('text=/^1[0-9]:[03]0$/').nth(1).click();
+  await page.locator('text=/^1[0-9]:[03]0$/').first().click();
   await page.getByText('Pay RM 399').click();
   await expect(page.getByRole('heading', { name: 'Booked.' })).toBeVisible();
   await page.getByText('Back to home').click();

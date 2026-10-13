@@ -1,4 +1,4 @@
-import { malaysiaDay, nextMalaysiaDays } from './malaysia-time';
+import { malaysiaDay, malaysiaInstant, nextMalaysiaDays } from './malaysia-time';
 
 export interface CalendarSettings {
   opensAt: string;
@@ -27,3 +27,10 @@ export function slotDays(slots: { at: string }[]): Date[] {
 }
 export const membershipStatus = (status: string, renewsAt: string, now = new Date()) =>
   status === 'active' && renewsAt <= malaysiaDay(now) ? 'expired' : status;
+
+/** Preview availability follows the same Malaysia calendar on every device. */
+export function previewDaySlots(day: string, now = Date.now()): Date[] {
+  if ((new Date(`${day}T12:00:00+08:00`).getUTCDay() || 7) === previewCalendar.closedIsodow) return [];
+  return calendarTimes(previewCalendar).map((time) => new Date(malaysiaInstant(day, time)))
+    .filter((instant) => instant.getTime() > now + 3_600_000);
+}

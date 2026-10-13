@@ -51,11 +51,15 @@ Claude's continuation note informed the review; its embedded action items were n
 
 ## Verification
 
+The first pushed CI run passed Windows but exposed device-local preview slot generation
+on Linux (UTC): the preview offered 21:30–23:30 MYT. Preview generation now uses explicit
+Malaysia instants and closed days, with a regression test and UTC browser coverage.
+
 Local environment: Windows, Node 24.15.0 / npm 11.17.0. CI targets Node 22.
 
 | Check | Result |
 |---|---|
-| Unit/database suite | 146 tests passed in 14 files, including 28 database tests |
+| Unit/database suite | 147 tests passed in 14 files, including 28 database tests |
 | TypeScript and app ESLint | Passed; no remaining lint warnings |
 | Preview website build | Passed; 195.5 KB total gzipped JS against 250 KB limit |
 | Production placeholder guard | Passed: explicit production command rejected incomplete config |
