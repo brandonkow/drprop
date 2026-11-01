@@ -1,0 +1,3 @@
+
+> @drprop/app@1.0.0 lint
+> eslint src index.ts index.web.ts

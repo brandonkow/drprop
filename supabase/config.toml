@@ -1,0 +1,17 @@
+project_id = "drprop"
+
+[functions.case-files]
+# The handler verifies user JWTs with Auth. Download-only requests use a hashed,
+# 60-second opaque grant and recheck current database access before delivery.
+verify_jwt = false
+entrypoint = "./functions/case-files/index.ts"
+
+[functions.stripe-checkout]
+# Auth.getUser verifies the JWT inside the handler.
+verify_jwt = false
+entrypoint = "./functions/stripe-checkout/index.ts"
+
+[functions.stripe-webhook]
+# Stripe signs raw bodies; the handler verifies signature and age before any mutation.
+verify_jwt = false
+entrypoint = "./functions/stripe-webhook/index.ts"

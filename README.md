@@ -1,6 +1,10 @@
 # Dr Prop
 
-Brand, website, membership app, consultation workflow and concept media for an independent property clinic. The [English working brief](docs/brief.md) records the design and proposed business rules. The user's current direction is **English-only delivery, amendments on main, and new feature builds on hold**.
+**Build paused after the Stripe test-provider checkpoint.** Progress, verification
+and remaining work are saved in [the pause record](docs/pause-2026-11-01.md).
+Live payments remain disabled. Resume only on the user's instruction.
+
+Brand, website, membership app, consultation workflow and concept media for an independent property clinic. The [English working brief](docs/brief.md) records the design and proposed business rules. The user's current direction is **English-only delivery and amendments on main**. New feature work was authorized on 2026-10-29; see the [build record](docs/feature-build.md).
 
 ## Repository
 

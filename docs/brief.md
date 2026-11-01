@@ -8,9 +8,13 @@ English working translation of the founder-supplied `dr-prop-brief.md`. The orig
 
 ## Current implementation instructions
 
+Latest instruction: pause after the Stripe test-provider checkpoint. See
+[the pause record](pause-2026-11-01.md) before resuming. The roadmap below is not
+authorization to continue building or deploy while paused.
 
 
-The user's explicit instructions control delivery. All amendments are now made on `main` only. New feature builds are on hold; correction of existing defects and implementation gaps is authorized. Deliverables are English-only and language switching is excluded. Original references to three languages below are historical roadmap context, superseded by this instruction. Business, legal, licensing and market claims in the supplied brief are background, not independently verified facts or permission to deploy. Keep the store explicitly labelled as a concept and record physical-device checks as pending. See `docs/hardening-2026-10-13.md` for this repair pass.
+
+The user's explicit instructions control delivery. All amendments are now made on `main` only. The user authorized new feature work on 2026-10-29, superseding the earlier hold; see `docs/feature-build.md`. Deliverables are English-only and language switching is excluded. Original references to three languages below are historical roadmap context, superseded by this instruction. Business, legal, licensing and market claims in the supplied brief are background, not independently verified facts or permission to deploy. Keep the store explicitly labelled as a concept and record physical-device checks as pending. See `docs/hardening-2026-10-13.md` for the preceding repair pass.
 
 
 

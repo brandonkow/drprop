@@ -1,5 +1,12 @@
 [
   {
+    "package": "zod",
+    "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+    "versions": ["3.25.76"],
+    "reviewBy": "2026-11-12T00:00:00Z",
+    "reason": "Temporary residual tooling risk: Expo CLI and ESLint require Zod 3.25.76; the upstream fix is in major version 4. The requested Remotion Zod 4 override is not fully resolved in the lockfile; vulnerable v4 copies remain an audit failure. This exception applies only to the exact remaining v3 version, not vulnerable v4. Do not expose Expo dev/MCP servers to untrusted users or load untrusted plugin/config payloads. The production case and payment gateways do not use Zod. Reassess with the next compatible Expo/ESLint release."
+  },
+  {
     "package": "braces",
     "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
     "reviewBy": "2026-11-11T00:00:00Z",

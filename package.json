@@ -32,16 +32,23 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
+    "@pdf-lib/fontkit": "^1.1.1",
     "@playwright/test": "^1.56.1",
     "@types/node": "^26.6.3",
     "axe-core": "^4.14.0",
     "decode-uri-component": "file:vendor/decode-uri-component",
+    "deepmerge": "file:vendor/deepmerge",
+    "pdf-lib": "^1.17.1",
     "query-string": "^7.1.3",
+    "stripe": "^23.0.1",
     "typescript": "~6.0.3",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.5"
   },
   "overrides": {
     "decode-uri-component": "$decode-uri-component",
+    "deepmerge": "$deepmerge",
+    "fast-uri": "^3.1.9",
+    "zod@>=4.0.0": "^4.6.7",
     "shell-quote": "^1.12.0",
     "source-map-js": "^1.2.2",
     "xcode": {

@@ -284,6 +284,7 @@ function Consult({
       </Small>
       {item.customerDrink ? <Small>{fmt(t.staff.drink, { drink: item.customerDrink })}</Small> : null}
       <Mono muted>{urgent ? fmt(t.staff.callBy, { time: at(b.ends_at) }) : at(b.starts_at)}</Mono>
+      <TextLink label="Open private case" onPress={() => router.push({ pathname: '/case/[id]', params: { id: b.id } })} />
 
       <View style={s.row}>
         {b.status === 'requested' && !started ? (

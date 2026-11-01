@@ -139,6 +139,62 @@ test('the client sees the finished call with the adviser’s note, and the new L
 });
 
 
+test('private documents survive retry and an adviser publishes the reviewed PDF to its owner only', async ({ browser }, testInfo) => {
+  test.setTimeout(120000);
+  const client=await signIn(browser,'012-345 6789');
+  await client.getByText('Records',{exact:true}).last().click();
+  await client.getByText('Done',{exact:true}).first().click();
+  await client.getByText('Open private case',{exact:true}).click();
+  await expect(client.getByText('No documents uploaded.')).toBeVisible();
+  const caseUrl=client.url();
+  await client.route('**/case-files/upload',(route)=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Upload interrupted. Retry the selected file.'})}));
+  const chooser=client.waitForEvent('filechooser');
+  await client.getByText('Upload document',{exact:true}).click();
+  await (await chooser).setFiles({name:'Fictional title.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7\nFictional source for browser testing only.\n%%EOF')});
+  await expect(client.getByText('Upload interrupted. Retry the selected file.')).toBeVisible();
+  await client.unroute('**/case-files/upload');
+  await client.getByText('Retry selected upload',{exact:true}).click();
+  await expect(client.getByText('Download Fictional title.pdf',{exact:true})).toBeVisible();
+  await expect(client.getByText('No diagnosis has been published yet.')).toBeVisible();
+
+  const adviser=await signIn(browser,'011-1111 1111');
+  await adviser.goto(caseUrl);
+  await adviser.getByLabel('Summary',{exact:true}).fill('Fictional example: confirm the lease before deciding.');
+  await adviser.getByLabel('Findings and uncertainty',{exact:true}).fill('The supplied document does not establish the remaining lease. No independent title search has been completed.');
+  await adviser.getByLabel('Questions to resolve',{exact:true}).fill('What does the current title search show?');
+  await adviser.getByLabel('Next steps',{exact:true}).fill('Ask the appointed lawyer for current evidence.');
+  await adviser.getByLabel('Adviser note',{exact:true}).fill('Do not treat an unresolved question as a positive finding.');
+  await adviser.getByLabel('Sources and limitations',{exact:true}).fill('Fictional uploaded source only; not independently verified.');
+  await adviser.getByRole('button',{name:'Select: Fictional title.pdf',exact:true}).click();
+  await adviser.getByText('Save diagnosis draft',{exact:true}).click();
+  await expect(adviser.getByText('Draft saved.',{exact:true})).toBeVisible();
+  await client.getByText('Reload case',{exact:true}).click();
+  await expect(client.getByText('No diagnosis has been published yet.')).toBeVisible();
+  await adviser.getByText('Review saved diagnosis',{exact:true}).click();
+  await expect(adviser.getByLabel('Summary',{exact:true})).not.toBeEditable();
+  expect(await axeViolations(adviser)).toEqual([]);
+  await adviser.screenshot({path:testInfo.outputPath('case-adviser-review.png'),fullPage:true});
+  const publication=adviser.waitForResponse((r)=>r.url().endsWith('/functions/v1/case-files') && r.request().postDataJSON()?.action==='publish',{timeout:30000});
+  await adviser.getByText('Publish reviewed PDF',{exact:true}).click();
+  const published=await publication;
+  expect(await published.json()).toMatchObject({state:'published'});
+  await expect(adviser.getByText('Diagnosis published.',{exact:true})).toBeVisible({timeout:30000});
+  await client.getByText('Reload case',{exact:true}).click();
+  await expect(client.getByText('Fictional example: confirm the lease before deciding.')).toBeVisible();
+  const download=client.waitForEvent('download');
+  await client.getByText('Download diagnosis v1',{exact:true}).click();
+  const delivered=await download;
+  expect(delivered.suggestedFilename()).toBe('Diagnosis v1.pdf');
+  await delivered.saveAs(testInfo.outputPath('diagnosis-v1.pdf'));
+  expect(await axeViolations(client)).toEqual([]);
+  await client.screenshot({path:testInfo.outputPath('case-client-published.png'),fullPage:true});
+  const stranger=await signIn(browser,'012-000 0011','Other client');
+  await stranger.goto(caseUrl);
+  await expect(stranger.getByText('No case content is available.')).toBeVisible();
+  await expect(stranger.getByText('Fictional title.pdf',{exact:true})).toHaveCount(0);
+  await Promise.all([client.context().close(),adviser.context().close(),stranger.context().close()]);
+});
+
 test('profile save failure is visible and retry persists the latest English profile', async ({ browser }) => {
   const page = await signIn(browser, '012-345 6789');
   await expect(page.getByText(/Mr Tan\./)).toBeVisible();

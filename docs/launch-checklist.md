@@ -45,7 +45,8 @@ On a mid-range Android phone (4 GB) and a recent iPhone:
 - [ ] SMS provider limits, spending cap, CAPTCHA decision.
 - [ ] Race tests on the real database: two clients for one slot; two advisers for one call-back.
 - [ ] Add advisers and members; confirm prices; open bookings.
-- [ ] Next phase: payments (FPX, Touch 'n Go, GrabPay, cards), private report PDFs.
+- [ ] Validate private report delivery in staging using [the case setup instructions](../supabase/CASE-DELIVERY.md). Local implementation does not establish hosted acceptance.
+- [ ] Later phase: payments, after provider selection and approved cancellation/refund rules.
 
 ## Print (`npm run print -w @drprop/brand`)
 

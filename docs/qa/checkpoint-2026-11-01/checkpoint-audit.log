@@ -1,0 +1,21 @@
+
+> audit:dependencies
+> node scripts/audit-dependencies.mjs
+
+FAIL deepmerge: deepmerge mergeObject() allows prototype poisoning of returned objects https://github.com/advisories/GHSA-gcqx-w48m-w2h4
+16 root advisories; 15 unhandled. Exceptions do not mean vulnerabilities are fixed.
+FAIL glob: Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal https://github.com/advisories/GHSA-3g3m-2fjr-6pw4
+FAIL minimatch: minimatch has potential denial of service via globparts amplification https://github.com/advisories/GHSA-g3hv-75wg-m249
+OPEN, time-limited exception: node-forge: No upstream patched release. Transitive Expo CLI certificate/signing tooling, not the app's own authentication. Do not treat certificates or updates supplied by untrusted parties as verified through this dependency; native signing/update release review remains required. Residual tooling risk remains. Review by 2026-11-11T00:00:00Z
+FAIL node-forge: Forge: ASN.1 OID first arc truncation in asn1.oidToDer https://github.com/advisories/GHSA-4642-5mcj-2rqw
+FAIL node-forge: Forge: Prototype Pollution in forge.http cookie handling via a malicious Set-Cookie https://github.com/advisories/GHSA-6wvx-3r32-xmcg
+FAIL node-forge: Forge: TLS client crash when the server sends no certificate https://github.com/advisories/GHSA-525v-9gp9-w22h
+FAIL node-forge: Forge: Regular expression denial of service in PEM decoding (pem.decode) https://github.com/advisories/GHSA-7wch-p9px-956x
+FAIL node-forge: Forge: Denial of Service via infinite loop in BigInteger.modInverse() with negative input (incomplete fix of CVE-2026-33891) https://github.com/advisories/GHSA-h6cr-wjv9-3cpp
+FAIL node-forge: Forge: verifyCertificateChain() removes trusted CA certificates with the same subject from the CA store https://github.com/advisories/GHSA-4487-j8r4-4g2f
+FAIL node-forge: Forge: AES-GCM authentication bypass via unvalidated tagLength option https://github.com/advisories/GHSA-5cwg-6vw7-rj6p
+FAIL node-forge: Forge: PKCS#12 MAC forgery and constant-key PBE via zero iteration count https://github.com/advisories/GHSA-jc66-7q78-782g
+FAIL node-forge: Forge: Denial of service in TLS record processing via a record interleaved with a fragmented handshake message https://github.com/advisories/GHSA-8hrf-8g6f-7xwp
+FAIL node-forge: Forge: Denial of service in TLS record processing via call stack exhaustion https://github.com/advisories/GHSA-hqq3-7jhf-c5jx
+FAIL node-forge: Forge: X.509 basicConstraints bypass in verifyCertificateChain() via deprecated extension OIDs 2.5.29.10 and 2.5.29.13 https://github.com/advisories/GHSA-5x38-2vff-x55p
+FAIL zod: Zod can exhaust memory while validating oversized constrained collections https://github.com/advisories/GHSA-mrhx-c7xc-m3w5

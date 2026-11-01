@@ -10,7 +10,7 @@ if (fixture) {
   delete env.EXPO_PUBLIC_SUPABASE_URL;
   delete env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 }
-const result = spawnSync(process.execPath, [require.resolve('expo/bin/cli'), 'export', '-p', 'web', '--clear',
+const result = spawnSync(process.execPath, [require.resolve('expo/bin/cli'), 'export', '-p', 'web', '--clear', '--max-workers', '2',
   ...(fixture ? ['--output-dir', 'dist-connected'] : [])], { env, stdio: 'inherit' });
 if (result.error) throw result.error;
 process.exitCode = result.status ?? 1;

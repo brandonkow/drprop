@@ -47,6 +47,9 @@ Nothing here has been applied to a hosted project, and no SMS has been sent.
 
 ## Setting up a project
 
+Private case documents and diagnosis PDFs also require the authenticated Edge
+gateway and operational checks in [CASE-DELIVERY.md](CASE-DELIVERY.md).
+
 1. Apply the migrations in filename order with your migration workflow (`supabase db push`, or the SQL
    editor on a new project). Don't reset a shared database. Then reload the API schema
    cache: `notify pgrst, 'reload schema';`.
@@ -139,3 +142,8 @@ the original two-hour response window was met. No notification infrastructure is
 Profile language is normalized to English, including existing profiles when this
 migration is applied. Hosted migration, PostgREST pagination, parallel connection
 races, SMS delivery and native session lifecycle still need environment checks.
+
+## Payment provider checkpoint
+
+Stripe test-mode setup and remaining gates are documented in [STRIPE.md](STRIPE.md).
+The build is paused; this setup guide is not permission to deploy or activate payments.

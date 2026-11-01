@@ -1,6 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 const exceptions = JSON.parse(readFileSync(new URL('../docs/security-exceptions.json', import.meta.url), 'utf8'));
+const lock = JSON.parse(readFileSync(new URL('../package-lock.json', import.meta.url), 'utf8'));
 const npm = process.env.npm_execpath;
 if (!npm) throw new Error('Run through npm run audit:dependencies');
 const result = spawnSync(process.execPath, [npm, 'audit', '--package-lock-only', '--json'], { encoding: 'utf8', maxBuffer: 16 << 20 });
@@ -14,7 +15,8 @@ for (const vulnerability of Object.values(report.vulnerabilities)) {
   for (const advisory of vulnerability.via.filter((entry) => typeof entry === 'object')) {
     if (seen.has(advisory.url)) continue;
     seen.add(advisory.url);
-    const exception = exceptions.find((item) => item.url === advisory.url && item.package === advisory.name && Date.parse(item.reviewBy) > Date.now());
+    const exception = exceptions.find((item) => item.url === advisory.url && item.package === advisory.name && Date.parse(item.reviewBy) > Date.now()
+      && (!item.versions || (vulnerability.nodes.length>0 && vulnerability.nodes.every((node)=>item.versions.includes(lock.packages[node]?.version)))));
     if (exception) console.warn(`OPEN, time-limited exception: ${advisory.name}: ${exception.reason} Review by ${exception.reviewBy}`);
     else { console.error(`FAIL ${advisory.name}: ${advisory.title} ${advisory.url}`); failures++; }
   }

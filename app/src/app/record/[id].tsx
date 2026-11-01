@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import { Body, Display, Label, Mono, Small } from '../../components/type';
 import { OutlineButton, Rule, Screen, TextLink } from '../../components/ui';
+import { StripeTestPayment, stripeTestEnabled } from '../../components/stripe-test-payment';
 import { errorKey } from '../../data/errors';
 import { openSampleReport } from '../../data/sample-report';
 import { source } from '../../data/source';
@@ -58,15 +59,16 @@ export default function Record() {
       </View>
 
       <Section label={t.records.report}>
-        {c.reportUrl ? (
+        {mode === 'connected' ? (
+          <OutlineButton label="Open private case" onPress={() => router.push({ pathname: '/case/[id]', params: { id: c.id } })} />
+        ) : c.reportUrl ? (
           <TextLink label={t.records.report} onPress={() => Linking.openURL(c.reportUrl!)} />
-        ) : mode !== 'connected' && c.id === 'sample' ? (
+        ) : c.id === 'sample' ? (
           // The preview's sample record opens the sample report itself.
           <TextLink label={t.records.openSample} onPress={() => void openSampleReport(language, t.records.openSample)} />
         ) : (
-          // Supabase mode has no private file storage yet: the adviser sends the PDF.
           <Body muted>
-            {mode === 'connected' ? t.records.reportSent : c.status === 'done' ? t.records.reportMock : t.records.reportPending}
+            {c.status === 'done' ? t.records.reportMock : t.records.reportPending}
           </Body>
         )}
         {/* Brief §2.5: every diagnosis carries this line. */}
@@ -109,6 +111,8 @@ export default function Record() {
           }}
         />
       ) : null}
+
+      {mode==='connected' && stripeTestEnabled ? <StripeTestPayment bookingId={c.id} /> : null}
 
       {cancellable ? (
         <View style={s.section}>

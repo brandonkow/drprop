@@ -1,7 +1,11 @@
 # Decisions still open
 
+Stripe was selected by the user. The test-provider implementation is saved;
+the build is now paused at the user's request. See [the checkpoint](pause-2026-11-01.md).
+Account setup, commercial rules and live activation remain pending.
+
 The current repair scope and evidence are in [the hardening report](hardening-2026-10-13.md).
-New feature builds remain on hold until the user authorizes them. This is a decision
+The user authorized new feature work on 2026-10-29; see [the build record](feature-build.md). This is a decision
 register, not an instruction to open accounts, spend money, deploy or delete branches.
 Costs, provider terms and licensing below are historical estimates requiring verification.
 
@@ -23,8 +27,8 @@ Costs, provider terms and licensing below are historical estimates requiring ver
 
 | | Account | Unlocks | Cost (approx.) | What I'll do with it |
 |---|---|---|---|---|
-| [ ] | **Supabase project** + an SMS provider (e.g. Twilio, Vonage) | Real sign-in by SMS, bookings, advisers, check-in | Supabase free tier to start; SMS per message | Apply all three migrations in order, set grants, run the live tests (race tests, SMS codes), switch the app to supabase mode |
-| [ ] | **Payment gateway** (e.g. Billplz, iPay88, Stripe Malaysia) | FPX, Touch 'n Go, GrabPay, cards; paid bookings and memberships | Per-transaction fees | Payment flow in the app, payment status in the database, receipts |
+| [ ] | **Supabase project** + an SMS provider (e.g. Twilio, Vonage) | Real sign-in by SMS, bookings, advisers, check-in and private cases | Supabase free tier to start; SMS per message | Apply all migrations in order in staging, configure the private gateway, run hosted permission/concurrency/SMS checks before production |
+| [ ] | **Stripe account** (provider selected) | Test Checkout and verified callbacks are implemented; account verification and live lifecycle remain pending | Verify current account pricing before activation | Resume with staging verification, approved commercial rules and explicit live-rollout authorization; no additional payment methods are promised |
 | [ ] | **Domain + website hosting** (e.g. Cloudflare Pages, Netlify, Vercel) | Going live | Domain ~RM 50–100/year; hosting free tier | Set `origin` and the real details in `site.ts`; the build refuses to ship with placeholders |
 | [ ] | **Expo account + Apple Developer + Google Play** | App Store and Play Store builds | Apple USD 99/year, Google USD 25 once | EAS builds, store listings, push to TestFlight / internal testing |
 | [ ] | **Front desk device** | Check-in | A tablet, or a phone; optional USB/Bluetooth QR scanner | Nothing more to code: the adviser screen scans with the camera, a scanner, or typed digits |

@@ -60,6 +60,7 @@ function Root({ fontsLoaded }: { fontsLoaded: boolean }) {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="consult" options={{ animation: 'slide_from_bottom' }} />
           <Stack.Screen name="record/[id]" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="case/[id]" options={{ animation: 'slide_from_right' }} />
           <Stack.Screen name="card" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
           <Stack.Screen name="staff" options={{ animation: 'slide_from_right' }} />
         </Stack.Protected>

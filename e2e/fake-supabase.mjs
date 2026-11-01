@@ -14,6 +14,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { PGlite } from '@electric-sql/pglite';
+import { fixtureCaseHandler } from './case-port.mjs';
 
 const port = Number(process.argv[2] ?? 54321);
 const ADVISER_PHONE = '601111111111'; // +60 11-1111 1111
@@ -28,6 +29,7 @@ await db.exec(`
     $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
   grant usage on schema auth to authenticated, anon;
   grant execute on function auth.uid() to authenticated, anon;`);
+await db.exec(readFileSync(new URL('../supabase/test/storage-fixture.sql', import.meta.url), 'utf8'));
 const dir = new URL('../supabase/migrations/', import.meta.url);
 for (const f of readdirSync(dir).sort()) await db.exec(readFileSync(new URL(f, dir), 'utf8'));
 
@@ -111,17 +113,25 @@ const readBody = (req) =>
 
 /* ---------------------------------------------------------------- server */
 
+const caseHandler=fixtureCaseHandler(db,asUser,userFromAuth);
+
 createServer(async (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
       'access-control-allow-origin': '*',
       'access-control-allow-methods': 'GET,POST,PATCH,DELETE,OPTIONS',
-      'access-control-allow-headers': 'authorization,apikey,content-type,x-client-info,prefer,accept,accept-profile,content-profile,range,x-supabase-api-version',
+      'access-control-allow-headers': 'authorization,apikey,content-type,x-client-info,prefer,accept,accept-profile,content-profile,range,x-supabase-api-version,x-case-id,x-request-id,x-file-name',
     });
     return res.end();
   }
   const url = new URL(req.url ?? '/', `http://localhost:${port}`);
   try {
+    if(url.pathname.startsWith('/functions/v1/case-files')) {
+      const chunks=[];let size=0;
+      for await(const chunk of req){size+=chunk.length;if(size>6291456+32768)return send(res,413,{error:'Request too large.'});chunks.push(chunk);}
+      const response=await caseHandler(new Request(url,{method:req.method,headers:req.headers,body:req.method==='POST'?Buffer.concat(chunks):undefined}));
+      res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));return;
+    }
     // ---- Auth
     if (url.pathname === '/auth/v1/otp' && req.method === 'POST') {
       const { phone } = await readBody(req);

@@ -63,6 +63,7 @@ beforeAll(async () => {
       $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
     grant usage on schema auth to authenticated, anon;
     grant execute on function auth.uid() to authenticated, anon;`);
+  await db.exec(readFileSync(new URL('./storage-fixture.sql', import.meta.url), 'utf8'));
   const dir = new URL('../migrations/', import.meta.url);
   for (const file of readdirSync(dir).sort()) await db.exec(readFileSync(new URL(file, dir), 'utf8'));
 }, 60_000); // WASM/Postgres initialization is slower on Windows and cold CI machines.
