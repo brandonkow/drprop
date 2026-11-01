@@ -1,0 +1,92 @@
+
+> @drprop/app@1.0.0 export:connected-fixture
+> npm run setup-skia-web && node scripts/export-web.mjs --fixture
+
+
+> @drprop/app@1.0.0 setup-skia-web
+> setup-skia-web public
+
+› Reading Expo settings from (if any):
+  [90mC:\Users\user\OneDrive\Documents\New project\dr-prop\app\app.json[0m
+  [90mExpo project with metro bundler detected[0m
+
+› Copying 'canvaskit.wasm' file to public folder:
+  [90mC:\Users\user\OneDrive\Documents\New project\dr-prop\app\public\canvaskit.wasm[0m
+
+[32m› Success! You are almost there:[0m
+[90m› To load React Native Skia Web,
+follow these instructions: https://shopify.github.io/react-native-skia/docs/getting-started/web[0m
+Using src/app as the root directory for Expo Router.
+Expo Autolinking module resolution enabled
+Starting Metro Bundler
+
+warning: Bundler cache is empty, rebuilding (this may take a minute)
+| (node:23388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:23388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+Web Bundled 53687ms app\index.web.ts (1689 modules)
+
+› Assets (57):
+..\node_modules\@expo-google-fonts\geist-mono\100Thin_Italic\GeistMono_100Thin_Italic.2e50fb9a43d70ceb4925a2c54502097c.ttf (105KB)
+..\node_modules\@expo-google-fonts\geist-mono\100Thin\GeistMono_100Thin.95eed4519d8c395e41b3b837ca97edea.ttf (102KB)
+..\node_modules\@expo-google-fonts\geist-mono\200ExtraLight_Italic\GeistMono_200ExtraLight_Italic.107f2670e94507223548f1d38eb14087.ttf (105KB)
+..\node_modules\@expo-google-fonts\geist-mono\200ExtraLight\GeistMono_200ExtraLight.0714ea94ac265d76bc16698dd1808599.ttf (102KB)
+..\node_modules\@expo-google-fonts\geist-mono\300Light_Italic\GeistMono_300Light_Italic.09420cdceda8d1f1612daceae1e4890e.ttf (105KB)
+..\node_modules\@expo-google-fonts\geist-mono\300Light\GeistMono_300Light.d6a3533adfd5834dd9f68ee37faa1e2d.ttf (102KB)
+..\node_modules\@expo-google-fonts\geist-mono\400Regular_Italic\GeistMono_400Regular_Italic.88343c321b266476ad3bc56735cc6ac7.ttf (105KB)
+..\node_modules\@expo-google-fonts\geist-mono\400Regular\GeistMono_400Regular.3656dcb247d3a6cd141f7601c2101125.ttf (101KB)
+..\node_modules\@expo-google-fonts\geist-mono\500Medium_Italic\GeistMono_500Medium_Italic.e149441dd9360bd7dbffeb1de9aa1685.ttf (105KB)
+..\node_modules\@expo-google-fonts\geist-mono\500Medium\GeistMono_500Medium.a298cd61aebdb709299e2a7deb73ed93.ttf (102KB)
+..\node_modules\@expo-google-fonts\geist-mono\600SemiBold_Italic\GeistMono_600SemiBold_Italic.e939ba436795ee2f0a379e7271bb957d.ttf (105KB)
+..\node_modules\@expo-google-fonts\geist-mono\600SemiBold\GeistMono_600SemiBold.cae945cb3b6156e396a1008b6252af21.ttf (101KB)
+..\node_modules\@expo-google-fonts\geist-mono\700Bold_Italic\GeistMono_700Bold_Italic.8cc57ff1f3c45e7ed84e74853c141e06.ttf (105KB)
+..\node_modules\@expo-google-fonts\geist-mono\700Bold\GeistMono_700Bold.7fcc8478bc1dcadc865d97626ba3206b.ttf (101KB)
+..\node_modules\@expo-google-fonts\geist-mono\800ExtraBold_Italic\GeistMono_800ExtraBold_Italic.0b4dd8c1b0e6d8791ea34c8f1417edfd.ttf (105KB)
+..\node_modules\@expo-google-fonts\geist-mono\800ExtraBold\GeistMono_800ExtraBold.b09b5457204e06ea7bacff03f0880065.ttf (101KB)
+..\node_modules\@expo-google-fonts\geist-mono\900Black_Italic\GeistMono_900Black_Italic.8dfe24b2fef43fb3d535316e2412be7d.ttf (105KB)
+..\node_modules\@expo-google-fonts\geist-mono\900Black\GeistMono_900Black.9ec025adf049c8a476588eeac81a36e4.ttf (101KB)
+..\node_modules\@expo-google-fonts\geist\100Thin_Italic\Geist_100Thin_Italic.b6fbf8e579631555af41feab85729950.ttf (93KB)
+..\node_modules\@expo-google-fonts\geist\100Thin\Geist_100Thin.4e901cbce27d5f5e2bfe2377780f4a79.ttf (91KB)
+..\node_modules\@expo-google-fonts\geist\200ExtraLight_Italic\Geist_200ExtraLight_Italic.548fb0abe4ae84bfac605542a1b94917.ttf (93KB)
+..\node_modules\@expo-google-fonts\geist\200ExtraLight\Geist_200ExtraLight.1831467b4b635ecd2dba0e938e127e26.ttf (91KB)
+..\node_modules\@expo-google-fonts\geist\300Light_Italic\Geist_300Light_Italic.2f8321841169009568ed827e1c3eae5c.ttf (93KB)
+..\node_modules\@expo-google-fonts\geist\300Light\Geist_300Light.8a1ec6119d4f17c398c65c121dd3e01f.ttf (91KB)
+..\node_modules\@expo-google-fonts\geist\400Regular_Italic\Geist_400Regular_Italic.d0ac47b56728311fa4df9ec94b2c9e85.ttf (92KB)
+..\node_modules\@expo-google-fonts\geist\400Regular\Geist_400Regular.c73f4c729327eae068890e8765bb199d.ttf (91KB)
+..\node_modules\@expo-google-fonts\geist\500Medium_Italic\Geist_500Medium_Italic.41fe48a34936ffd72c079cd568223a69.ttf (93KB)
+..\node_modules\@expo-google-fonts\geist\500Medium\Geist_500Medium.42a64eb53a967fa64ab827c3a32bb973.ttf (91KB)
+..\node_modules\@expo-google-fonts\geist\600SemiBold_Italic\Geist_600SemiBold_Italic.23524949685237571ca6f1f5df131f1d.ttf (93KB)
+..\node_modules\@expo-google-fonts\geist\600SemiBold\Geist_600SemiBold.196be9d9a220066df3dfbf8bdec91b83.ttf (91KB)
+..\node_modules\@expo-google-fonts\geist\700Bold_Italic\Geist_700Bold_Italic.dc12f7355f830dc725c2890a8d013db4.ttf (93KB)
+..\node_modules\@expo-google-fonts\geist\700Bold\Geist_700Bold.d2ec50ce0714c8b3853d2dac8c11cd84.ttf (91KB)
+..\node_modules\@expo-google-fonts\geist\800ExtraBold_Italic\Geist_800ExtraBold_Italic.cdd27f89f2ef47e13c5245f0d456252b.ttf (93KB)
+..\node_modules\@expo-google-fonts\geist\800ExtraBold\Geist_800ExtraBold.8451ac4b4efe61dba64ee7724a2f5f3d.ttf (91KB)
+..\node_modules\@expo-google-fonts\geist\900Black_Italic\Geist_900Black_Italic.fe4bb7402f719e08342cacae1821cd11.ttf (93KB)
+..\node_modules\@expo-google-fonts\geist\900Black\Geist_900Black.7d70e63494126d2191461f393c57aaa0.ttf (91KB)
+..\node_modules\@expo-google-fonts\instrument-serif\400Regular_Italic\InstrumentSerif_400Regular_Italic.4036d1c3db2f215c15e9c022fb4644c8.ttf (71KB)
+..\node_modules\@expo-google-fonts\instrument-serif\400Regular\InstrumentSerif_400Regular.1e3bf8f4e9f996285924f99ebc80e546.ttf (69KB)
+..\node_modules\expo-router\assets\arrow_down.017bc6ba3fc25503e5eb5e53826d48a8.png (9.5KB)
+..\node_modules\expo-router\assets\error.d1ea1496f9057eb392d5bbf3732a61b7.png (469B)
+..\node_modules\expo-router\assets\file.19eeb73b9593a38f8e9f418337fc7d10.png (138B)
+..\node_modules\expo-router\assets\forward.d8b800c443b8972542883e0b9de2bdc6.png (188B)
+..\node_modules\expo-router\assets\pkg.ab19f4cbc543357183a20571f68380a3.png (364B)
+..\node_modules\expo-router\assets\react-navigation\elements\back-icon-mask.0a328cd9c1afd0afe8e3b1ec5165b1b4.png (653B)
+..\node_modules\expo-router\assets\react-navigation\elements\back-icon.35ba0eaec5a4f5ed12ca16fabeae451d.png (207B)
+..\node_modules\expo-router\assets\react-navigation\elements\clear-icon.c94f6478e7ae0cdd9f15de1fcb9e5e55.png (4 variations | 425B)
+..\node_modules\expo-router\assets\react-navigation\elements\close-icon.808e1b1b9b53114ec2838071a7e6daa7.png (4 variations | 235B)
+..\node_modules\expo-router\assets\react-navigation\elements\search-icon.286d67d3f74808a60a78d3ebf1a5fb57.png (928B)
+..\node_modules\expo-router\assets\sitemap.412dd9275b6b48ad28f5e3d81bb1f626.png (465B)
+..\node_modules\expo-router\assets\unmatched.20e71bdf79e3a97bf55fd9e164041578.png (4.8KB)
+assets\samples\diagnosis-en.55dd67292c4a0a0ded94bc69bdee4172.pdf (60KB)
+
+› web bundles (2):
+_expo/static/js/web/index-0842f269f2155e9df4355b9682645104.js (3.2MB)
+_expo/static/js/web/index-7cf429b9261093953f015e4586356e7d.js (45KB)
+
+› Files (3):
+favicon.ico (15KB)
+index.html (1.2KB)
+metadata.json (49B)
+
+Exported: dist-connected

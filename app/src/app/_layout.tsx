@@ -63,6 +63,7 @@ function Root({ fontsLoaded }: { fontsLoaded: boolean }) {
           <Stack.Screen name="case/[id]" options={{ animation: 'slide_from_right' }} />
           <Stack.Screen name="card" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
           <Stack.Screen name="staff" options={{ animation: 'slide_from_right' }} />
+          <Stack.Screen name="payments" options={{ animation: 'slide_from_right' }} />
         </Stack.Protected>
         <Stack.Protected guard={!user}>
           <Stack.Screen name="sign-in" />

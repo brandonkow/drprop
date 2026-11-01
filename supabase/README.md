@@ -146,4 +146,6 @@ races, SMS delivery and native session lifecycle still need environment checks.
 ## Payment provider checkpoint
 
 Stripe test-mode setup and remaining gates are documented in [STRIPE.md](STRIPE.md).
-The build is paused; this setup guide is not permission to deploy or activate payments.
+The five-area build has resumed; this setup guide is not permission to deploy or activate payments.
+See [operational safeguards and recovery](OPERATIONS.md) for scanner configuration,
+rate limits, aggregate health checks and the required backup/restore drill.

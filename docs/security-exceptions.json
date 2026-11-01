@@ -1,21 +1,16 @@
 [
   {
+    "package": "minimatch",
+    "url": "https://github.com/advisories/GHSA-g3hv-75wg-m249",
+    "versions": ["3.1.5"],
+    "reviewBy": "2026-11-12T00:00:00Z",
+    "reason": "Version-specific applicability review: the maintainer advisory describes firstPhasePreProcess globparts cloning at optimizationLevel >= 2 in 10.2.6. ESLint's legacy 3.1.5 has neither firstPhasePreProcess nor secondPhasePreProcess and does not implement that optimization. Keep its callable CommonJS API for ESLint compatibility. The installed-resolution regression check verifies the absent mechanism and bounded globParts on the reported pattern shape. Modern consumers use patched 11.0.3. This narrowly scoped exception does not cover any 10.x copy; review upstream advisory range and ESLint migration by the deadline. Source: https://github.com/isaacs/minimatch/security/advisories/GHSA-g3hv-75wg-m249"
+  },
+  {
     "package": "zod",
     "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
     "versions": ["3.25.76"],
     "reviewBy": "2026-11-12T00:00:00Z",
-    "reason": "Temporary residual tooling risk: Expo CLI and ESLint require Zod 3.25.76; the upstream fix is in major version 4. The requested Remotion Zod 4 override is not fully resolved in the lockfile; vulnerable v4 copies remain an audit failure. This exception applies only to the exact remaining v3 version, not vulnerable v4. Do not expose Expo dev/MCP servers to untrusted users or load untrusted plugin/config payloads. The production case and payment gateways do not use Zod. Reassess with the next compatible Expo/ESLint release."
-  },
-  {
-    "package": "braces",
-    "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
-    "reviewBy": "2026-11-11T00:00:00Z",
-    "reason": "No upstream patched release. Transitive Metro/Remotion build globbing; only repository-controlled patterns are used. Do not accept untrusted glob expressions or expose development servers publicly. Residual build-time denial-of-service risk remains."
-  },
-  {
-    "package": "node-forge",
-    "url": "https://github.com/advisories/GHSA-86w9-cpqp-85rv",
-    "reviewBy": "2026-11-11T00:00:00Z",
-    "reason": "No upstream patched release. Transitive Expo CLI certificate/signing tooling, not the app's own authentication. Do not treat certificates or updates supplied by untrusted parties as verified through this dependency; native signing/update release review remains required. Residual tooling risk remains."
+    "reason": "Temporary residual tooling risk: Expo CLI still requires Zod 3.25.76; the upstream fix is in major version 4. Modern consumers resolve patched Zod 4.6.7. This exception applies only to the exact remaining v3 version, not vulnerable v4. Do not expose Expo dev/MCP servers to untrusted users or load untrusted plugin/config payloads. The production case and payment gateways do not use Zod. Reassess with the next compatible Expo release."
   }
 ]

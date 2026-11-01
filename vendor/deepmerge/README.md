@@ -12,8 +12,8 @@ Normal arrays, symbols and custom merging remain supported.
 
 `scripts/deepmerge.test.ts` reproduces both target and source poisoning, nested
 objects, constructor/prototype keys and ordinary configuration merging. The root
-override requests this local dependency, but the checkpoint lockfile still has
-an unresolved Expo nested copy of upstream 4.3.1. The audit remains failing;
-this patch is not a claim that every consumer is protected. Resolve the nested
-copy before release. Revisit when an upstream patch becomes available; do not
-edit installed node_modules in place.
+override resolves this local dependency from Expo after the 2026-11-01 lockfile
+refresh. `scripts/dependency-resolution.test.ts` verifies the actual installed
+Expo resolution and repeats the poisoning regression through that consumer.
+Revisit when an upstream patch becomes available; do not edit installed
+node_modules in place.

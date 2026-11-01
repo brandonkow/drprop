@@ -8,9 +8,9 @@ English working translation of the founder-supplied `dr-prop-brief.md`. The orig
 
 ## Current implementation instructions
 
-Latest instruction: pause after the Stripe test-provider checkpoint. See
-[the pause record](pause-2026-11-01.md) before resuming. The roadmap below is not
-authorization to continue building or deploy while paused.
+Latest instruction: resume the five remaining build areas. See
+[the continuation record](build-2026-11-01.md). The roadmap below does not authorize
+production deployment, live payments or invented business decisions.
 
 
 

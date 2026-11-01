@@ -1,0 +1,15 @@
+
+> test
+> vitest run
+
+
+ RUN  v5.0.5 C:/Users/user/OneDrive/Documents/New project/dr-prop
+
+
+ Test Files  21 passed (21)
+      Tests  211 passed (211)
+   Start at  16:25:59
+   Duration  28.10s (tests 83%, import 13%, transform 3%, worker 1%)
+
+    Isolate  21 workers spawned · ~305ms startup each (spawn + environment, per file)
+             at least ~6.10s faster with isolate: false — reuses workers across files instead of one per file

@@ -1,6 +1,7 @@
 import { CaseError, readBounded, sha256, type CasePort } from './cases.ts';
 import type { PaymentOrder, PaymentProvider, PaymentSession } from './stripe-provider.ts';
-type PaymentPort=Pick<CasePort,'authenticate'|'rpc'>;
+import { recordDispute, recordRefund, type RefundProvider } from './payment-operations.ts';
+type PaymentPort=Pick<CasePort,'authenticate'|'rpc'|'limit'>;
 const headers={'access-control-allow-origin':'*','access-control-allow-headers':'authorization, apikey, content-type, x-client-info',
   'access-control-allow-methods':'POST, OPTIONS','cache-control':'no-store','content-type':'application/json'};
 const json=(value:unknown,status=200)=>new Response(JSON.stringify(value),{status,headers});
@@ -15,10 +16,12 @@ export function checkoutHandler(db:PaymentPort,provider:PaymentProvider,enabled:
     if(!enabled)return json({error:'Stripe test checkout is disabled.'},503);
     try {
       const actor=await db.authenticate(req.headers.get('authorization') ?? '');
+      await db.limit('checkout',actor.id);
       let body:Record<string,unknown>;
       try{body=JSON.parse(new TextDecoder().decode(await readBounded(req,4096)));}catch(e){if(e instanceof CaseError)throw e;throw new CaseError('Invalid checkout request.');}
       if(!body || typeof body.bookingId!=='string' || !/^[a-f0-9-]{36}$/i.test(body.bookingId))throw new CaseError('Choose a booking.');
-      const order=await db.rpc<PaymentOrder>('dp_stripe_order',{p_booking:body.bookingId},actor.token);
+      const order=await db.rpc<PaymentOrder>(body.retryExpired===true?'dp_stripe_retry':'dp_stripe_order',{p_booking:body.bookingId},actor.token);
+      if(order.state==='expired')throw new CaseError('This checkout is verified expired. Choose restart to create a new attempt.',409);
       if(order.state==='paid' || order.state==='review_required')return json({mode:'test',state:order.state,orderId:order.id});
       const s=order.stripe_session_id?await provider.retrieve(order.stripe_session_id):await provider.create(order);
       checkSession(s,order);
@@ -31,7 +34,7 @@ export function checkoutHandler(db:PaymentPort,provider:PaymentProvider,enabled:
     }catch(e){return error(e);}
   };
 }
-export function stripeWebhookHandler(db:PaymentPort,provider:PaymentProvider) {
+export function stripeWebhookHandler(db:PaymentPort,provider:PaymentProvider,operations?:RefundProvider) {
   return async(req:Request)=>{
     if(req.method!=='POST')return json({error:'Use POST.'},405);
     try {
@@ -40,6 +43,12 @@ export function stripeWebhookHandler(db:PaymentPort,provider:PaymentProvider) {
       try{event=await provider.verify(raw,req.headers.get('stripe-signature') ?? '');}
       catch{throw new CaseError('Invalid Stripe signature.',400);}
       if(event.live)throw new CaseError('Live payments are disabled.',400);
+      if(['refund.created','refund.updated','refund.failed'].includes(event.type) && operations) {
+        await recordRefund(db,await operations.retrieve(event.sessionId));return json({received:true,mode:'test'});
+      }
+      if(event.type.startsWith('charge.dispute.') && operations) {
+        await recordDispute(db,await operations.dispute(event.sessionId));return json({received:true,mode:'test'});
+      }
       if(!['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type))return json({received:true,ignored:true});
       const s=await provider.retrieve(event.sessionId);
       if(s.live)throw new CaseError('Live payments are disabled.',400);

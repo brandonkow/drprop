@@ -15,3 +15,7 @@ entrypoint = "./functions/stripe-checkout/index.ts"
 # Stripe signs raw bodies; the handler verifies signature and age before any mutation.
 verify_jwt = false
 entrypoint = "./functions/stripe-webhook/index.ts"
+[functions.payment-operations]
+# Auth plus the separately provisioned payment-operator role are checked inside.
+verify_jwt = false
+entrypoint = "./functions/payment-operations/index.ts"

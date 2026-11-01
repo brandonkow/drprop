@@ -5,6 +5,7 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { stripeTestEnabled } from '../../components/stripe-test-payment';
 import { Body, Display, Label, Mono, Small } from '../../components/type';
 import { OutlineButton, Rule, Screen, TextLink } from '../../components/ui';
 import { source } from '../../data/source';
@@ -102,6 +103,7 @@ export default function Me() {
       {staff ? (
         <Field label={t.me.staff}>
           <OutlineButton label={t.staff.title} onPress={() => router.push('/staff')} />
+          {stripeTestEnabled?<TextLink label="Test payment operations" onPress={()=>router.push('/payments')} />:null}
         </Field>
       ) : null}
 

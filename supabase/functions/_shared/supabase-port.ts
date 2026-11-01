@@ -1,7 +1,7 @@
-import { BUCKET, CaseError, type CasePort, type Diagnosis } from './cases.ts';
+import { BUCKET, CaseError, sha256, type CasePort, type Diagnosis } from './cases.ts';
 
 /** Service credentials live only in the function environment or the operator process. */
-export function supabasePort(url: string, publishableKey: string, serviceKey: string, render?: CasePort['render']): CasePort {
+export function supabasePort(url: string, publishableKey: string, serviceKey: string, render?: CasePort['render'], scan?: CasePort['scan']): CasePort {
   const request = async (path: string, init: RequestInit = {}, token?: string) => {
     const response = await fetch(`${url}${path}`, { ...init, signal: AbortSignal.timeout(30000),
       headers: { apikey: token ? publishableKey : serviceKey, authorization: `Bearer ${token ?? serviceKey}`, ...init.headers } });
@@ -17,6 +17,12 @@ export function supabasePort(url: string, publishableKey: string, serviceKey: st
   };
   const keyPath = (key: string) => key.split('/').map(encodeURIComponent).join('/');
   return {
+    scan: scan ?? (async () => { throw new CaseError('Document safety scanning is not configured.', 503); }),
+    async limit(scope, subject) {
+      const allowed = await (await request('/rest/v1/rpc/dp_gateway_limit', { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ p_scope: scope, p_subject_hash: await sha256(new TextEncoder().encode(subject)) }) })).json();
+      if (allowed !== true) throw new CaseError('Too many requests. Wait a minute before retrying.', 429);
+    },
     async authenticate(authorization) {
       const token = authorization.match(/^Bearer (\S+)$/i)?.[1];
       if (!token) throw new CaseError('Sign in to access your case.',401);

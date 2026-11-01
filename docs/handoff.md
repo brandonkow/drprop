@@ -1,8 +1,8 @@
 # Current handoff
 
-**Paused after the Stripe test-provider checkpoint.** Do not start further build
-work until the user resumes. Read [the saved progress and remaining checks](pause-2026-11-01.md)
-before continuing. Stripe is selected; cancellation/refund rules remain unapproved.
+**The user resumed all five build areas on 2026-11-01.** Read
+[the continuation record](build-2026-11-01.md). Stripe is selected;
+cancellation/refund and membership rules remain unapproved.
 
 Work only on `main`. This supersedes older feature-branch restrictions. The user authorized the new feature build on 2026-10-29, superseding the earlier hold. The current implementation and verification status is in [the build record](feature-build.md). All released UI and documentation are English-only. Historical translation source data is retained but is not an enabled product language.
 
@@ -26,7 +26,7 @@ The media manifest verifies all 45 tracked MP4 assets. Publication candidates ex
 
 ## Current scope
 
-Private document uploads, diagnosis publication and the Stripe test-provider checkpoint are implemented locally. Further work is paused. Commercial rules and hosted acceptance remain pending. Store concepts and outstanding device checks remain unchanged. Do not deploy, spend money or apply production migrations merely because implementation tests pass.
+Private document uploads, diagnosis publication and the Stripe test-provider checkpoint are implemented locally. The five remaining build areas are authorized. Commercial rules and hosted acceptance remain pending. Store concepts and outstanding device checks remain unchanged. Do not deploy, spend money or apply production migrations merely because implementation tests pass.
 
 ## External inputs still needed
 

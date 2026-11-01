@@ -1,0 +1,30 @@
+[WebServer] (node:2788) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:23676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:5020) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:25860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 13 tests using 1 worker
+
+(node:24796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [web] › e2e\web.spec.ts:5:1 › home: five sections, one CTA, the calculator prices every band (712ms)
+  ok  2 [web] › e2e\web.spec.ts:36:3 › / has no WCAG A/AA violations (776ms)
+  ok  3 [web] › e2e\web.spec.ts:36:3 › /terms/ has no WCAG A/AA violations (919ms)
+  ok  4 [web] › e2e\web.spec.ts:36:3 › /privacy/ has no WCAG A/AA violations (712ms)
+  ok  5 [web] › e2e\web.spec.ts:42:1 › terms carry the zero-commission and referral-fee promises in English (411ms)
+  ok  6 [web] › e2e\web.spec.ts:54:1 › without JavaScript, the text, fee table and booking link are all there (361ms)
+  ok  7 [web] › e2e\web.spec.ts:64:1 › reduced motion and the data saver keep the static line and skip WebGL (4.8s)
+  ok  8 [web] › e2e\web.spec.ts:82:3 › no sideways scrolling at 320px (428ms)
+  ok  9 [web] › e2e\web.spec.ts:82:3 › no sideways scrolling at 390px (506ms)
+  ok 10 [web] › e2e\web.spec.ts:82:3 › no sideways scrolling at 768px (488ms)
+  ok 11 [web] › e2e\web.spec.ts:82:3 › no sideways scrolling at 1440px (533ms)
+(node:9904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 12 [app] › e2e\app.spec.ts:21:1 › sign in, book a consult, see it in Records, cancel it (14.0s)
+  ok 13 [app] › e2e\app.spec.ts:50:1 › a review follows the sample diagnosis, at half its fee (10.3s)
+
+  13 passed (47.7s)

@@ -3,7 +3,7 @@ import { CaseError } from './cases.ts';
 
 export interface PaymentOrder {
   id:string; booking_id:string; user_id:string; amount_minor:number; currency:'myr'; mode:'test';
-  state:'created'|'checkout_open'|'paid'|'review_required'; stripe_session_id:string|null; checkout_expires_at:string;
+  state:'created'|'checkout_open'|'paid'|'review_required'|'expired'; stripe_session_id:string|null; checkout_expires_at:string;
 }
 export interface PaymentSession {
   id:string; orderId:string; amount:number|null; currency:string|null; paid:boolean; live:boolean;
@@ -18,7 +18,7 @@ const session=(s:Stripe.Checkout.Session):PaymentSession=>({id:s.id,orderId:s.me
   currency:s.currency,paid:s.payment_status==='paid',live:s.livemode,paymentIntent:typeof s.payment_intent==='string'?s.payment_intent:s.payment_intent?.id ?? null,url:s.url,status:s.status});
 
 /** Test-mode keys only. Live charging needs a separate reviewed rollout and policy. */
-export function stripeProvider(secret:string,webhookSecret:string,returnOrigin:string,httpClient?:Stripe.HttpClient):PaymentProvider {
+export function stripeProvider(secret:string,webhookSecret:string,returnOrigin:string,httpClient?:ReturnType<typeof Stripe.createFetchHttpClient>):PaymentProvider {
   if(!secret.startsWith('sk_test_') || !webhookSecret.startsWith('whsec_'))throw new Error('Stripe test key and webhook signing secret are required. Live keys are disabled.');
   const origin=new URL(returnOrigin);
   if((origin.protocol!=='https:' && !(origin.protocol==='http:' && ['localhost','127.0.0.1'].includes(origin.hostname))) || origin.origin!==returnOrigin || origin.username || origin.password)throw new Error('Configure a trusted app origin without a path.');

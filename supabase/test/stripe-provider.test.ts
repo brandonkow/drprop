@@ -46,7 +46,7 @@ describe('payment HTTP boundary',()=>{
   const provider={create:vi.fn(async()=>session),retrieve:vi.fn(async()=>session),verify:vi.fn(async(raw:string,signature:string)=>{
     const actual=stripeProvider('sk_test_fake',signingSecret,'https://app.example.com');return actual.verify(raw,signature);
   })};
-  const db={authenticate,rpc:rpc as <T>(name:string,args:Record<string,unknown>,token?:string)=>Promise<T>};
+  const db={authenticate,limit:async()=>{},rpc:rpc as <T>(name:string,args:Record<string,unknown>,token?:string)=>Promise<T>};
   const checkout=checkoutHandler(db,provider,true);const webhook=stripeWebhookHandler(db,provider);
   beforeEach(()=>{vi.clearAllMocks();session={id:'cs_test_one',orderId:id,amount:39900,currency:'myr',paid:false,live:false,paymentIntent:null,url:'https://checkout.stripe.com/c/pay/cs_test_one',status:'open'};});
   const request=(body:unknown,authorization='Bearer valid')=>new Request('https://function/checkout',{method:'POST',headers:{authorization,'content-type':'application/json'},body:JSON.stringify(body)});
@@ -77,5 +77,22 @@ describe('payment HTTP boundary',()=>{
   it('returns retryable failure when database settlement fails rather than acknowledging a lost payment',async()=>{
     session.paid=true;session.paymentIntent='pi_test_one';rpc.mockRejectedValueOnce(new Error('Database unavailable'));
     expect((await hook()).status).toBe(503);
+  });
+  it('verifies refund callbacks before retrieving and recording their current provider state',async()=>{
+    const operations={create:vi.fn(),retrieve:vi.fn(async()=>({id:'re_test_one',requestId:id,paymentIntent:'pi_test_one',amount:100,currency:'myr',state:'pending',live:false})),dispute:vi.fn()};
+    const handler=stripeWebhookHandler(db,provider,operations);
+    const raw=JSON.stringify({id:'evt_refund',type:'refund.updated',livemode:false,data:{object:{id:'re_test_one',amount:999999,status:'succeeded'}}});
+    const invoke=(signature:string)=>handler(new Request('https://fixture/webhook',{method:'POST',headers:{'stripe-signature':signature},body:raw}));
+    expect((await invoke('invalid')).status).toBe(400);expect(operations.retrieve).not.toHaveBeenCalled();
+    expect((await invoke(sign(raw))).status).toBe(200);
+    expect(operations.retrieve).toHaveBeenCalledWith('re_test_one');
+    expect(rpc).toHaveBeenCalledWith('dp_refund_result',expect.objectContaining({p_refund:id,p_amount:100,p_state:'pending',p_live:false}));
+  });
+  it('records a verified current dispute and does not trust event-body amounts',async()=>{
+    const operations={create:vi.fn(),retrieve:vi.fn(),dispute:vi.fn(async()=>({id:'du_test_one',paymentIntent:'pi_test_one',amount:39900,currency:'myr',state:'needs_response',reason:'general',due:null,live:false}))};
+    const handler=stripeWebhookHandler(db,provider,operations);
+    const raw=JSON.stringify({id:'evt_dispute',type:'charge.dispute.created',livemode:false,data:{object:{id:'du_test_one',amount:1}}});
+    expect((await handler(new Request('https://fixture/webhook',{method:'POST',headers:{'stripe-signature':sign(raw)},body:raw}))).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('dp_dispute_result',expect.objectContaining({p_id:'du_test_one',p_amount:39900,p_state:'needs_response'}));
   });
 });

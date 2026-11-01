@@ -1,8 +1,8 @@
 # Dr Prop
 
-**Build paused after the Stripe test-provider checkpoint.** Progress, verification
-and remaining work are saved in [the pause record](docs/pause-2026-11-01.md).
-Live payments remain disabled. Resume only on the user's instruction.
+**Five-area build resumed on 2026-11-01.** Follow [the continuation record](docs/build-2026-11-01.md).
+The [prior checkpoint](docs/pause-2026-11-01.md) preserves earlier evidence.
+Live payments remain disabled pending business rules and acceptance.
 
 Brand, website, membership app, consultation workflow and concept media for an independent property clinic. The [English working brief](docs/brief.md) records the design and proposed business rules. The user's current direction is **English-only delivery and amendments on main**. New feature work was authorized on 2026-10-29; see the [build record](docs/feature-build.md).
 

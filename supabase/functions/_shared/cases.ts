@@ -22,6 +22,8 @@ export interface CasePort {
   put(key: string, bytes: Uint8Array, mime: string): Promise<void>;
   remove(keys: string[]): Promise<void>;
   render(report: Diagnosis): Promise<Uint8Array>;
+  scan(bytes: Uint8Array, mime: string): Promise<void>;
+  limit(scope: string, subject: string): Promise<void>;
 }
 export class CaseError extends Error {
   readonly status: number;
@@ -85,8 +87,10 @@ export function caseHandler(port: CasePort) {
         if (typeof body.token !== 'string' || !/^[a-f0-9]{64}$/.test(body.token)) throw new CaseError('Download grant unavailable.', 403);
         const hash = await sha256(new TextEncoder().encode(body.token));
         const file = await port.rpc<CaseFile>('dp_resolve_case_download', { p_token_hash: hash });
+        await port.limit('case-download', hash);
         const bytes = await port.get(file.storage_key);
         if (!bytes || bytes.length !== file.byte_size || await sha256(bytes) !== file.sha256) throw new CaseError('Document unavailable. Request a fresh download or contact the adviser.', 503);
+        await port.scan(bytes, file.mime);
         // Recheck after Storage returns, then record delivery. This is not proof the recipient opened it.
         await port.rpc('dp_record_case_download', { p_token_hash: hash });
         return new Response(new Uint8Array(bytes), { headers: { ...headers, 'content-type': file.mime,
@@ -94,6 +98,7 @@ export function caseHandler(port: CasePort) {
           'content-security-policy': "default-src 'none'; sandbox", 'content-length': String(bytes.length) } });
       }
       const actor = await port.authenticate(request.headers.get('authorization') ?? '');
+      await port.limit(upload ? 'case-upload' : 'case-action', actor.id);
       if (upload) {
         const caseId = uuid(request.headers.get('x-case-id')); const requestId = uuid(request.headers.get('x-request-id'));
         if (!await port.canReadCase(caseId, actor.token)) throw new CaseError('Case access denied.', 403);
@@ -103,6 +108,7 @@ export function caseHandler(port: CasePort) {
         const mime = request.headers.get('content-type') ?? '';
         const bytes = await readBounded(request, MAX_FILE_BYTES); checkFile(bytes, mime);
         const hash = await sha256(bytes);
+        await port.scan(bytes, mime);
         const file = await port.rpc<CaseFile>('dp_reserve_document', { p_case: caseId, p_request: requestId, p_name: name, p_mime: mime, p_size: bytes.length, p_hash: hash }, actor.token);
         if (file.state === 'ready') return json(file);
         try {

@@ -1,0 +1,3 @@
+
+> typecheck:edge
+> npx --yes deno@2.9.6 check --frozen --config supabase/functions/case-files/deno.json supabase/functions/case-files/index.ts && npx --yes deno@2.9.6 check --frozen --config supabase/functions/payment-operations/deno.json supabase/functions/payment-operations/index.ts supabase/functions/stripe-checkout/index.ts supabase/functions/stripe-webhook/index.ts

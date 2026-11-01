@@ -1,0 +1,60 @@
+
+> build
+> npm run brand:build && npm run build -w @drprop/web
+
+
+> brand:build
+> npm run build -w @drprop/brand
+
+
+> @drprop/brand@0.1.0 build
+> tsx scripts/build-css.ts && tsx scripts/build-logo.ts
+
+wrote C:\Users\user\OneDrive\Documents\New project\dr-prop\brand\tokens\tokens.css
+wrote logo/*.svg, logo-paths.ts, 3d/glyphs.generated.ts
+
+> @drprop/web@0.1.0 build
+> vite build --mode preview
+
+vite v8.3.5 building client environment for preview...
+[plugin drprop-launch-guard] Preview build: 5 placeholders in src/config/site.ts.
+transforming...
+✓ 39 modules transformed.
+rendering chunks...
+[plugin drprop-js-budget] JavaScript, gzipped: 195.6 KB of 250 KB (brief §7.4)
+  assets/pulse-line-DlZNAQcF.js             133.8 KB
+  assets/smooth-scroll-OjccOgOP.js           50.9 KB
+  assets/fluid-CU20u76d.js                    4.5 KB
+  assets/main-BGWt50HZ.js                     3.2 KB
+  assets/scene-DqZQpRKX.js                    2.9 KB
+computing gzip size...
+dist/ms/index.html                                                  0.22 kB │ gzip:   0.17 kB
+dist/zh/index.html                                                  0.22 kB │ gzip:   0.17 kB
+dist/ms/terms/index.html                                            0.23 kB │ gzip:   0.18 kB
+dist/zh/terms/index.html                                            0.23 kB │ gzip:   0.18 kB
+dist/ms/privacy/index.html                                          0.24 kB │ gzip:   0.18 kB
+dist/zh/privacy/index.html                                          0.24 kB │ gzip:   0.18 kB
+dist/favicon.svg                                                    0.31 kB │ gzip:   0.25 kB
+dist/assets/geist-latin-ext-400-normal-CND6cjiG.woff2               7.82 kB
+dist/assets/instrument-serif-latin-ext-400-normal-CFCUzsTy.woff     9.86 kB
+dist/assets/geist-mono-latin-400-normal-DTRLJnHl.woff2              9.86 kB
+dist/privacy/index.html                                            10.67 kB │ gzip:   4.08 kB
+dist/assets/geist-latin-ext-400-normal-Bz1pQMyt.woff               10.68 kB
+dist/assets/instrument-serif-latin-ext-400-normal-C2je3j2s.woff2   11.60 kB
+dist/assets/geist-latin-400-normal-B40WzpMT.woff2                  12.95 kB
+dist/assets/geist-mono-latin-400-normal-B2yvC1Cq.woff              13.04 kB
+dist/terms/index.html                                              13.46 kB │ gzip:   5.07 kB
+dist/index.html                                                    16.07 kB │ gzip:   5.59 kB
+dist/assets/geist-latin-400-normal-akEymXtG.woff                   16.76 kB
+dist/assets/instrument-serif-latin-400-normal-BVbkICAY.woff        18.33 kB
+dist/assets/instrument-serif-latin-400-normal-DnYpCC2O.woff2       21.03 kB
+dist/third-party-notices.txt                                       26.85 kB │ gzip:   3.12 kB
+dist/assets/smooth-scroll-fOJvfYOR.css                              0.45 kB │ gzip:   0.22 kB
+dist/assets/main-zgWTDyTK.css                                      12.64 kB │ gzip:   3.52 kB
+dist/assets/scene-DqZQpRKX.js                                       6.61 kB │ gzip:   3.11 kB
+dist/assets/main-BGWt50HZ.js                                        6.64 kB │ gzip:   3.28 kB
+dist/assets/fluid-CU20u76d.js                                      15.62 kB │ gzip:   4.65 kB
+dist/assets/smooth-scroll-OjccOgOP.js                             138.29 kB │ gzip:  52.71 kB
+dist/assets/pulse-line-DlZNAQcF.js                                553.29 kB │ gzip: 138.48 kB
+
+✓ built in 814ms

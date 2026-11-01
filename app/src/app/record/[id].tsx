@@ -8,6 +8,7 @@ import { Linking, StyleSheet, View } from 'react-native';
 import { Body, Display, Label, Mono, Small } from '../../components/type';
 import { OutlineButton, Rule, Screen, TextLink } from '../../components/ui';
 import { StripeTestPayment, stripeTestEnabled } from '../../components/stripe-test-payment';
+import { BookingChange } from '../../components/booking-change';
 import { errorKey } from '../../data/errors';
 import { openSampleReport } from '../../data/sample-report';
 import { source } from '../../data/source';
@@ -113,6 +114,7 @@ export default function Record() {
       ) : null}
 
       {mode==='connected' && stripeTestEnabled ? <StripeTestPayment bookingId={c.id} /> : null}
+      {mode==='connected' && cancellable ? <BookingChange bookingId={c.id} type={c.type} /> : null}
 
       {cancellable ? (
         <View style={s.section}>

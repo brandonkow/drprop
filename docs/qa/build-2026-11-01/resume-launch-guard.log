@@ -1,0 +1,5 @@
+
+> verify:launch-guard
+> node scripts/verify-launch-guard.mjs
+
+PASS: production refused incomplete configuration, including a missing origin.

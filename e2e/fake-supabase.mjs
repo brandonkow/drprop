@@ -15,6 +15,7 @@ import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { PGlite } from '@electric-sql/pglite';
 import { fixtureCaseHandler } from './case-port.mjs';
+import { fixturePayments } from './payment-port.mjs';
 
 const port = Number(process.argv[2] ?? 54321);
 const ADVISER_PHONE = '601111111111'; // +60 11-1111 1111
@@ -37,6 +38,7 @@ const adviserId = randomUUID();
 await db.query("insert into auth.users values ($1, $2, now())", [adviserId, ADVISER_PHONE]);
 await db.query("insert into public.dp_profiles (user_id, display_name, drink_preference) values ($1, 'Aisyah', 'Teh tarik')", [adviserId]);
 await db.query("insert into public.dp_staff values ($1, 'Aisyah', true)", [adviserId]);
+await db.query('insert into dp_private.payment_operators values($1,true)',[adviserId]);
 // Aisyah is also a Lounge member, so the check-in test can scan her own card.
 await db.query("insert into public.dp_memberships (user_id, member_no, status, renews_at) values ($1, 'PJ-0001', 'active', current_date + 30)", [adviserId]);
 await db.exec(`
@@ -114,6 +116,7 @@ const readBody = (req) =>
 /* ---------------------------------------------------------------- server */
 
 const caseHandler=fixtureCaseHandler(db,asUser,userFromAuth);
+const paymentHandler=fixturePayments(db,asUser,userFromAuth);
 
 createServer(async (req, res) => {
   if (req.method === 'OPTIONS') {
@@ -126,6 +129,18 @@ createServer(async (req, res) => {
   }
   const url = new URL(req.url ?? '/', `http://localhost:${port}`);
   try {
+    if(url.pathname==='/__fixture/paid-order' && req.method==='POST') {
+      const [b]=(await db.query("select * from public.dp_bookings where status='completed' order by created_at limit 1")).rows;
+      if(!b)return send(res,400,{error:'Complete the fictional booking first.'});
+      const [o]=await asUser(b.user_id,'select * from public.dp_stripe_order($1)',[b.id]);
+      await db.query('select public.dp_stripe_paid($1,$2,$3,$4,$5,$6,$7,false)',[o.id,'evt_fixture_paid','a'.repeat(64),'cs_test_fixture','pi_fixture',o.amount_minor,'myr']);
+      return send(res,200,{id:o.id,bookingId:b.id});
+    }
+    if(url.pathname==='/functions/v1/payment-operations') {
+      const body=await readBody(req);
+      const response=await paymentHandler(new Request(url,{method:'POST',headers:req.headers,body:JSON.stringify(body)}));
+      res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));return;
+    }
     if(url.pathname.startsWith('/functions/v1/case-files')) {
       const chunks=[];let size=0;
       for await(const chunk of req){size+=chunk.length;if(size>6291456+32768)return send(res,413,{error:'Request too large.'});chunks.push(chunk);}
@@ -195,10 +210,11 @@ createServer(async (req, res) => {
       let cols = '*';
       for (const [k, v] of url.searchParams) {
         if (k === 'select') cols = v === '*' ? '*' : v.split(',').map((c) => ident(c.trim())).join(', ');
-        else if (k === 'order') order = `order by ${v.split(',').map((o) => { const [c, dir] = o.split('.'); return `${ident(c)} ${dir === 'desc' ? 'desc' : 'asc'}`; }).join(', ')}`;
+        else if (k === 'order') order = `order by ${v.split(',').map((o) => { const [c, dir, nulls] = o.split('.'); return `${ident(c)} ${dir === 'desc' ? 'desc' : 'asc'}${nulls==='nullslast'?' nulls last':nulls==='nullsfirst'?' nulls first':''}`; }).join(', ')}`;
         else if (k === 'offset') offset = `offset ${Number(v)}`;
         else if (k === 'limit') limit = `limit ${Number(v)}`;
         else {
+          if(v==='not.is.null'){where.push(`${ident(k)} is not null`);continue;}
           const [op, ...rest] = v.split('.');
           const sqlOp = { eq: '=', gte: '>=', lte: '<=', gt: '>', lt: '<' }[op];
           if (!sqlOp) return send(res, 400, { message: `unsupported filter ${op}` });

@@ -8,6 +8,9 @@ export function fixtureCaseHandler(db, asUser, userFromAuth) {
     await tx.exec('set local role service_role');return (await tx.query(sql,args)).rows;
   });
   return caseHandler({
+    // Fixture bytes only. Hosted acceptance must use the approved real scanning service.
+    async scan() {},
+    async limit() {},
     async authenticate(header) {
       const id=userFromAuth({headers:{authorization:header}});
       const row=id?(await db.query('select id from auth.users where id=$1 and phone_confirmed_at is not null',[id])).rows[0]:null;

@@ -42,6 +42,135 @@ const publish = async (id: string, revision: number, user = adviser) => {
   return (await admin('select * from public.dp_publish_diagnosis($1,$2,$3,$4,$5,456)',[id,revision,user,key,hash]))[0]!;
 };
 
+describe('commercial policy and reviewed booking changes',()=>{
+  const policy=()=>db.exec("update dp_private.commercial_policy set cancellation_approved=true,cutoff_hours=24,refund_before_percent=100,late_manual_review=true,approval_reference='Fictional unit-test approval only'");
+  const operator=()=>db.query('insert into dp_private.payment_operators values($1,true)',[adviser]);
+  const request=(kind='cancel',slot:string|null=null,requestId=randomUUID(),user=owner)=>as(user,'select * from public.dp_request_booking_change($1,$2,$3,$4,$5)',[caseId,requestId,kind,slot,'Fictional change request reason']).then(r=>r[0]!);
+  const review=(requestId:string,approve=true)=>as(adviser,'select * from public.dp_review_booking_change($1,$2,$3)',[requestId,approve,'Fictional operator review note']).then(r=>r[0]!);
+  const futureSlots=async()=>{
+    await db.exec("update public.dp_settings set bookings_enabled=true,closed_isodow=null");
+    const rows=(await db.query<Row>(`insert into public.dp_slots(adviser_id,starts_at,ends_at)
+      select $1,(date_trunc('day',now() at time zone 'Asia/Kuala_Lumpur')+interval '2 days 10 hours'+n*interval '30 minutes') at time zone 'Asia/Kuala_Lumpur',
+      (date_trunc('day',now() at time zone 'Asia/Kuala_Lumpur')+interval '2 days 10 hours'+(n+1)*interval '30 minutes') at time zone 'Asia/Kuala_Lumpur'
+      from generate_series(0,2) n returning *`,[adviser])).rows;
+    await db.query("update public.dp_bookings set consultation_type='clinic',slot_id=$2,starts_at=$3,ends_at=$4 where id=$1",[caseId,rows[0]!.id,rows[0]!.starts_at,rows[0]!.ends_at]);
+    return rows;
+  };
+  it('defaults to unapproved policy and disabled membership charging, and denies customer edits',async()=>{
+    await db.exec('update dp_private.commercial_policy set cancellation_approved=false,membership_approved=false');
+    const status=(await as(owner,'select public.dp_commercial_status() as status'))[0]!.status;
+    expect(status).toMatchObject({cancellationApproved:false,membershipApproved:false,membershipChargingEnabled:false,cutoffHours:null});
+    await expect(as(owner,'update dp_private.commercial_policy set cancellation_approved=true')).rejects.toThrow(/permission denied/);
+    await db.exec('update dp_private.commercial_policy set approval_reference=null');
+    await expect(policy().then(()=>db.exec('update dp_private.commercial_policy set approval_reference=null'))).rejects.toThrow(/check constraint/);
+  });
+  it('deduplicates owner requests, preserves the appointment and requires approved rules before applying',async()=>{
+    await db.exec('update dp_private.commercial_policy set cancellation_approved=false');await operator();
+    const requestId=randomUUID();const r=await request('cancel',null,requestId);expect((await request('cancel',null,requestId)).id).toBe(r.id);
+    await expect(request('cancel',null,randomUUID(),stranger)).rejects.toThrow(/denied/);
+    expect(await as(stranger,'select * from public.dp_booking_changes')).toEqual([]);
+    await expect(review(r.id)).rejects.toThrow(/not approved/);
+    expect((await db.query<Row>('select status from public.dp_bookings where id=$1',[caseId])).rows[0]!.status).toBe('confirmed');
+    expect((await review(r.id,false)).state).toBe('rejected');
+  });
+  it('applies an available reschedule atomically and retains its policy/reviewer snapshot',async()=>{
+    await operator();await policy();const slots=await futureSlots();const r=await request('reschedule',slots[1]!.id);
+    const changed=await review(r.id);expect(changed.state).toBe('applied');expect(changed.reviewed_by).toBe(adviser);
+    expect(changed.policy_snapshot.approval_reference).toContain('Fictional');
+    expect((await db.query<Row>('select slot_id from public.dp_bookings where id=$1',[caseId])).rows[0]!.slot_id).toBe(slots[1]!.id);
+    expect((await review(r.id)).id).toBe(r.id);
+  });
+  it('rejects a target taken after the request without releasing the original time',async()=>{
+    await operator();await policy();const slots=await futureSlots();const r=await request('reschedule',slots[1]!.id);
+    await db.query("update public.dp_bookings set consultation_type='clinic',slot_id=$2,starts_at=$3,ends_at=$4 where id=$1",[otherCase,slots[1]!.id,slots[1]!.starts_at,slots[1]!.ends_at]);
+    await expect(review(r.id)).rejects.toThrow(/no longer available/);
+    expect((await db.query<Row>('select slot_id from public.dp_bookings where id=$1',[caseId])).rows[0]!.slot_id).toBe(slots[0]!.id);
+  });
+  it('records cancellation and a refund suggestion without creating a provider refund',async()=>{
+    await operator();await policy();await futureSlots();const o=(await as(owner,'select * from public.dp_stripe_order($1)',[caseId]))[0]!;
+    await admin('select public.dp_stripe_paid($1,$2,$3,$4,$5,$6,$7,false)',[o.id,'evt_cancel_test',hash,'cs_test_cancel','pi_cancel',29900,'myr']);
+    const r=await request();expect((await review(r.id)).suggested_refund_minor).toBe(29900);
+    expect((await db.query<Row>('select state from public.dp_payment_orders where id=$1',[o.id])).rows[0]!.state).toBe('review_required');
+    expect((await db.query('select * from public.dp_payment_refunds')).rows).toHaveLength(0);
+  });
+});
+
+describe('payment recovery, refunds and receipts',()=>{
+  const createOrder=async(paid=true)=>{
+    const o=(await as(owner,'select * from public.dp_stripe_order($1)',[caseId]))[0]!;
+    if(paid)await admin('select public.dp_stripe_paid($1,$2,$3,$4,$5,$6,$7,false)',[o.id,'evt_test_paid',hash,'cs_test_one','pi_test_one',29900,'myr']);
+    return o;
+  };
+  const enableOperator=()=>db.query('insert into dp_private.payment_operators values($1,true)',[adviser]);
+  const prepare=(orderId:string,request=randomUUID(),amount=10000,user=adviser)=>as(user,'select * from public.dp_refund_prepare($1,$2,$3,$4)',[orderId,request,amount,'Manual sandbox refund approved']).then(r=>r[0]!);
+  const refundResult=(refundId:string,state='succeeded',amount=10000,live=false)=>admin('select * from public.dp_refund_result($1,$2,$3,$4,$5,$6,$7)',[refundId,'re_test_one','pi_test_one',amount,'myr',state,live]).then(r=>r[0]!);
+  it('requires a separately provisioned operator and never permits clients to mutate provider results',async()=>{
+    const o=await createOrder();await expect(prepare(o.id)).rejects.toThrow(/operator access denied/);
+    await enableOperator();const r=await prepare(o.id);
+    expect(r.requested_by).toBe(adviser);
+    await expect(as(owner,'select public.dp_refund_result($1,$2,$3,$4,$5,$6,false)',[r.id,'re_bad','pi_test_one',10000,'myr','succeeded'])).rejects.toThrow(/permission denied/);
+    await db.query("update auth.users set banned_until=now()+interval '1 day' where id=$1",[adviser]);
+    await expect(as(adviser,'select public.dp_payment_queue()')).rejects.toThrow(/operator access denied/);
+  });
+  it('reserves pending refunds, prevents over-refunds, deduplicates intent and records only verified success',async()=>{
+    const o=await createOrder();await enableOperator();const request=randomUUID();const r=await prepare(o.id,request,20000);
+    expect((await prepare(o.id,request,20000)).id).toBe(r.id);
+    await expect(prepare(o.id,request,10000)).rejects.toThrow(/different details/);
+    await expect(prepare(o.id,randomUUID(),10000)).rejects.toThrow(/exceeds/);
+    await expect(refundResult(r.id,'succeeded',1)).rejects.toThrow(/does not match/);
+    await expect(refundResult(r.id,'succeeded',20000,true)).rejects.toThrow(/does not match/);
+    expect((await refundResult(r.id,'pending',20000)).state).toBe('pending');
+    const receipt=()=>as(owner,'select public.dp_payment_receipt($1) as receipt',[o.id]).then(r=>r[0]!.receipt);
+    expect((await receipt()).refundedMinor).toBe(0);
+    expect((await refundResult(r.id,'succeeded',20000)).state).toBe('succeeded');
+    expect((await refundResult(r.id,'pending',20000)).state).toBe('succeeded');
+    expect((await receipt()).refundedMinor).toBe(20000);expect((await receipt()).label).toMatch(/TEST.*not a tax invoice/);
+    await expect(as(stranger,'select public.dp_payment_receipt($1)',[o.id])).rejects.toThrow(/unavailable/);
+    const history=(await as(adviser,'select public.dp_payment_history($1) as history',[o.id]))[0]!.history;
+    expect(history.events.filter((e:Row)=>e.kind==='dp_payment_refunds').map((e:Row)=>e.state)).toEqual(['requested','pending','succeeded']);
+  });
+  it('only restarts an authoritatively expired checkout and retains earlier order history',async()=>{
+    const o=await createOrder(false);
+    expect((await as(owner,'select * from public.dp_stripe_retry($1)',[caseId]))[0]!.id).toBe(o.id);
+    await expect(as(owner,'select public.dp_stripe_expired($1,$2,false)',[o.id,'cs_test_one'])).rejects.toThrow(/permission denied/);
+    await admin('select public.dp_stripe_expired($1,$2,false)',[o.id,'cs_test_one']);
+    const next=(await as(owner,'select * from public.dp_stripe_retry($1)',[caseId]))[0]!;
+    expect(next.id).not.toBe(o.id);expect((await as(owner,'select * from public.dp_stripe_order($1)',[caseId]))[0]!.id).toBe(next.id);
+    expect((await as(owner,'select * from public.dp_payment_orders'))).toHaveLength(2);
+    await expect(as(stranger,'select public.dp_stripe_retry($1)',[caseId])).rejects.toThrow(/denied/);
+  });
+  it('records matched test disputes for manual review without marking bookings paid',async()=>{
+    const o=await createOrder();await enableOperator();
+    const args=['du_test_one','pi_test_one',29900,'myr','needs_response','general',null,false];
+    await expect(as(owner,'select public.dp_dispute_result($1,$2,$3,$4,$5,$6,$7,$8)',args)).rejects.toThrow(/permission denied/);
+    await admin('select public.dp_dispute_result($1,$2,$3,$4,$5,$6,$7,$8)',args);
+    expect((await as(owner,'select state from public.dp_payment_orders where id=$1',[o.id]))[0]!.state).toBe('review_required');
+    expect((await as(adviser,'select public.dp_payment_history($1) as history',[o.id]))[0]!.history.disputes).toHaveLength(1);
+    expect((await db.query<Row>('select payment_status from public.dp_bookings where id=$1',[caseId])).rows[0]!.payment_status).toBe('unpaid');
+  });
+});
+
+describe('gateway rate limits and operator health',()=>{
+  it('shares a service-only bounded counter, isolates scopes and clears expired windows',async()=>{
+    await expect(as(owner,'select public.dp_gateway_limit($1,$2)',['checkout',hash])).rejects.toThrow(/permission denied/);
+    await db.exec('truncate dp_private.gateway_limits');
+    for(let i=0;i<6;i++)expect((await admin('select public.dp_gateway_limit($1,$2) as allowed',['checkout',hash]))[0]!.allowed).toBe(true);
+    expect((await admin('select public.dp_gateway_limit($1,$2) as allowed',['checkout',hash]))[0]!.allowed).toBe(false);
+    expect((await admin('select public.dp_gateway_limit($1,$2) as allowed',['case-action',hash]))[0]!.allowed).toBe(true);
+    await db.exec("update dp_private.gateway_limits set window_start=now()-interval '4 minutes'");
+    expect((await admin('select public.dp_gateway_limit($1,$2) as allowed',['checkout',hash]))[0]!.allowed).toBe(true);
+    expect((await db.query('select * from dp_private.gateway_limits')).rows).toHaveLength(1);
+    await expect(admin('select public.dp_gateway_limit($1,$2)',['arbitrary',hash])).rejects.toThrow(/Invalid/);
+  });
+  it('keeps operational counters private and reports aggregate recovery work',async()=>{
+    await expect(as(owner,'select public.dp_ops_health()')).rejects.toThrow(/permission denied/);
+    const f=await reserve();await admin('select public.dp_finish_document($1,$2,$3,123,false)',[f.id,owner,hash]);
+    const health=(await admin('select public.dp_ops_health() as health'))[0]!.health;
+    expect(health.failedUploads).toBe(1);
+    expect(JSON.stringify(health)).not.toContain(owner);expect(JSON.stringify(health)).not.toContain('Title.pdf');
+  });
+});
+
 describe('Stripe test orders and settlement permissions',()=>{
   const order=()=>as(owner,'select * from public.dp_stripe_order($1)',[caseId]).then((r)=>r[0]!);
   const paid=(id:string,event='evt_test_one',amount=29900,currency='myr',live=false,h=hash)=>admin(
@@ -109,8 +238,10 @@ beforeEach(async () => {
 describe('the deployed file gateway against real database permissions', () => {
   const pdfBytes = new TextEncoder().encode('%PDF-1.7\nFixture for gateway tests only\n%%EOF');
   const objects = new Map<string,Uint8Array>();
-  let putFails=false, renderFails=false, lostPublishResponse=false, puts=0;
+  let putFails=false, renderFails=false, lostPublishResponse=false, puts=0, scanFails=false, limited=false;
   const port: CasePort = {
+    async scan() { if(scanFails)throw new CaseError('Document rejected by scanner.',422); },
+    async limit() { if(limited)throw new CaseError('Too many requests.',429); },
     async authenticate(header) {
       const id=header.replace(/^Bearer /,'');
       if (![owner,stranger,adviser,otherAdviser].includes(id)) throw new CaseError('Sign in.',401);
@@ -143,7 +274,16 @@ describe('the deployed file gateway against real database permissions', () => {
     method:'POST',headers:{authorization:`Bearer ${user}`,'x-case-id':caseId,'x-request-id':request,'x-file-name':encodeURIComponent(name),'content-type':mime},body:new Uint8Array(bytes),
   }));
   const action=(body:Record<string,unknown>,user=owner)=>handler(new Request('https://fixture/case-files',{method:'POST',headers:{authorization:`Bearer ${user}`,'content-type':'application/json'},body:JSON.stringify(body)}));
-  beforeEach(()=>{objects.clear();putFails=false;renderFails=false;lostPublishResponse=false;puts=0;});
+  beforeEach(()=>{objects.clear();putFails=false;renderFails=false;lostPublishResponse=false;puts=0;scanFails=false;limited=false;});
+
+  it('blocks uploads before storage and rechecks safety when serving existing documents',async()=>{
+    scanFails=true; expect((await upload()).status).toBe(422); expect(puts).toBe(0);
+    scanFails=false; limited=true; expect((await upload()).status).toBe(429); expect(puts).toBe(0);
+    limited=false; const file=await (await upload()).json();
+    const grant=await (await action({action:'grant',id:file.id})).json();
+    scanFails=true; expect((await action({action:'download',token:grant.token})).status).toBe(422);
+    expect(await as(owner,"select event from public.dp_case_events where event='download_served'")).toHaveLength(0);
+  });
 
   it('requires verified identity and current case access; body identity cannot override it',async()=>{
     expect((await upload('invalid')).status).toBe(401);

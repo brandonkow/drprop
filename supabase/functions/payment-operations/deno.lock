@@ -1,0 +1,16 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:stripe@23.1.0": "23.1.0"
+  },
+  "npm": {
+    "stripe@23.1.0": {
+      "integrity": "sha512-fVUfMSfTPoukfoV//MUKAx2+YxyKmYaYtnAL9VkfnHfaPNQylFdWZMD+zgUFerI8rjbaiER8Vzj2XEUQ2AhAsQ=="
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:stripe@23.1.0"
+    ]
+  }
+}

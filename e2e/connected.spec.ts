@@ -195,6 +195,27 @@ test('private documents survive retry and an adviser publishes the reviewed PDF 
   await Promise.all([client.context().close(),adviser.context().close(),stranger.context().close()]);
 });
 
+test('a payment operator reconciles and refunds a fictional test order while clients are denied',async({browser,request},testInfo)=>{
+  const seeded=await request.post('http://127.0.0.1:54321/__fixture/paid-order');expect(seeded.ok()).toBe(true);
+  const order=await seeded.json();const adviser=await signIn(browser,'011-1111 1111');
+  await adviser.goto('/payments');await adviser.getByText('Load latest test orders',{exact:true}).click();
+  await adviser.getByRole('button',{name:`Review test order ${order.id}`,exact:true}).click();
+  await adviser.getByRole('button',{name:'Reconcile with Stripe',exact:true}).click();
+  await expect(adviser.getByText('Verified test order: paid.',{exact:true})).toBeVisible();
+  await adviser.getByLabel('Refund amount in sen',{exact:true}).fill('100');
+  await adviser.getByLabel('Refund review reason',{exact:true}).fill('Fictional browser refund review.');
+  await adviser.getByRole('button',{name:'Submit reviewed test refund',exact:true}).click();
+  await expect(adviser.getByText('Test refund: succeeded.',{exact:true})).toBeVisible();
+  expect(await axeViolations(adviser)).toEqual([]);
+  await adviser.screenshot({path:testInfo.outputPath('test-payment-operator.png'),fullPage:true});
+  const client=await signIn(browser,'012-345 6789');await client.goto('/payments');
+  await client.getByText('Load latest test orders',{exact:true}).click();
+  await expect(client.getByRole('alert')).toBeVisible();await expect(client.getByText(order.id,{exact:true})).toHaveCount(0);
+  await client.goto(`/record/${order.bookingId}`);await client.getByText('Show test payment record',{exact:true}).click();
+  await expect(client.getByText(/TEST payment record.*refunded RM 1.00/)).toBeVisible();
+  await Promise.all([client.context().close(),adviser.context().close()]);
+});
+
 test('profile save failure is visible and retry persists the latest English profile', async ({ browser }) => {
   const page = await signIn(browser, '012-345 6789');
   await expect(page.getByText(/Mr Tan\./)).toBeVisible();

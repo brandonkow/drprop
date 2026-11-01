@@ -1,0 +1,3 @@
+
+> typecheck
+> tsc -p brand && tsc -p web && tsc -p app --noEmit && tsc -p reels --noEmit && tsc -p twin --noEmit && tsc -p supabase && tsc -p app/test && tsc -p e2e

@@ -1,7 +1,7 @@
 # Decisions still open
 
 Stripe was selected by the user. The test-provider implementation is saved;
-the build is now paused at the user's request. See [the checkpoint](pause-2026-11-01.md).
+the five-area build resumed on 2026-11-01. See [the continuation](build-2026-11-01.md).
 Account setup, commercial rules and live activation remain pending.
 
 The current repair scope and evidence are in [the hardening report](hardening-2026-10-13.md).

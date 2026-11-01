@@ -1,0 +1,11 @@
+
+ RUN  v5.0.5 C:/Users/user/OneDrive/Documents/New project/dr-prop
+
+
+ Test Files  3 passed (3)
+      Tests  55 passed (55)
+   Start at  16:35:20
+   Duration  14.31s (tests 85%, import 13%, transform 2%)
+
+    Isolate  3 workers spawned · ~422ms startup each (spawn + environment, per file)
+             at least ~844ms faster with isolate: false — reuses workers across files instead of one per file

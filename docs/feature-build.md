@@ -64,10 +64,9 @@ docs/                                           evidence and hosted setup
   reviewed PDF publication, provenance, downloads and operator retention/cleanup
   are implemented. Setup and operational boundaries: [case delivery](../supabase/CASE-DELIVERY.md).
 - Stripe test-mode provider checkpoint implemented; see [Stripe setup](../supabase/STRIPE.md).
-- The user requested a pause after this provider checkpoint. No further feature
-  build or live rollout should proceed until they resume.
-- Final verification results and exact remaining work are recorded in
-  [the pause checkpoint](pause-2026-11-01.md).
+- The user resumed all five remaining build areas on 2026-11-01. See
+  [the continuation record](build-2026-11-01.md) for current work.
+- Earlier verification results are preserved in [the pause checkpoint](pause-2026-11-01.md).
 
 ## Brief 5.6 self-check
 

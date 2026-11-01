@@ -35,6 +35,9 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Edge function typecheck (pinned Deno and frozen dependency locks)
+        run: npm run typecheck:edge
+
       - name: Dependency audit (reviewed exceptions expire)
         run: npm run audit:dependencies
 

@@ -15,7 +15,9 @@ operator; they do not authorize production migration or deployment.
   access even alongside an unrelated permissive policy. Service credentials stay
   exclusively on the server or in an operator process.
 - The gateway validates bounded byte length, PDF/JPEG/PNG signatures and SHA-256.
-  It does **not** certify uploaded content as safe or implement malware scanning.
+  Byte checks alone do **not** certify uploaded content as safe. The gateway now
+  requires the configured scanning adapter before uploads and downloads; an approved
+  scanner service and hosted detection checks are still required. See [operations](OPERATIONS.md).
   Downloads use attachment disposition, no-store, nosniff and a sandbox policy.
 - PDF generation uses the reviewed content and source hashes, with bundled
   licensed Geist/Instrument Serif fonts and no external requests or supplied HTML.

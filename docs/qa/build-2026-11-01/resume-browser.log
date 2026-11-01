@@ -1,0 +1,24 @@
+[WebServer] (node:18964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:23564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:15972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 9 tests using 1 worker
+
+(node:21500) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [connected] › e2e\connected.spec.ts:32:1 › a client signs in by SMS, books a published time, cancels it, and asks for an urgent call (7.0s)
+  ok 2 [connected] › e2e\connected.spec.ts:80:1 › the adviser takes the call-back, finishes it, writes the note, and updates the Lounge board (6.3s)
+  ok 3 [connected] › e2e\connected.spec.ts:106:1 › the front desk checks a member in with the code on their card, once (5.7s)
+  ok 4 [connected] › e2e\connected.spec.ts:129:1 › the client sees the finished call with the adviser’s note, and the new Lounge board (4.3s)
+  ok 5 [connected] › e2e\connected.spec.ts:142:1 › private documents survive retry and an adviser publishes the reviewed PDF to its owner only (23.6s)
+  ok 6 [connected] › e2e\connected.spec.ts:198:1 › a payment operator reconciles and refunds a fictional test order while clients are denied (21.7s)
+  ok 7 [connected] › e2e\connected.spec.ts:219:1 › profile save failure is visible and retry persists the latest English profile (7.1s)
+  ok 8 [connected] › e2e\connected.spec.ts:237:1 › a delayed foreground refresh cannot restore a signed-out account (4.7s)
+  ok 9 [connected] › e2e\connected.spec.ts:268:1 › an expired displayed check-in code disappears even when refresh fails (5.8s)
+
+  9 passed (1.6m)

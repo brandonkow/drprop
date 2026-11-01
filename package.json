@@ -28,7 +28,8 @@
     "twin:build": "npm run build -w @drprop/twin",
     "build:production": "npm run brand:build && npm run build:production -w @drprop/web",
     "audit:dependencies": "node scripts/audit-dependencies.mjs",
-    "verify:launch-guard": "node scripts/verify-launch-guard.mjs"
+    "verify:launch-guard": "node scripts/verify-launch-guard.mjs",
+    "typecheck:edge": "npx --yes deno@2.9.6 check --frozen --config supabase/functions/case-files/deno.json supabase/functions/case-files/index.ts && npx --yes deno@2.9.6 check --frozen --config supabase/functions/payment-operations/deno.json supabase/functions/payment-operations/index.ts supabase/functions/stripe-checkout/index.ts supabase/functions/stripe-webhook/index.ts"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
@@ -40,7 +41,7 @@
     "deepmerge": "file:vendor/deepmerge",
     "pdf-lib": "^1.17.1",
     "query-string": "^7.1.3",
-    "stripe": "^23.0.1",
+    "stripe": "23.1.0",
     "typescript": "~6.0.3",
     "vitest": "^5.0.5"
   },
@@ -53,6 +54,24 @@
     "source-map-js": "^1.2.2",
     "xcode": {
       "uuid": "^11.1.1"
+    },
+    "glob": "^14.0.3",
+    "minimatch@>=9": "^11.0.3",
+    "node-forge": "^1.4.2",
+    "@expo/config": {
+      "deepmerge": "$deepmerge"
+    },
+    "@remotion/media": {
+      "zod": "^4.6.7"
+    },
+    "@remotion/studio": {
+      "zod": "^4.6.7"
+    },
+    "@remotion/studio-protocol": {
+      "zod": "^4.6.7"
+    },
+    "@remotion/studio-server": {
+      "zod": "^4.6.7"
     }
   }
 }
