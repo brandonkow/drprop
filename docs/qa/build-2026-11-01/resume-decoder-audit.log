@@ -1,0 +1,7 @@
+
+> audit:dependencies
+> node scripts/audit-dependencies.mjs
+
+OPEN, time-limited exception: minimatch: Version-specific applicability review: the maintainer advisory describes firstPhasePreProcess globparts cloning at optimizationLevel >= 2 in 10.2.6. ESLint's legacy 3.1.5 has neither firstPhasePreProcess nor secondPhasePreProcess and does not implement that optimization. Keep its callable CommonJS API for ESLint compatibility. The installed-resolution regression check verifies the absent mechanism and bounded globParts on the reported pattern shape. Modern consumers use patched 11.0.3. This narrowly scoped exception does not cover any 10.x copy; review upstream advisory range and ESLint migration by the deadline. Source: https://github.com/isaacs/minimatch/security/advisories/GHSA-g3hv-75wg-m249 Review by 2026-11-12T00:00:00Z
+OPEN, time-limited exception: zod: Temporary residual tooling risk: Expo CLI still requires Zod 3.25.76; the upstream fix is in major version 4. Modern consumers resolve patched Zod 4.6.7. This exception applies only to the exact remaining v3 version, not vulnerable v4. Do not expose Expo dev/MCP servers to untrusted users or load untrusted plugin/config payloads. The production case and payment gateways do not use Zod. Reassess with the next compatible Expo release. Review by 2026-11-12T00:00:00Z
+2 root advisories; 0 unhandled. Exceptions do not mean vulnerabilities are fixed.

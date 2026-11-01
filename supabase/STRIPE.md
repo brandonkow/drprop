@@ -60,7 +60,9 @@ Unmatched provider objects fail for investigation rather than silently settling.
 
 Clients can view a clearly labelled test payment record and submit cancellation
 or rescheduling requests. Operators review requests; a requested slot is not held.
-Approval atomically rechecks slot availability/overlap and records a policy snapshot.
+Approved rules are snapshotted when the client submits. A later policy edit cannot
+retroactively change that request. Requests made before rules were approved must
+be rejected and resubmitted after approval. Approval atomically rechecks slot availability/overlap.
 Cancellation marks existing paid test orders for review; refund suggestions do not
 move money. Ordinary cancellation also puts already-paid test orders into review.
 

@@ -70,6 +70,7 @@ describe('commercial policy and reviewed booking changes',()=>{
     await expect(request('cancel',null,randomUUID(),stranger)).rejects.toThrow(/denied/);
     expect(await as(stranger,'select * from public.dp_booking_changes')).toEqual([]);
     await expect(review(r.id)).rejects.toThrow(/not approved/);
+    await policy();await expect(review(r.id)).rejects.toThrow(/not approved when this request/);
     expect((await db.query<Row>('select status from public.dp_bookings where id=$1',[caseId])).rows[0]!.status).toBe('confirmed');
     expect((await review(r.id,false)).state).toBe('rejected');
   });
@@ -89,7 +90,9 @@ describe('commercial policy and reviewed booking changes',()=>{
   it('records cancellation and a refund suggestion without creating a provider refund',async()=>{
     await operator();await policy();await futureSlots();const o=(await as(owner,'select * from public.dp_stripe_order($1)',[caseId]))[0]!;
     await admin('select public.dp_stripe_paid($1,$2,$3,$4,$5,$6,$7,false)',[o.id,'evt_cancel_test',hash,'cs_test_cancel','pi_cancel',29900,'myr']);
-    const r=await request();expect((await review(r.id)).suggested_refund_minor).toBe(29900);
+    const r=await request();
+    await db.exec('update dp_private.commercial_policy set refund_before_percent=25');
+    expect((await review(r.id)).suggested_refund_minor).toBe(29900);
     expect((await db.query<Row>('select state from public.dp_payment_orders where id=$1',[o.id])).rows[0]!.state).toBe('review_required');
     expect((await db.query('select * from public.dp_payment_refunds')).rows).toHaveLength(0);
   });
